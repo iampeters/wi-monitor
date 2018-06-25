@@ -1,1 +1,130 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Reseting all buttons with .btn class
+$btn-padding-reset: 0px 24px;
+$btn-radius: 60px;
+$btn-font-size: 15px;
+.btn {
+    padding: $btn-padding-reset;
+    border-radius: $btn-radius;
+    font-size: $btn-font-size;
+    height: 40px;
+    width: 184px;
+    font-weight: 600;
+}
+
+a.btn {
+    color: #fff !important;
+}
+
+// Font reset
+@font-face {
+    font-family: GothamRounded;
+    src: url('assets/font/gothamrnd-book.woff');
+}
+
+// Reset all ul
+$margin-reset: 0;
+$padding-reset: 0;
+$list: none;
+$font-style: GothamRounded;
+body,
+html,
+:root {
+    margin: $margin-reset;
+    padding: $padding-reset;
+    font-family: $font-style;
+}
+
+ul {
+    margin: $margin-reset;
+    padding: $padding-reset;
+    list-style: $list;
+}
+
+// Anchor reset
+$text-deco: none;
+$color: #364962 !important;
+$spacing: 0.4px;
+a,
+a:hover,
+a:visited,
+a:active,
+a:focus {
+    text-decoration: $text-deco;
+    color: $color;
+    letter-spacing: $spacing;
+    opacity: 0.8;
+}
+
+a.navbar-brand {
+    opacity: 1;
+}
+
+// Margin tops
+.mt-3 {
+    margin-top: 3px;
+}
+
+.mt-5 {
+    margin-top: 5px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-15 {
+    margin-top: 15px;
+}
+
+.mt-20 {
+    margin-top: 150px;
+}
+
+// Margin bottom
+.mb-3 {
+    margin-top: 3px;
+}
+
+.mb-5 {
+    margin-top: 5px;
+}
+
+.mb-10 {
+    margin-top: 10px;
+}
+
+.mb-15 {
+    margin-top: 15px;
+}
+
+.mb-20 {
+    margin-top: 150px;
+}
+
+// Padding reset
+pl-0 {
+    padding-left: 0 !important;
+}
+
+pr-0 {
+    padding-right: 0 !important;
+}
+
+pt-0 {
+    padding-right: 0 !important;
+}
+
+pb-0 {
+    padding-right: 0 !important;
+}
+
+p-0 {
+    padding-right: 0 !important;
+}
+
+//Faded text
+.txt-light {
+    color: #818181;
+}
