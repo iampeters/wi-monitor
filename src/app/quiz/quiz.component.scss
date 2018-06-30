@@ -13,6 +13,7 @@ $bg-grad: linear-gradient(145deg, rgb(13, 71, 161), rgb(66, 165, 245));
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 5000;
 }
 
 html {
@@ -315,7 +316,7 @@ html {
     font-size: 16px;
     color: #fff;
     text-align: center;
-    line-height: 25px;
+    margin-bottom: 0;
     letter-spacing: 1px;
 }
 
@@ -382,7 +383,7 @@ button.btn {
         height: inherit;
         width: 30px;
         text-align: center;
-        line-height: 30px;
+        line-height: 23px;
         font-weight: 800 !important;
         background: none !important;
         box-shadow: none !important;

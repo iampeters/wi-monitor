@@ -3,14 +3,17 @@
 // Reseting all buttons with .btn class
 $btn-padding-reset: 0px 24px;
 $btn-radius: 60px;
-$btn-font-size: 15px;
+$btn-font-size: 14px !important;
 .btn {
     padding: $btn-padding-reset;
     border-radius: $btn-radius;
     font-size: $btn-font-size;
-    height: 40px;
-    width: 184px;
+    height: 35px;
+    width: 150px;
     font-weight: 600;
+    .badge {
+        line-height: 23px !important;
+    }
 }
 
 a.btn {
@@ -127,4 +130,10 @@ p-0 {
 //Faded text
 .txt-light {
     color: #818181;
+}
+
+// modify md-form 
+.md-form {
+    margin-top: 15px;
+    margin-bottom: 15px;
 }

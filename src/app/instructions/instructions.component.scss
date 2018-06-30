@@ -31,3 +31,17 @@ ol li {
     font-size: 16px;
     color: #567;
 }
+
+ul.courses {
+    li {
+        height: auto;
+        // background:;
+        width: 100%;
+        padding: 10px;
+        cursor: pointer;
+        // hover
+        &:hover {
+            background: #c8e6c9;
+        }
+    }
+}

@@ -1,0 +1,24 @@
+header {
+    // padding-left: 240px !important;
+}
+
+.light-blue-skin .side-nav {
+    background-color: #6a9ed3;
+}
+
+#sidenav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120vh;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 997;
+    will-change: opacity;
+    display: none;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+main {
+    margin-top: 100px;
+}

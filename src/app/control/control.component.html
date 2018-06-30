@@ -1,0 +1,74 @@
+<div class="wrapper animated fadeIn">
+    <!-- header -->
+    <app-header></app-header>
+    <!-- inner-wrapper -->
+    <div class="inner-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-10 offset-md-1 animated pulse">
+                    <div class="jumbotron">
+                        <div class="row">
+                            <!-- Caption -->
+                            <div class="col-12  col-md-6 d-none d-md-block p-5">
+                                <!-- Caption header -->
+                                <div class="caption-header col mb-3 mt-3">
+                                    <h6>Welcome</h6>
+                                    <h5>Control Room</h5>
+                                </div>
+                                <!-- caption body -->
+                                <div class="body col mb-3 mt-3">
+                                    <p>You can do the following:</p>
+                                    <ul class="ul-list">
+                                        <li><i class="fa fa-angle-double-right"></i> Add a new subject</li>
+                                        <li><i class="fa fa-angle-double-right"></i> Create new questions</li>
+                                        <li><i class="fa fa-angle-double-right"></i> Manage already created questions</li>
+                                        <li></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--admin login form -->
+                            <div class="col-12  col-md-6 p-5">
+                                <!-- Material form login -->
+                                <form #loginForm="ngForm" (ngSubmit)='login($event)'>
+                                    <p class="h4 text-center mb-4">Sign in</p>
+                                    <!-- {{ userModel | json }} -->
+
+                                    <!-- Material input email -->
+                                    <div class="md-form">
+                                        <i class="fa fa-envelope prefix grey-text"></i>
+
+                                        <input type="email" #email="ngModel" id="materialFormLoginEmailEx" class="form-control" name="email" #email="ngModel" [(ngModel)]="userModel.email" [class.is-invalid]="email.invalid && email.touched" required>
+
+                                        <label for="materialFormLoginEmailEx">Your email</label>
+                                        <div class="text-right">
+                                            <small class="animated fadeIn text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
+                                            <!-- <small>Invalid email address</small> -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Material input password -->
+                                    <div class="md-form">
+                                        <!-- icon -->
+                                        <i class="fa fa-lock prefix grey-text"></i>
+                                        <!-- input -->
+                                        <input type="password" id="materialFormLoginPasswordEx" class="form-control" name="password" #password="ngModel" [(ngModel)]="userModel.password" [class.is-invalid]="password.invalid && password.touched" required>
+                                        <!-- label -->
+                                        <label for="materialFormLoginPasswordEx">Your password</label>
+                                        <div class="text-right">
+                                            <small class="animated fadeIn text-danger" [class.d-none]="password.valid || password.untouched">Password is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <button class="btn btn-default" type="submit" [disabled]="email.invalid || email.untouched && password.invalid || password.pristine">Login</button>
+                                    </div>
+                                </form>
+                                <!-- Material form login -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

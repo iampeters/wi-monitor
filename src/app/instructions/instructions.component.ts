@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SubjectsService } from '../services/subjects.service';
+import { QuestionsService } from '../services/questions.service';
+import { MiscService } from '../services/misc.service';
+
 
 @Component({
   selector: 'app-instructions',
@@ -8,20 +12,54 @@ import { Router } from '@angular/router';
 })
 export class InstructionsComponent implements OnInit {
 
-  constructor( private router: Router) { }
+  public subjects = [];
+  sub;
+  subjectChosen;
+  error;
+
+  constructor(
+    private router: Router,
+    private returned: SubjectsService,
+    private question: QuestionsService,
+    private misc: MiscService
+  ) { }
 
   ngOnInit() {
+    this.returned.getSubjects().subscribe(data => {
+      this.subjects = data;
+    });
   }
 
-  agree() {
-    this.router.navigate(['quiz']);
+  // this fucntion will be executed on form submit
+  onSubmit(event) {
+    this.sub = event.group;
+
+    this.question.getQuestions(this.sub).subscribe(data => {
+      if (data.success === true) {
+
+        this.subjectChosen = data.message;
+
+        this.router.navigate(['quiz']);
+
+
+      } else {
+        this.error = data.message;
+      }
+    });
+
+    return false;
   }
 
+  // // this function will redirect to some other link
   cancel() {
     if (confirm('Are you sure about this?')) {
       // The user window will be closed
+      this.misc.logoutUser().subscribe(data => {
+        this.router.navigate(['/login']);
+      });
 
     }
   }
 
 }
+

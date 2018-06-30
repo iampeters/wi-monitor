@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper animated fadeIn">
     <app-header></app-header>
 
     <!-- this will hold the instructions -->
@@ -22,10 +22,48 @@
                 <!-- instructions footer -->
                 <div class="instructions-footer text-center">
                     <div class="form-group d-flex">
-                        <button (click)="agree()" class="btn btn-success">Agree</button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#modalLoginForm">Agree</button>
                         <button (click)="cancel()" class="btn btn-danger">Cancel</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup modal -->
+    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h6 class="modal-title w-100 font-weight-bold">Choose your subject</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- form -->
+                <form #subjectsForm="ngForm" (ngSubmit)='onSubmit(subjectsForm.value)'>
+                    <div class="modal-body mx-3">
+
+                        <!--Radio group-->
+                        <div *ngFor="let subject of subjects">
+                            <div class="form-check">
+                                <input #input="ngModel" class="form-check-input with-gap radio-value" name="group" type="radio" id="radio{{subject.subject_id}}" value="{{ subject.subject_id }}" required ngModel>
+                                <label class="form-check-label" for="radio{{subject.subject_id}}">{{ subject.subject }}</label>
+                            </div>
+                        </div>
+
+                        <!--Radio group-->
+
+                    </div>
+                    <!-- hidden element -->
+
+                    <input type="hidden" value="" id="_hidden">
+
+                    <div class="modal-footer d-flex justify-content-center">
+                        <input type="submit" class="btn btn-success" id="enterQuiz" value="Play" />
+                        <small class="text-danger animated fadeIn">{{ error }}</small>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

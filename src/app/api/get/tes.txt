@@ -1,0 +1,13 @@
+hey guys.
+im new to angular 6 and have been working on an app as seen in the picture below.
+the list of subjects were gotten from the database using php and displayed in the view as in the picture.
+
+what i want is: 
+the user will choose a subject and click on the play button. Once the button is clicked, i want the checked subject to be submitted to the component.ts file of the view and the exact subject be queried from the database to generate questions that are related to the subject the user checked.
+
+Problem:
+i have been finding it difficult to get the value of the checked radio button in angular.
+
+Please note that i have searched almost everywhere online and couldn't find any working solution.
+
+thanks in advance.

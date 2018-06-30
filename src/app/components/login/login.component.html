@@ -1,0 +1,59 @@
+<div class="wrapper animated fadeIn">
+    <!-- header -->
+    <app-header></app-header>
+    <!-- inner-wrapper -->
+    <div class="inner-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6 offset-md-3 animated pulse">
+                    <div class="jumbotron">
+                        <div class="row">
+                            <!-- Caption -->
+
+                            <!--user login form -->
+                            <div class="col-12  col-md-12 p-5 ">
+                                <!-- Material form login -->
+                                <form #loginForm="ngForm" (ngSubmit)='login(loginForm.value)'>
+                                    <p class="h4 text-center mb-4">Sign in</p>
+                                    <small class="text-center d-block text-danger">{{info}}</small>
+
+                                    <!-- Material input email -->
+                                    <div class="md-form">
+                                        <i class="fa fa-user prefix grey-text"></i>
+                                        <!-- Input field -->
+                                        <input type="text" id="materialFormLoginUsernameEx" class="form-control" name="username" #username="ngModel" [(ngModel)]="loginModel.username" [class.is-invalid]="username.invalid && username.touched" required>
+                                        <!-- Label -->
+                                        <label for="materialFormLoginUsernameEx">Username</label>
+                                        <div class="text-right">
+                                            <small class="animated fadeIn text-danger" [class.d-none]="username.valid || username.untouched">Username is required</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Material input password -->
+                                    <div class="md-form">
+                                        <!-- icon -->
+                                        <i class="fa fa-lock prefix grey-text"></i>
+                                        <!-- input -->
+                                        <input type="password" id="materialFormLoginPasswordEx" class="form-control" name="password" #password="ngModel" [(ngModel)]="loginModel.password" [class.is-invalid]="password.invalid && password.touched" required>
+                                        <!-- label -->
+                                        <label for="materialFormLoginPasswordEx">Your password</label>
+                                        <div class="text-right">
+                                            <small class="animated fadeIn text-danger" [class.d-none]="password.valid || password.untouched">Password is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <button class="btn btn-success" type="submit" [disabled]="username.invalid || username.pristine || password.invalid || password.pristine">Login</button><br>
+                                        <button (click)="register()" class="btn btn-primary">Register</button><br>
+                                        <small>Forgot password?</small>
+                                    </div>
+                                </form>
+                                <!-- Material form login -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

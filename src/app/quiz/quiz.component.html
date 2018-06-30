@@ -1,5 +1,5 @@
 <!-- Preloader -->
-<!-- <div class="preloader">
+<div class="preloader">
     <div class="loader animated pulse">
         <div class="loader__bar"></div>
         <div class="loader__bar"></div>
@@ -9,7 +9,7 @@
         <div class="loader__ball"></div>
 
     </div>
-</div> -->
+</div>
 <!-- Preloader -->
 
 <!-- Main wrapper -->
@@ -31,7 +31,7 @@
                         <!--Panel header -->
                         <div class="q-panel-header col-12">
                             <div class="col-4 score p-0">
-                                <h6 class="text-white">Player 1</h6>
+                                <h6 class="text-white">{{player}}</h6>
                                 <span class="badge bg-success">Correct:</span> &nbsp;
                                 <span class="badge bg-success">0</span> <br>
                                 <span class="badge bg-danger">Wrong:&nbsp;</span> &nbsp;
@@ -61,7 +61,7 @@
                             <div class="q-board">
                                 <!-- Question board header -->
                                 <div class="q-board-header">
-                                    <h5>Who was the first man on the moon?</h5>
+                                    <h5>{{ question }}</h5>
                                 </div>
                                 <!-- Question board content -->
                                 <div class="q-board-content">
@@ -69,25 +69,25 @@
                                         <div class="col-12 col-md-6 p-0">
                                             <button class="btn btn-white btn-mod">
                                                 <span class="badge ">A: </span>
-                                                <span class="ans"> Neil Amstrong</span>
+                                                <span class="ans">{{answer}}</span>
                                             </button>
                                         </div>
                                         <div class="col-12 col-md-6 p-0">
                                             <button class="btn btn-white btn-mod">
                                                 <span class="badge ">B: </span>
-                                                <span class="ans">Buhari</span>
+                                                <span class="ans">{{ option1 }}</span>
                                             </button>
                                         </div>
                                         <div class="col-12 col-md-6 p-0">
                                             <button class="btn btn-white btn-mod">
                                                 <span class="badge  ">C: </span>
-                                                <span class="ans">Jonathan Cage</span>
+                                                <span class="ans"> {{ option3 }}</span>
                                             </button>
                                         </div>
                                         <div class="col-12 col-md-6 p-0">
                                             <button class="btn btn-white btn-mod">
                                                 <span class="badge ">D: </span>
-                                                <span class="ans">Obasanjo</span>
+                                                <span class="ans">{{option2}}</span>
                                             </button>
                                         </div>
                                         <div class="col-12 mt-5">
@@ -103,7 +103,7 @@
                         <!-- Course -->
                         <div class="row">
                             <div class="col-12 col-md-8 offset-md-1 text-white">
-                                <span class="badge red">Course:</span> Mathematics &nbsp;
+                                <span class="badge red">Course:</span> {{ subject }} &nbsp;
                                 <span class="badge red">Questions:</span> 10 &nbsp;
                                 <span class="badge red">Marks:</span> 10
                             </div>
@@ -123,7 +123,7 @@
                                     <button class="btn btn-light-blue life-line">Skip</button>
                                 </div>
                                 <div class="col-12 col-md-3 ">
-                                    <button class="btn btn-danger life-line">Quit</button>
+                                    <button (click)='quit()' class="btn btn-danger life-line">Quit</button>
                                 </div>
                             </div>
                         </div>
