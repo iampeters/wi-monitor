@@ -44,7 +44,7 @@
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="../../assets/js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="../../assets/js/mdb.min.js"></script>
+    <script type="text/javascript" src="../../assets/js/mdb.js"></script>
     <!-- Project core JavaScript -->
     <script src="../../assets/js/script.js"></script>
     <!-- Smooth Scroll -->
@@ -61,41 +61,7 @@
     <app-root></app-root>
     <script>
         $(function() {
-            $('#enterQuiz').click(function() {
-                // fadeout the modal backdrop
-                // aler('clicked');
-            });
 
-
-            $('.quiz-wrapper').hide();
-            setInterval(function() {
-                $('.preloader').hide();
-                $('.quiz-wrapper').show();
-                $('.modal-backdrop').hide();
-            }, 4000);
-
-            // side bar nav
-            $(".button-collapse").click(function() {
-                $('#slide-out').css({
-                    "transform": "translateX(0)",
-                    "transition": ".3s all ease-in-out"
-                });
-                $('#sidenav-overlay').fadeIn();
-            });
-
-            $('#sidenav-overlay').click(function() {
-                $('#slide-out').css({
-                    "transform": "translateX(-100%)",
-                    "transition": ".3s all ease-in-out"
-
-                });
-                $(this).fadeOut();
-            });
-
-            $('.collapsible-header').click(function() {
-                // $('.collapsible-body').slideToggle(300);
-                $(this).addClass('active');
-            });
 
         });
     </script>

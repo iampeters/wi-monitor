@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { registerLocaleData } from '@angular/common';
 import { RegisterComponent } from './components/register/register.component';
+import { AddComponent } from './components/add/add.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'add', component: AddComponent },
   { path: '**', component: ErrorPageComponent }
 
 ];
@@ -36,5 +38,6 @@ export const routingComponents = [
   ErrorPageComponent,
   ControlComponent,
   RegisterComponent,
-  LoginComponent
+  LoginComponent,
+  AddComponent
 ];

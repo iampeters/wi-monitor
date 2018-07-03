@@ -12,6 +12,9 @@ export class MiscService {
   loginUrl = '/wi-monitor/src/app/api/user/login.php';
   logoutUrl = '/wi-monitor/src/app/api/user/logout.php';
   useChkUrl = '/wi-monitor/src/app/api/user/userCheck.php';
+  addQuestionUrl = '/wi-monitor/src/app/api/post/addQuestion.php';
+  addSubjectUrl = '/wi-monitor/src/app/api/post/addSubject.php';
+  addGuardianUrl = '/wi-monitor/src/app/api/post/addGuardian.php';
 
   constructor( private http: HttpClient ) { }
 
@@ -46,6 +49,20 @@ export class MiscService {
   userCheck() {
     return this.http.get<Myface>(this.useChkUrl);
   }
+
+  // Add subject
+  addSubject(subject) {
+    return this.http.post<Myface>(this.addSubjectUrl, {
+      subject
+    });
+  }
+
+  // Add question
+  addQuestion(question, subject, option1, option2, option3, answer) {
+    return this.http.post<Myface>(this.addQuestionUrl, {
+      question, subject, option1, option2, option3, answer
+    });
+  }
 }
 export interface Myface {
   success: boolean;
@@ -53,4 +70,12 @@ export interface Myface {
   username: string;
   password: string;
   message: string;
+  guardian: string;
+  subject: string;
+  option1: string;
+  option2: string;
+  option3: string;
+  answer: string;
+  question: string;
+  ward: string;
 }

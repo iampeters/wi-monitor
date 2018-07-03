@@ -7,7 +7,7 @@
     $_POST = json_decode(file_get_contents('php://input'), true);
     
     if (isset($_POST['subject']) && !empty($_POST['subject'])) {
-         // Database parameters
+        // Database parameters
         $dbname = 'wi-monitor';
         $dbuser = 'root';
         $dbpass = "";

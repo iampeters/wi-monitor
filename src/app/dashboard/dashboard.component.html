@@ -8,7 +8,7 @@
                 <li>
                     <div class="logo-wrapper waves-light">
                         <a href="#">
-                            <img src="https://mdbootstrap.com/img/logo/mdb-transparent.png" class="img-fluid flex-center">
+                            <span src="" class="img-fluid flex-center" alt="wi-monito">wi-monito</span>
                         </a>
                     </div>
                 </li>
@@ -52,11 +52,11 @@
                 <li>
                     <ul class="collapsible collapsible-accordion">
                         <li>
-                            <a class="collapsible-header waves-effect arrow-r">
-                                <i class="fa fa-chevron-right"></i> Submit blog
-                                <i class="fa fa-angle-down rotate-icon"></i>
+                            <a routerLink="/dashboard" class="collapsible-header waves-effect arrow-r">
+                                <i class="fa fa-chevron-right"></i> Dashboard
+                                <!-- <i class="fa fa-angle-down rotate-icon"></i> -->
                             </a>
-                            <div class="collapsible-body">
+                            <!-- <div class="collapsible-body">
                                 <ul>
                                     <li>
                                         <a href="#" class="waves-effect">Submit listing</a>
@@ -65,14 +65,14 @@
                                         <a href="#" class="waves-effect">Registration form</a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </li>
-                        <li>
-                            <a class="collapsible-header waves-effect arrow-r">
+                        <li class="">
+                            <a routerLink="/add" routerLinkActive="active" class="collapsible-header waves-effect arrow-r">
                                 <i class="fa fa-hand-pointer-o"></i> Add new subject
                                 <!-- <i class="fa fa-angle-down rotate-icon"></i> -->
                             </a>
-                            <div class="collapsible-body">
+                            <!-- <div class="collapsible-body">
                                 <ul>
                                     <li>
                                         <a href="#" class="waves-effect">For bloggers</a>
@@ -81,14 +81,14 @@
                                         <a href="#" class="waves-effect">For authors</a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </li>
                         <li>
                             <a class="collapsible-header waves-effect arrow-r">
                                 <i class="fa fa-eye"></i> Add new question
-                                <i class="fa fa-angle-down rotate-icon"></i>
+                                <!-- <i class="fa fa-angle-down rotate-icon"></i> -->
                             </a>
-                            <div class="collapsible-body">
+                            <!-- <div class="collapsible-body">
                                 <ul>
                                     <li>
                                         <a href="#" class="waves-effect">Introduction</a>
@@ -97,41 +97,7 @@
                                         <a href="#" class="waves-effect">Monthly meetings</a>
                                     </li>
                                 </ul>
-                            </div>
-                        </li>
-                        <li>
-                            <a class="collapsible-header waves-effect arrow-r">
-                                <i class="fa fa-envelope-o"></i> Contact me
-                                <i class="fa fa-angle-down rotate-icon"></i>
-                            </a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li>
-                                        <a href="#" class="waves-effect">FAQ</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="waves-effect">Write a message</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="waves-effect">FAQ</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="waves-effect">Write a message</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="waves-effect">FAQ</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="waves-effect">Write a message</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="waves-effect">FAQ</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="waves-effect">Write a message</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            </div> -->
                         </li>
                     </ul>
                 </li>
@@ -150,7 +116,7 @@
             </div>
             <!-- Breadcrumb-->
             <div class="breadcrumb-dn mr-auto">
-                <p>Material Design for Bootstrap</p>
+                <p>WI-MONITO</p>
             </div>
             <ul class="nav navbar-nav nav-flex-icons ml-auto">
                 <li class="nav-item">
@@ -190,11 +156,167 @@
     <!--Main Layout-->
     <main>
         <div class="container mt-5">
-            <h2>Advanced Double Navigation with fixed SideNav & fixed Navbar:</h2>
-            <br>
-            <h5>1. Fixed side menu, hidden on small devices.</h5>
-            <h5>2. Fixed Navbar. It will always stay visible on the top, even when you scroll down.</h5>
-            <div style="height: 2000px"></div>
+            <div class="row">
+                <!-- card -->
+                <div class="col-12 col-md-6 col-xl-4 mb-5">
+                    <div class="card">
+
+                        <h6 class="card-header text-white">
+                            Add new subject
+                        </h6>
+                        <form #subjectForm="ngForm" (submit)="addSubject(subjectForm.value)">
+                            <div class="card-body">
+
+                                <!-- Material input subject -->
+                                <div class="md-form">
+                                    <!-- <i class="fa fa-book prefix grey-text"></i> -->
+                                    <!-- Input field -->
+                                    <input type="text" id="materialFormAddSubjectEx" class="form-control" name="sub" #sub="ngModel" [(ngModel)]="subjectModel.subject" [class.is-invalid]="subject.invalid && subject.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddSubjectEx">Subject name</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="sub.valid || sub.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <!-- This will display information from the server -->
+                                <small class="text-center d-block text-success"> {{ subjectInfo }}</small>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-center">
+                                    <button class="btn btn-default" type="submit" [disabled]="sub.invalid || sub.pristine">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Question panel -->
+                <div class="col-12 col-md-6 col-xl-4 mb-5">
+                    <div class="card">
+                        <h6 class="card-header text-white ">
+                            Add new question
+                        </h6>
+                        <form #questionForm="ngForm" (submit)="addQuestion(questionForm.value)">
+                            <div class="card-body">
+                                <!-- Material input subject -->
+                                <div class="md-form">
+                                    <!-- <i class="fa fa-book prefix grey-text"></i> -->
+                                    <!-- Input field -->
+                                    <input type="text" id="materialFormAddQuestionEx" class="form-control" name="question" #question="ngModel" [(ngModel)]="questionModel.question" [class.is-invalid]="question.invalid && question.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddQuestionEx">Question</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="question.valid || question.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <!-- Material input subject -->
+                                <div class="md-form">
+                                    <!--Blue select-->
+                                    <div class="select-wrapper mdb-select colorful-select dropdown-primary">
+                                        <!-- <span class="caret">▼</span> -->
+                                        <!-- <label for="inputState">State</label> -->
+                                        <select id="materialFormSelectEx" name="subject" #subject="ngModel" [(ngModel)]="questionModel.subject" class="form-control d-block">
+                                            <option>Choose subject...</option>
+                                            <option *ngFor="let subj of Subjs" value="{{subj.subject_id}}">{{subj.subject}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Material input Options -->
+                                <div class="md-form">
+                                    <!-- <i class="fa fa-book prefix grey-text"></i> -->
+                                    <!-- Input field -->
+                                    <input type="text" id="materialFormAddOption1Ex" class="form-control" name="option1" #option1="ngModel" [(ngModel)]="questionModel.option1" [class.is-invalid]="option1.invalid && option1.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddOption1Ex">Option 1</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="option1.valid || option1.untouched">Field is required</small>
+                                    </div>
+                                </div>
+
+                                <!-- Material input Options -->
+                                <div class="md-form">
+                                    <!-- <i class="fa fa-book prefix grey-text"></i> -->
+                                    <!-- Input field -->
+                                    <input type="text" id="materialFormAddOption2Ex" class="form-control" name="option2" #option2="ngModel" [(ngModel)]="questionModel.option2" [class.is-invalid]="option2.invalid && option2.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddOption2Ex">Option 2</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="option2.valid || option2.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <!-- Material input Options -->
+                                <div class="md-form">
+                                    <!-- <i class="fa fa-book prefix grey-text"></i> -->
+                                    <!-- Input field -->
+                                    <input type="text" id="materialFormAddOption3Ex" class="form-control" name="option3" #option3="ngModel" [(ngModel)]="questionModel.option3" [class.is-invalid]="option3.invalid && option3.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddOption3Ex">Option 3</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="option3.valid || option3.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <!-- Material input Options -->
+                                <div class="md-form">
+                                    <!-- <i class="fa fa-book prefix grey-text"></i> -->
+                                    <!-- Input field -->
+                                    <input type="text" id="materialFormAddAnswerEx" class="form-control" name="answer" #answer="ngModel" [(ngModel)]="questionModel.answer" [class.is-invalid]="answer.invalid && answer.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddAnswerEx">Answer</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="answer.valid || answer.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <small class="text-center d-block text-danger">{{questionInfo}}</small>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-center">
+                                    <button class="btn btn-default" type="submit" [disabled]="question.invalid || question.pristine || subject.invalid || subject.pristine || option1.invalid || option1.pristine || option2.invalid || option2.pristine || option3.invalid || option3.pristine || answer.invalid || answer.pristine">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Parent form -->
+                <div class="col-12 col-md-6 col-xl-4 mb-5">
+                    <div class="card">
+                        <h6 class="card-header text-white ">
+                            Add a parent/guardian
+                        </h6>
+                        <form #guardianForm="ngForm" (ngSubmit)="addGuardian(guardianForm.value)">
+                            <div class="card-body">
+                                <!-- Material input guardian -->
+                                <div class="md-form">
+                                    <!-- Input field -->
+                                    <input type="text" id="materialFormAddGuardianEx" class="form-control" name="guardian" #guardian="ngModel" [(ngModel)]="guardianModel.guardian" [class.is-invalid]="guardian.invalid && guardian.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddGuardianEx">Guardian</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="guardian.valid || guardian.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <!-- Material input ward -->
+                                <div class="md-form">
+                                    <!-- Input field -->
+                                    <input type="text" id="materialFormAddWardEx" class="form-control" name="ward" #ward="ngModel" [(ngModel)]="guardianModel.ward" [class.is-invalid]="ward.invalid && ward.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddWardEx">Ward</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="ward.valid || ward.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <small class="text-center d-block text-danger">{{guardianInfo}}</small>
+
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-center">
+                                    <button class="btn btn-default" type="submit" [disabled]="guardian.invalid || guardian.pristine ||ward.invalid || ward.pristine">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- ./ card -->
+            </div>
         </div>
     </main>
     <!--Main Layout-->

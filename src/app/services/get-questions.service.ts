@@ -8,6 +8,7 @@ export class GetQuestionsService {
 
   url = '/wi-monitor/src/app/api/get/subjectChoice.php';
   url1 = '/wi-monitor/src/app/api/get/getQuestions.php';
+  url2 = '/wi-monitor/src/app/api/get/generator.php';
 
   constructor( private http: HttpClient ) { }
 
@@ -19,6 +20,11 @@ export class GetQuestionsService {
   // Getting questions from the preferred subject
   getQuestions() {
     return this.http.get<MyInt>(this.url1);
+  }
+
+  // Getting questions from the server
+  generator() {
+    return this.http.get<MyInt>(this.url2);
   }
 }
 export interface MyInt {
