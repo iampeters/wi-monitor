@@ -20,6 +20,11 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.misc.isLoggedIn().subscribe(data => {
+      if (data.success === true) {
+        this.router.navigate(['/welcome']);
+      }
+    });
   }
 
   // New user registration

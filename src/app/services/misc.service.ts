@@ -15,6 +15,8 @@ export class MiscService {
   addQuestionUrl = '/wi-monitor/src/app/api/post/addQuestion.php';
   addSubjectUrl = '/wi-monitor/src/app/api/post/addSubject.php';
   addGuardianUrl = '/wi-monitor/src/app/api/post/addGuardian.php';
+  taggerUrl = '/wi-monitor/src/app/api/get/tagger.php';
+  isLoggedInUrl = '/wi-monitor/src/app/api/user/isLoggedIn.php';
 
   constructor( private http: HttpClient ) { }
 
@@ -63,6 +65,17 @@ export class MiscService {
       question, subject, option1, option2, option3, answer
     });
   }
+
+  // This will tag the players
+  tagger() {
+    return this.http.get<Tagger>(this.taggerUrl);
+  }
+
+  // This will check if a user is logged in for all template
+  isLoggedIn() {
+    return this.http.get<Tagger>(this.isLoggedInUrl);
+  }
+
 }
 export interface Myface {
   success: boolean;
@@ -78,4 +91,21 @@ export interface Myface {
   answer: string;
   question: string;
   ward: string;
+}
+
+export interface Tagger {
+  success: boolean;
+  message: string;
+  data: string;
+  game_id: number;
+  tag_id: number;
+  subject_id: number;
+  subject: string;
+  player_id: number;
+  opponent_id: number;
+  session_key: string;
+  player_name: string;
+  opponent_name: string;
+  loggedInUser: string;
+  username: string;
 }

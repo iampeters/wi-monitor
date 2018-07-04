@@ -15,6 +15,11 @@ export class WelcomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.misc.isLoggedIn().subscribe( data => {
+      if (data.success === false) {
+        this.router.navigate(['/login']);
+      }
+    });
   }
   nextPage() {
     this.router.navigate(['instructions']);

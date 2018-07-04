@@ -20,6 +20,11 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.misc.isLoggedIn().subscribe( data => {
+      if (data.success === true) {
+        this.router.navigate(['/welcome']);
+      }
+    });
   }
 
   // Login user

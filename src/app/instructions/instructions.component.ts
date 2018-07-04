@@ -24,11 +24,28 @@ export class InstructionsComponent implements OnInit {
     private misc: MiscService
   ) { }
 
-  ngOnInit() {
+  public getSub() {
     this.returned.getSubjects().subscribe(data => {
       this.subjects = data;
     });
   }
+
+  ngOnInit() {
+    this.misc.isLoggedIn().subscribe( data => {
+
+      if ( data.success === false) {
+        this.router.navigate(['/login']);
+      }
+    });
+
+    // Getting available subjects
+    // this.returned.getSubjects().subscribe(data => {
+    //   this.subjects = data;
+    // });
+    this.getSub();
+  }
+
+
 
   // this fucntion will be executed on form submit
   onSubmit(event) {
