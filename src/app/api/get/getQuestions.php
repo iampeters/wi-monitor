@@ -68,20 +68,26 @@
 
                 } else {
                     echo '{
-                        "success"" false,
+                        "success": false,
                         "message": "A fatal error has occured"
                     }';
                 }
 
             } else {
-                # code...
+                echo '{
+                    "success": false,
+                    "message": "There are no questions to display"
+                }';
             }
             
 
         }
 
     } else {
-        # code...
+        echo '{
+            "success": false,
+            "message": "You have to select a subject first"
+        }';
     }
     
 

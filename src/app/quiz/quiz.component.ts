@@ -60,18 +60,22 @@ export class QuizComponent implements OnInit {
     // This will check if game of the user subject has an active session or is waiting to be merged
     this.misc.tagger().subscribe( data => {
 
-      if (data.success === true) {
+      if (data.success === true && data.message === 'resume') {
 
         // Checking if player 1 is the logged in user
         if (data.player_name === data.loggedInUser) {
 
           this.player = data.player_name;
           this.opponent = data.opponent_name;
+          this.subject = data.subject;
+          // alert(data.message);
 
         } else {
 
           this.opponent = data.player_name;
           this.player = data.opponent_name;
+          this.subject = data.subject;
+          // alert(data.message);
         }
 
         // Getting questions from user preferred subject
@@ -88,7 +92,9 @@ export class QuizComponent implements OnInit {
         });
 
       } else {
-        alert(data);
+        alert(data.message);
+        this.player = data.username;
+        this.subject = data.subject;
       }
     });
 
