@@ -47,7 +47,7 @@
                 else {          
 
                     # Insert into the game table and intialize the game
-                    $insert_game = mysqli_query($conn, "insert into game (game_id, subject_id, session_key, started, has_ended) values ('', '$subject_id', '$rand', '', '0')");
+                    $insert_game = mysqli_query($conn, "insert into game (game_id, subject_id, session_key, has_ended) values ('', '$subject_id', '$rand', '0')");
 
                     if ( !$insert_game ) {
 
@@ -94,12 +94,18 @@
                         $data->opponent_name = $opponent_row['username'];
                         $data->loggedInUser = $username;
                         $data->success = true;
+                        $data->message = "start";
 
                         # Add to session variables
                         $_SESSION['gid'] = $rows['game_id'];
                         $_SESSION['tid'] = $rows['tag_id'];
                         $_SESSION['key'] = $rows['session_key'];
 
+                        $gid = $rows['game_id'];
+                        $tid = $rows['tag_id'];
+                        $key = $rows['session_key'];
+
+                        # Send back data
                         echo json_encode($data);
 
                     } else {

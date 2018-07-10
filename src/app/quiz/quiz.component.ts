@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { GetQuestionsService } from '../services/get-questions.service';
 import { MiscService } from '../services/misc.service';
@@ -9,7 +9,10 @@ import { Answer } from '../classes/user';
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.scss']
 })
+
 export class QuizComponent implements OnInit {
+
+  @ViewChild('qBoard') qBoard: ElementRef;
 
   subject;
   question;
@@ -18,6 +21,8 @@ export class QuizComponent implements OnInit {
   option3;
   answer;
   Qid;
+  isMerged;
+  msg;
 
   error;
   player;
@@ -60,7 +65,9 @@ export class QuizComponent implements OnInit {
     // This will check if game of the user subject has an active session or is waiting to be merged
     this.misc.tagger().subscribe( data => {
 
-      if (data.success === true && data.message === 'resume') {
+      if (data.success === true && (data.message === 'resume' || data.message === 'start')) {
+
+        this.isMerged = true;
 
         // Checking if player 1 is the logged in user
         if (data.player_name === data.loggedInUser) {
@@ -92,9 +99,11 @@ export class QuizComponent implements OnInit {
         });
 
       } else {
-        alert(data.message);
+        // alert(data.message);
         this.player = data.username;
         this.subject = data.subject;
+        this.isMerged = false;
+        this.msg = data.message;
       }
     });
 
@@ -102,6 +111,19 @@ export class QuizComponent implements OnInit {
 
   }
   // End of onInit
+
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngAfterViewInit() {
+
+    const interv = setInterval(() => {
+      if (this.time === 0) {
+        clearInterval(interv);
+        // alert('timeup');
+      } else {
+        this.time = this.time - 1;
+      }
+    }, 1000);
+  }
 
 
   // Checking user answer
@@ -113,10 +135,17 @@ export class QuizComponent implements OnInit {
         alert('Game Over' + ' ' + 'Score: ' + this.marks);
       } else {
         this.q_count = this.q_count - 1;
-        // Incrementing the score
-        this.right = this.right + 1;
-        // incrementing the marks
-        this.marks = this.marks + 5;
+
+        const score = 1;
+
+        // Inserting into scores table when the user picked the correct answer
+        this.misc.ansCorrect(score).subscribe( data => {
+          if ( data.success === true) {
+            this.right = data.value;
+            // incrementing the marks
+            this.marks = data.scores;
+          }
+        });
 
         this.choice.generator().subscribe(data => {
           if (data.success === true) {
@@ -136,8 +165,15 @@ export class QuizComponent implements OnInit {
           alert('Game Over' + ' ' + 'Score: ' + this.marks);
         } else {
           this.q_count = this.q_count - 1;
-          // Incrementing the score
-          this.wrong = this.wrong + 1;
+
+          const score = 1;
+
+          // Inserting into scores table when the user picked the wrong answer
+          this.misc.ansWrong(score).subscribe(data => {
+            if (data.success === true) {
+              this.wrong = data.value;
+            }
+          });
 
           this.choice.generator().subscribe(data => {
             if (data.success === true) {

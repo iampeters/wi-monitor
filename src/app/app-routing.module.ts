@@ -10,10 +10,11 @@ import { LoginComponent } from './components/login/login.component';
 import { registerLocaleData } from '@angular/common';
 import { RegisterComponent } from './components/register/register.component';
 import { AddComponent } from './components/add/add.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'quiz', component: QuizComponent },
+  { path: 'quiz', component: QuizComponent, canActivate: [AuthGuard] },
   { path: 'instructions', component: InstructionsComponent },
   { path: 'welcome', component: WelcomeComponent },
   { path: 'control', component: ControlComponent },

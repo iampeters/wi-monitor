@@ -17,6 +17,7 @@ export class MiscService {
   addGuardianUrl = '/wi-monitor/src/app/api/post/addGuardian.php';
   taggerUrl = '/wi-monitor/src/app/api/get/tagger.php';
   isLoggedInUrl = '/wi-monitor/src/app/api/user/isLoggedIn.php';
+  scoresUrl = '/wi-monitor/src/app/api/post/scoresUpdate.php';
 
   constructor( private http: HttpClient ) { }
 
@@ -76,6 +77,25 @@ export class MiscService {
     return this.http.get<Tagger>(this.isLoggedInUrl);
   }
 
+  // This will update the scores table when the user answer is wrong
+  ansWrong(wrong) {
+    return this.http.post<Tagger>(this.scoresUrl, {
+      wrong
+    });
+  }
+
+  // This will update the scores table when the user answer is correct
+  ansCorrect(right) {
+    return this.http.post<Tagger>(this.scoresUrl, {
+      right
+    });
+  }
+
+  // Checking if the admin is logged in
+  isLoggedInUser() {
+    return this.http.get(this.isLoggedInUrl);
+  }
+
 }
 export interface Myface {
   success: boolean;
@@ -108,4 +128,8 @@ export interface Tagger {
   opponent_name: string;
   loggedInUser: string;
   username: string;
+  wrong: number;
+  right: number;
+  value: number;
+  scores: number;
 }

@@ -18,6 +18,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 q-panel-holder animated pulse">
+
                 <!-- Player 1 Screen -->
                 <div class="col-md-12 col-lg-6 col-12 player-1">
                     <!-- Preloader -->
@@ -59,14 +60,14 @@
                         <!-- Panel body -->
                         <div class="q-panel-body col-12">
                             <div class="q-board">
-                                <form #answerForm="ngForm" (ngSubmit)="userAns(answerForm.value); answerForm.reset()">
+                                <form #answerForm="ngForm" (ngSubmit)="userAns(answerForm.value); answerForm.reset()" *ngIf="isMerged; else showDiv">
                                     <!-- {{ answerForm.value | json }} -->
                                     <!-- Question board header -->
                                     <div class="q-board-header">
                                         <h5>{{ question }}</h5>
                                     </div>
                                     <!-- Question board content -->
-                                    <div class="q-board-content">
+                                    <div #qBoard class="q-board-content">
                                         <div class="row">
                                             <div class="col-12 col-md-6 p-0">
                                                 <label for="A" class="form-check-label btn btn-white btn-mod">
@@ -118,6 +119,11 @@
                                     </div>
                                 </form>
                                 <!-- end of form  -->
+
+                                <!-- This will be displayed if the user has not been merged -->
+                                <ng-template #showDiv>
+                                    <h6 class="text-white text-center">{{ msg }}</h6>
+                                </ng-template>
                             </div>
                             <!-- ./ Panel body -->
                         </div>
@@ -194,8 +200,7 @@
                         <!-- Panel body -->
                         <div class="q-panel-body col-12">
                             <div class="q-board">
-                                <form>
-                                    <!-- {{ answerForm.value | json }} -->
+                                <form *ngIf="isMerged; else showDiv">
                                     <!-- Question board header -->
                                     <div class="q-board-header">
                                         <h5>{{ question }}</h5>
@@ -253,6 +258,12 @@
                                     </div>
                                 </form>
                                 <!-- end of form  -->
+
+                                <!-- This will be displayed if the user has not been merged -->
+                                <ng-template #showDiv>
+                                    <h6 class="text-white text-center">{{ msg }}</h6>
+                                </ng-template>
+
                             </div>
                             <!-- ./ Panel body -->
                         </div>
