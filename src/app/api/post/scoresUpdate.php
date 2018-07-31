@@ -23,9 +23,9 @@
         $score = 5;
 
         #Get the current value of the user's correct answers
-        $sql = mysqli_query($conn, "select correct, scores from scores where player_id = '$player_id' and session_key = '$key' ");
+        $sql = mysqli_query($conn, "SELECT correct, scores from scores where player_id = '$player_id' and session_key = '$key' ");
         
-        if ( mysqli_num_rows($sql) > 0 ) {
+        if ( mysqli_num_rows($sql) == 1 ) {
             
             $row = mysqli_fetch_assoc($sql);
             $correct_value = $row['correct'] ;
@@ -35,7 +35,7 @@
             $new_scores = $scores + 5; 
 
             # Inserting the current value of the correct choices
-            $correct_update = mysqli_query( $conn, "update scores set correct = '$new_value', scores = '$new_scores' " );
+            $correct_update = mysqli_query( $conn, "UPDATE scores set correct = '$new_value', scores = '$new_scores', timer = 0 where player_id = '$player_id' " );
 
             echo '{
                 "success": true,
@@ -46,7 +46,7 @@
         else {
 
             # Inserting the current value of the correct choices
-            $correct_insert = mysqli_query( $conn, "insert into scores (score_id, player_id, correct, scores, game_id, tag_id, subject_id, session_key) values ('', '$player_id', '$right', '$score', '$gid', '$tid','$sid', '$key') " );
+            $correct_insert = mysqli_query( $conn, "INSERT into scores (score_id, player_id, correct, scores, game_id, tag_id, subject_id, session_key, timer) values ('', '$player_id', '$right', '$score', '$gid', '$tid','$sid', '$key', 0) " );
 
             echo '{
                 "success": true,
@@ -70,8 +70,8 @@
         $wrong = $_POST['wrong'];
         $player_id = $_SESSION['uid'];
 
-        #Get the current value of the user's correct answers
-        $sql = mysqli_query($conn, "select wrong from scores where player_id = '$player_id' and session_key = '$key' ");
+        #Get the current value of the user's wrong answers
+        $sql = mysqli_query($conn, "SELECT wrong from scores where player_id = '$player_id' and session_key = '$key' ");
         
         if ( mysqli_num_rows($sql) == 1 ) {
             
@@ -80,8 +80,8 @@
 
             $new_value = $wrong_value + 1;
 
-            # Inserting the current value of the correct choices
-            $wrong_update = mysqli_query( $conn, "update scores set wrong = '$new_value' " );
+            # Inserting the current value of the wrong choice
+            $wrong_update = mysqli_query( $conn, "UPDATE scores set wrong = '$new_value' WHERE player_id = '$player_id' " );
 
             echo '{
                 "success": true,
@@ -89,8 +89,8 @@
             }';
         }
         else {
-            # Inserting the current value of the correct choices
-            $wrong_insert = mysqli_query( $conn, "insert into scores (score_id, player_id, wrong, game_id, tag_id, subject_id, session_key) values ('', '$player_id', '$wrong', '$gid', '$tid','$sid', '$key') " );
+            # Inserting the current value of the wrong choice
+            $wrong_insert = mysqli_query( $conn, "INSERT into scores (score_id, player_id, wrong, game_id, tag_id, subject_id, session_key) values ('', '$player_id', '$wrong', '$gid', '$tid','$sid', '$key') " );
 
             echo '{
                 "success": true,

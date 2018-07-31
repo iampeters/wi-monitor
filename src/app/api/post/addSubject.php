@@ -21,7 +21,7 @@
         else {
             echo'{
                 "success": false,
-                "message": "Subject already exist in the systerm"
+                "message": "Sorry! Subject already exist in the server"
             }';
         }
         

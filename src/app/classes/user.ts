@@ -25,6 +25,14 @@ export class Login {
     ) { }
 }
 
+// Viewers login class
+export class ViewersLogin {
+    constructor (
+        public ward: string,
+        public username: string
+    ) {}
+}
+
 // New subject class
 export class NewSubject {
     constructor(
@@ -46,6 +54,10 @@ export class NewQuestion {
 export class NewGuardian {
     constructor(
         public guardian: string,
+        public username: string,
+        public email: string,
+        public phone: string,
+        public relationship: string,
         public ward: string
     ) { }
 }
@@ -55,5 +67,20 @@ export class NewGuardian {
 export class Answer {
     constructor (
         public ans: string
+    ) {}
+}
+
+// Game class
+export class Game {
+    constructor (
+        public session_key: string
+    ) {}
+}
+
+// Chat class
+export class Chat {
+    constructor (
+        public chats: string,
+        public message: string
     ) {}
 }

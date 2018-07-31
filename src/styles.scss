@@ -4,6 +4,12 @@
 $btn-padding-reset: 0px 24px;
 $btn-radius: 60px;
 $btn-font-size: 14px !important;
+body,
+html {
+    font-size: 14px;
+    // letter-spacing: 0.1em;
+}
+
 .btn {
     padding: $btn-padding-reset;
     border-radius: $btn-radius;
@@ -11,6 +17,7 @@ $btn-font-size: 14px !important;
     height: 35px;
     width: 150px;
     font-weight: 600;
+    // badge
     .badge {
         line-height: 23px !important;
     }
@@ -81,6 +88,10 @@ a.navbar-brand {
     margin-top: 15px;
 }
 
+.mt-50 {
+    margin-top: 50px;
+}
+
 .mt-20 {
     margin-top: 150px;
 }
@@ -104,6 +115,19 @@ a.navbar-brand {
 
 .mb-20 {
     margin-top: 150px;
+}
+
+// Margin left
+.ml-5 {
+    margin-left: 5px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.ml-15 {
+    margin-left: 15px;
 }
 
 // Padding reset

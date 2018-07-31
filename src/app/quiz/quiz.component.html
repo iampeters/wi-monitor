@@ -12,6 +12,45 @@
 </div> -->
 <!-- Preloader -->
 
+<!-- chat -->
+<div class="container-fluid" id="chat">
+    <div class="row">
+        <div class="c-overlay"></div>
+        <div class="col-4 offset-4 card p-0">
+            <form #chatForm="ngForm" (ngSubmit)="chat(chatForm.value); chatForm.reset()">
+                <div class="card-header">Lifeline panel - Ask your question
+                    <span (click)="close()" class="close" id="close">
+                        <i class="fa fa-close"></i>
+                    </span>
+                </div>
+
+                <div class="card-body">
+                    <div class="area p-2" id="area">
+                        <input type="hidden" name="hidden" #hidden="ngModel" [(ngModel)]="chatModel.chats" />
+
+                        <div *ngFor="let chat of chats">
+                            <div>
+                                <span class="c-right bg-info mb-2">
+                                    <span style="font-size: 10px" class="mb-2 text-white">{{ chat.sender}}</span><br>
+                                <span>{{ chat.message }}</span>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <textarea name="txt" #txt='ngModel' [(ngModel)]=chatModel.message id="txt"></textarea>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Send</button> &nbsp;
+                    <small class="text-center text-danger">{{empty}}</small>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- chat -->
+
 <!-- Main wrapper -->
 <div class="quiz-wrapper view">
     <div class="mask pattern-6"></div>
@@ -29,6 +68,66 @@
                     </div> -->
 
                     <div class="col-12 q-panel p-0">
+
+                        <span *ngIf="turn; else waiting"></span>
+
+                        <!-- Waing preloader -->
+                        <ng-template #waiting>
+                            <div class="col-12 waiting animated fadeIn">
+                                <div class="preloader-wrapper big active">
+                                    <div class="spinner-layer spinner-blue">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-red">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-yellow">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-green">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6>Waiting</h6>
+                            </div>
+                        </ng-template>
+                        <!-- Waing preloader -->
+
                         <!--Panel header -->
                         <div class="q-panel-header col-12">
                             <div class="col-4 score p-0">
@@ -40,7 +139,7 @@
                             </div>
                             <div class="col-4 time text-center p-0">
                                 <h6 class="viewer text-white">Viewers</h6>
-                                <span class="badge bg-success">121</span> &nbsp;
+                                <span class="badge bg-success">{{viewers}}</span> &nbsp;
                             </div>
 
                             <!-- <div class="col-3 time text-right p-0">
@@ -128,8 +227,8 @@
                             <!-- ./ Panel body -->
                         </div>
                         <!-- Course -->
-                        <div class="row">
-                            <div class="col-12 col-md-8 offset-md-1 text-white">
+                        <div class="">
+                            <div class="col-12 col-md-11 offset-md-1 text-white">
                                 <span class="badge red">Subject:</span> {{ subject }} &nbsp;
                                 <span class="badge red">Questions:</span> {{q_count}} &nbsp;
                                 <span class="badge red">Score:</span> {{marks}}
@@ -138,166 +237,28 @@
 
                         <!-- Panel footer -->
                         <div class="q-panel-footer col-12 mt-5">
-                            <div class="row">
-                                <!-- life line -->
-                                <div class="col-3">
-                                    <button class="btn btn-info life-line"><i class="fa fa-phone "></i> Friend</button>
+                            <form #lifeLine="ngForm">
+                                <div class="row">
+                                    <!-- life line -->
+                                    <div class="col-3">
+                                        <button (click)="life()" class="btn btn-warning life-line">
+                                            <i class="fa fa-phone "></i> Parent</button>
+                                    </div>
+                                    <div class="col-3 ">
+                                        <button id="btn" name="btn" (click)="skip()" class="btn btn-light-blue life-line">Skip</button>
+                                    </div>
+                                    <div class="col-3 ">
+                                        <button (click)='quit()' class="btn btn-danger life-line">Quit</button>
+                                    </div>
                                 </div>
-                                <div class="col-3">
-                                    <button class="btn btn-warning life-line"><i class="fa fa-phone "></i> Parent</button>
-                                </div>
-                                <div class="col-3 ">
-                                    <button class="btn btn-light-blue life-line">Skip</button>
-                                </div>
-                                <div class="col-3 ">
-                                    <button (click)='quit()' class="btn btn-danger life-line">Quit</button>
-                                </div>
-                            </div>
+                            </form>
+                            <!-- end of form  -->
                         </div>
                     </div>
                 </div>
 
 
                 <!-- Player 2 Screen -->
-                <div class="col-md-12 col-lg-6 col-12 player-2">
-                    <!-- Preloader -->
-                    <div class="waiting-preloader">
-                        <div class="box">
-                            <h6>waiting...</h6>
-                        </div>
-                    </div>
-
-                    <div class="col-12 q-panel p-0">
-                        <!--Panel header -->
-                        <div class="q-panel-header col-12">
-                            <div class="col-4 score p-0">
-                                <h6 class="text-white">{{ opponent }}</h6>
-                                <span class="badge bg-success">Correct:</span> &nbsp;
-                                <span class="badge bg-success">{{right}}</span>
-                                <br>
-                                <span class="badge bg-danger">Wrong:&nbsp;</span> &nbsp;
-                                <span class="badge bg-danger">{{wrong}}</span>
-                            </div>
-                            <div class="col-4 time text-center p-0">
-                                <h6 class="viewer text-white">Viewers</h6>
-                                <span class="badge bg-success">121</span> &nbsp;
-                            </div>
-
-                            <!-- <div class="col-3 time text-right p-0">
-                                                    <h3 class="text-danger">
-                                                        15 secs
-                                                    </h3>
-                                                </div> -->
-                            <!-- Time -->
-                            <div class="col-4 time text-right p-0">
-                                <h6 class="text-white text-right">
-                                    Time left:
-                                </h6>
-                                <span class="badge">{{time}} secs</span>
-
-                            </div>
-                        </div>
-                        <!-- Panel body -->
-                        <div class="q-panel-body col-12">
-                            <div class="q-board">
-                                <form *ngIf="isMerged; else showDiv">
-                                    <!-- Question board header -->
-                                    <div class="q-board-header">
-                                        <h5>{{ question }}</h5>
-                                    </div>
-                                    <!-- Question board content -->
-                                    <div class="q-board-content">
-                                        <div class="row">
-                                            <div class="col-12 col-md-6 p-0">
-                                                <label for="A" class="form-check-label btn btn-white btn-mod">
-                                                    <input type="radio" name="option" value="{{ answer}}" class="d-none" id="A">
-                                                    <span class="badge ">A: </span>
-                                                    <span class="ans">{{answer}}</span>
-                                                    <span class="b-mask"></span>
-                                                </label>
-                                            </div>
-
-                                            <div class="col-12 col-md-6 p-0">
-                                                <label for="B" class="form-check-label btn btn-white btn-mod">
-                                                    <input type="radio" name="option" value="{{ option1}}" class="d-none" id="B">
-                                                    <span class="badge ">B: </span>
-                                                    <span class="ans">{{option1}}</span>
-                                                    <span class="b-mask"></span>
-                                                </label>
-                                            </div>
-
-
-                                            <div class="col-12 col-md-6 p-0">
-                                                <label for="C" class="form-check-label btn btn-white btn-mod">
-                                                    <input type="radio" name="option" value="{{ option2}}" id="C"/>
-                                                    <span class="badge ">C: </span>
-                                                    <span class="ans">{{option2}}</span>
-                                                    <span class="b-mask"></span>
-                                                </label>
-
-                                            </div>
-
-
-                                            <div class="col-12 col-md-6 p-0">
-                                                <label for="D" class="form-check-label btn btn-white btn-mod">
-                                                    <input type="radio" name="option" value="{{ option3}}" class="d-none" id="D" />
-                                                    <span class="badge ">D: </span>
-                                                    <span class="ans">{{option3}}</span>
-                                                    <span class="b-mask"></span>
-                                                </label>
-                                            </div>
-
-
-                                            <div class="col-12 mt-5">
-                                                <button id="submit" type="submit" class="btn btn-success">Submit</button>
-                                            </div>
-
-
-                                        </div>
-
-                                    </div>
-                                </form>
-                                <!-- end of form  -->
-
-                                <!-- This will be displayed if the user has not been merged -->
-                                <ng-template #showDiv>
-                                    <h6 class="text-white text-center">{{ msg }}</h6>
-                                </ng-template>
-
-                            </div>
-                            <!-- ./ Panel body -->
-                        </div>
-                        <!-- Course -->
-                        <div class="row">
-                            <div class="col-12 col-md-8 offset-md-1 text-white">
-                                <span class="badge red">Subject:</span> {{ subject }} &nbsp;
-                                <span class="badge red">Questions:</span> {{q_count}} &nbsp;
-                                <span class="badge red">Score:</span> {{marks}}
-                            </div>
-                        </div>
-
-                        <!-- Panel footer -->
-                        <div class="q-panel-footer col-12 mt-5">
-                            <div class="row">
-                                <!-- life line -->
-                                <div class="col-3">
-                                    <button class="btn btn-info life-line">
-                                        <i class="fa fa-phone "></i> Friend</button>
-                                </div>
-                                <div class="col-3">
-                                    <button class="btn btn-warning life-line">
-                                        <i class="fa fa-phone "></i> Parent</button>
-                                </div>
-                                <div class="col-3 ">
-                                    <button class="btn btn-light-blue life-line">Skip</button>
-                                </div>
-                                <div class="col-3 ">
-                                    <button (click)='quit()' class="btn btn-danger life-line">Quit</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
 
             </div>

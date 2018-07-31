@@ -2,7 +2,6 @@
     "/wi-monitor/src/app": {
         "target": "http://localhost",
         "secure": false,
-
         "changeOrigin": true
     }
 }

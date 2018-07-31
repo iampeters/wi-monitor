@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MyInt } from './get-questions.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +17,25 @@ export class MiscService {
   taggerUrl = '/wi-monitor/src/app/api/get/tagger.php';
   isLoggedInUrl = '/wi-monitor/src/app/api/user/isLoggedIn.php';
   scoresUrl = '/wi-monitor/src/app/api/post/scoresUpdate.php';
+  setterUrl = '/wi-monitor/src/app/api/get/setter.php';
+  getterUrl = '/wi-monitor/src/app/api/post/getter.php';
+  timerUrl = '/wi-monitor/src/app/api/get/timer.php';
+  getTimeUrl = '/wi-monitor/src/app/api/get/getTime.php';
+  guardianLoginUrl = '/wi-monitor/src/app/api/post/guardianLogin.php';
+  getGameUrl = '/wi-monitor/src/app/api/get/game.php';
+  gameInitUrl = '/wi-monitor/src/app/api/post/gameActivity.php';
+  gameInit = '/wi-monitor/src/app/api/post/game.php';
+  parentChkUrl = '/wi-monitor/src/app/api/user/parentChk.php';
+  getViewersUrl = '/wi-monitor/src/app/api/get/getViewers.php';
+  chatUrl = '/wi-monitor/src/app/api/post/chat.php';
+  parentChatUrl = '/wi-monitor/src/app/api/post/parentchat.php';
+  parentChatterUrl = '/wi-monitor/src/app/api/post/parentchatter.php';
+  chatterUrl = '/wi-monitor/src/app/api/get/chatter.php';
+  neededUrl = '/wi-monitor/src/app/api/get/needed.php';
+  vLogoutUrl = '/wi-monitor/src/app/api/user/vLogout.php';
+
+  private loggedInStatus = false;
+
 
   constructor( private http: HttpClient ) { }
 
@@ -74,7 +92,21 @@ export class MiscService {
 
   // This will check if a user is logged in for all template
   isLoggedIn() {
-    return this.http.get<Tagger>(this.isLoggedInUrl);
+    return this.http.get<Myface>(this.isLoggedInUrl);
+  }
+
+  // Checks if a parent is logged in
+  isParentLoggedIn() {
+    return this.http.get<Myface>(this.parentChkUrl);
+  }
+
+
+  setLoggedin(value: boolean) {
+    this.loggedInStatus = value;
+  }
+
+  get loginChk() {
+    return this.loggedInStatus;
   }
 
   // This will update the scores table when the user answer is wrong
@@ -96,6 +128,114 @@ export class MiscService {
     return this.http.get(this.isLoggedInUrl);
   }
 
+  // This method will get and set the player turn in the database
+  setter() {
+    return this.http.get<Tagger>(this.setterUrl);
+  }
+
+  // This will check whose turn it is to play
+  getter() {
+    return this.http.get<Tagger>(this.getterUrl);
+  }
+
+  // This will set the timer
+  timer() {
+    return this.http.get<Tagger>(this.timerUrl);
+  }
+
+  // This will get the time set above
+  getTime() {
+    return this.http.get<Tagger>(this.getTimeUrl);
+  }
+
+  // This will add Guardian/Parents
+  addGuardian(guardian, ward, relationship, phone, email, username) {
+    return this.http.post<Tagger>(this.addGuardianUrl, {
+      guardian,
+      ward,
+      relationship,
+      phone,
+      email,
+      username
+    });
+  }
+
+  // Guardian login
+  guardianLogin(username, ward) {
+    return this.http.post<Tagger>(this.guardianLoginUrl, {
+      username, ward
+    });
+  }
+
+  // Getting game sessions
+  getGame() {
+    return this.http.get<Game[]>(this.getGameUrl);
+  }
+
+  // Viewers Activity
+  viewerInit() {
+    return this.http.get<Activity[]>(this.gameInitUrl);
+  }
+
+  // Viewers game activity
+  viewerGame(game) {
+    return this.http.post<Tagger>(this.gameInit, {
+      game
+    });
+  }
+
+  // Get viewers
+  getViewers() {
+    return this.http.get<Game>(this.getViewersUrl);
+  }
+
+  // Chat
+  chat(message) {
+    return this.http.post<Myface>(this.chatUrl, {
+      message
+    });
+  }
+
+  parentChat(message) {
+    return this.http.post<Myface>(this.parentChatUrl, {
+      message
+    });
+  }
+
+  // Chatter
+  chatter() {
+    return this.http.get<Chatter[]>(this.chatterUrl);
+  }
+
+  // Parent Chatter
+  parentChatter() {
+    return this.http.get<Chatter[]>(this.parentChatterUrl);
+  }
+
+  // Needed
+  needed() {
+    return this.http.get<Chatter>(this.neededUrl);
+  }
+
+  // Close needed
+  close(close) {
+    return this.http.post<Chatter>(this.neededUrl, {
+      close
+    });
+  }
+
+  // Open needed
+  open(open) {
+    return this.http.post<Chatter>(this.neededUrl, {
+      open
+    });
+  }
+
+  // Logout viewer
+  vLogout() {
+    return this.http.get<Chatter>(this.vLogoutUrl);
+  }
+
 }
 export interface Myface {
   success: boolean;
@@ -111,6 +251,14 @@ export interface Myface {
   answer: string;
   question: string;
   ward: string;
+}
+
+export interface Chatter {
+  success: boolean;
+  mid: number;
+  sender: string;
+  receiver: string;
+  message: string;
 }
 
 export interface Tagger {
@@ -132,4 +280,34 @@ export interface Tagger {
   right: number;
   value: number;
   scores: number;
+  msg: boolean;
+  time: number;
+}
+
+export interface Game {
+  session_key: string;
+  success: boolean;
+  message: string;
+}
+
+export interface Activity {
+  success: boolean;
+  opponent: string;
+  player: string;
+  subject: string;
+  p_correct: number;
+  p_wrong: number;
+  p_scores: number;
+  o_correct: number;
+  o_wrong: number;
+  o_scores: number;
+  p_username: string;
+  o_username: string;
+  o_fullname: string;
+  p_fullname: string;
+  viewers: number;
+  o_count: number;
+  p_count: number;
+  p_turn: number;
+  o_turn: number;
 }

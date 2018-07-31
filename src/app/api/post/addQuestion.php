@@ -50,7 +50,7 @@
         else {
             echo'{
                 "success": false,
-                "message": "Error! Question already exist on the server"
+                "message": "Sorry! Question already exist on the server"
             }';
         }
         

@@ -144,7 +144,7 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="#">Action</a>
                         <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a (click)='logout()' class="dropdown-item">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -179,7 +179,8 @@
                                     </div>
                                 </div>
                                 <!-- This will display information from the server -->
-                                <small class="text-center d-block text-success"> {{ subjectInfo }}</small>
+                                <small class="text-center d-block text-danger"> {{ subjectInfo }}</small>
+                                <small class="text-center d-block text-success"> {{ subjectSuccess }}</small>
                             </div>
                             <div class="card-footer">
                                 <div class="text-center">
@@ -212,10 +213,8 @@
                                 <div class="md-form">
                                     <!--Blue select-->
                                     <div class="select-wrapper mdb-select colorful-select dropdown-primary">
-                                        <!-- <span class="caret">▼</span> -->
-                                        <!-- <label for="inputState">State</label> -->
                                         <select id="materialFormSelectEx" name="subject" #subject="ngModel" [(ngModel)]="questionModel.subject" class="form-control d-block">
-                                            <option>Choose subject...</option>
+                                            <option selected>Choose subject...</option>
                                             <option *ngFor="let subj of Subjs" value="{{subj.subject_id}}">{{subj.subject}}</option>
                                         </select>
                                     </div>
@@ -266,6 +265,8 @@
                                     </div>
                                 </div>
                                 <small class="text-center d-block text-danger">{{questionInfo}}</small>
+                                <small class="text-center d-block text-success">{{questionSuccess}}</small>
+
                             </div>
                             <div class="card-footer">
                                 <div class="text-center">
@@ -287,29 +288,69 @@
                                 <!-- Material input guardian -->
                                 <div class="md-form">
                                     <!-- Input field -->
+                                    <input type="text" id="materialFormUsernameEx" class="form-control" name="username" #username="ngModel" [(ngModel)]="guardianModel.username" [class.is-invalid]="username.invalid && username.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormUsernameEx">Username</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="username.valid || username.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <!-- Material input guardian -->
+                                <div class="md-form">
+                                    <!-- Input field -->
                                     <input type="text" id="materialFormAddGuardianEx" class="form-control" name="guardian" #guardian="ngModel" [(ngModel)]="guardianModel.guardian" [class.is-invalid]="guardian.invalid && guardian.touched" required>
                                     <!-- Label -->
-                                    <label for="materialFormAddGuardianEx">Guardian</label>
+                                    <label for="materialFormAddGuardianEx">Full name</label>
                                     <div class="text-right">
                                         <small class="animated fadeIn text-danger" [class.d-none]="guardian.valid || guardian.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <!-- Material input guardian -->
+                                <div class="md-form">
+                                    <!-- Input field -->
+                                    <input type="email" id="materialFormAddEmailEx" class="form-control" name="email" #email="ngModel" [(ngModel)]="guardianModel.email" [class.is-invalid]="email.invalid && email.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddEmailEx">Email</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="email.valid || email.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <!-- Material input guardian -->
+                                <div class="md-form">
+                                    <!-- Input field -->
+                                    <input type="email" id="materialFormAddPhoneEx" class="form-control" name="phone" #phone="ngModel" [(ngModel)]="guardianModel.phone" [class.is-invalid]="phone.invalid && phone.touched" required>
+                                    <!-- Label -->
+                                    <label for="materialFormAddPhoneEx">Phone</label>
+                                    <div class="text-right">
+                                        <small class="animated fadeIn text-danger" [class.d-none]="phone.valid || phone.untouched">Field is required</small>
+                                    </div>
+                                </div>
+                                <!-- Material input ward -->
+                                <div class="md-form">
+                                    <div class="select-wrapper mdb-select colorful-select dropdown-primary">
+                                        <select id="materialFormSelect2Ex" name="ward" #ward="ngModel" [(ngModel)]="guardianModel.ward" class="form-control d-block">
+                                            <option>Choose Ward...</option>
+                                            <option *ngFor="let ward of Wards" value="{{ward.user_id}}">{{ward.username}}</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <!-- Material input ward -->
                                 <div class="md-form">
                                     <!-- Input field -->
-                                    <input type="text" id="materialFormAddWardEx" class="form-control" name="ward" #ward="ngModel" [(ngModel)]="guardianModel.ward" [class.is-invalid]="ward.invalid && ward.touched" required>
+                                    <input type="text" id="materialFormAddRelationshipEx" class="form-control" name="relationship" #relationship="ngModel" [(ngModel)]="guardianModel.relationship" [class.is-invalid]="relationship.invalid && relationship.touched" required>
                                     <!-- Label -->
-                                    <label for="materialFormAddWardEx">Ward</label>
+                                    <label for="materialFormAddRelationshipEx">Relationship</label>
                                     <div class="text-right">
-                                        <small class="animated fadeIn text-danger" [class.d-none]="ward.valid || ward.untouched">Field is required</small>
+                                        <small class="animated fadeIn text-danger" [class.d-none]="relationship.valid || relationship.untouched">Field is required</small>
                                     </div>
                                 </div>
                                 <small class="text-center d-block text-danger">{{guardianInfo}}</small>
+                                <small class="text-center d-block text-success">{{guardianSuccess}}</small>
 
                             </div>
                             <div class="card-footer">
                                 <div class="text-center">
-                                    <button class="btn btn-default" type="submit" [disabled]="guardian.invalid || guardian.pristine ||ward.invalid || ward.pristine">Add</button>
+                                    <button class="btn btn-default" type="submit" [disabled]="guardian.invalid || guardian.pristine || relationship.invalid || relationship.pristine || phone.invalid || phone .pristine || email.invalid || email.pristine || username.invalid || username.pristine || ward.invalid || ward.pristine">Add</button>
                                 </div>
                             </div>
                         </form>

@@ -7,14 +7,16 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { ControlComponent } from './control/control.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
-import { registerLocaleData } from '@angular/common';
 import { RegisterComponent } from './components/register/register.component';
 import { AddComponent } from './components/add/add.component';
 import { AuthGuard } from './auth.guard';
+import { ViewersComponent } from './components/viewers/viewers.component';
+import { ViewerloginComponent } from './components/viewerlogin/viewerlogin.component';
+import { GidComponent } from './components/gid/gid.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'quiz', component: QuizComponent, canActivate: [AuthGuard] },
+  { path: 'quiz', component: QuizComponent },
   { path: 'instructions', component: InstructionsComponent },
   { path: 'welcome', component: WelcomeComponent },
   { path: 'control', component: ControlComponent },
@@ -22,6 +24,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'add', component: AddComponent },
+  { path: 'viewers', component: ViewersComponent },
+  { path: 'viewerlogin', component: ViewerloginComponent },
+  { path: 'gid', component: GidComponent },
   { path: '**', component: ErrorPageComponent }
 
 ];
@@ -40,5 +45,8 @@ export const routingComponents = [
   ControlComponent,
   RegisterComponent,
   LoginComponent,
-  AddComponent
+  AddComponent,
+  ViewersComponent,
+  ViewerloginComponent,
+  GidComponent
 ];

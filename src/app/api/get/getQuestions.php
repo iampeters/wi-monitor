@@ -8,6 +8,9 @@
     if (isset($_SESSION['subject'])) {
 
         $id = $_SESSION['subject_id'];
+        $key = $_SESSION['key'];
+        $uid = $_SESSION['uid'];
+        $username = $_SESSION['username'];
 
         // Database parameters
         $dbname = 'wi-monitor';
@@ -19,11 +22,9 @@
         $conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
         if (!$conn->connect_error) {
-            // init empty array
-            $ques = array();
 
-            $sql = "select * from questions where subject_id = $id  order by rand() limit 1";
-            // $sql = "select * from questions where subject_id = $id limit 1";
+            $sql = "SELECT * from questions where subject_id = $id  order by rand() limit 1";
+
             $query = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($query) == 1) {
@@ -33,37 +34,28 @@
                 $answer = $row['answer'];
 
                 // getting available options
-                $sql1 = "select * from answers where question_id = $Qid";
+                $sql1 = "SELECT * from answers where question_id = $Qid";
                 $res = mysqli_query($conn, $sql1);
 
                 if (mysqli_num_rows($res) == 1) {
                     $row1 = mysqli_fetch_assoc($res);
-                    // Standard class
-                    $answers = new stdClass();
 
                     $option1 = $row1['option_1'];
                     $option2 = $row1['option_2'];
                     $option3 = $row1['option_3'];
                     $c_answer = $row1['answer'];
 
-                    $answers->success = true;
-                    $answers->Qid = $Qid;
-                    $answers->question = $question;
-                    $answers->option1 = $option1;
-                    $answers->option2 = $option2;
-                    $answers->option3 = $option3;
-                    $answers->answer = $c_answer;
-
-                    // echo json_encode($answers);
+                    # Inserting into vQues tbl
+                    $vQues = mysqli_query($conn, "INSERT INTO vQues values(null, '$uid', '$id', '$Qid', '$key') ");
 
                     echo '{
-                        "success": true,
-                        "Qid": "'.$Qid.'",
-                        "question": "'.$question.'",
-                        "option1": "'.$option1.'",
-                        "option2": "'.$option2.'",
-                        "option3": "'.$option3.'",
-                        "answer": "'.$c_answer.'"
+                        "success" : true,
+                        "Qid" : "'.$Qid.'",
+                        "question" : "'.$question.'",
+                        "option1" : "'.$option1.'",
+                        "option2" : "'.$option2.'",
+                        "option3" : "'.$option3.'",
+                        "answer" : "'.$c_answer.'"
                     }';
 
                 } else {
@@ -86,7 +78,7 @@
     } else {
         echo '{
             "success": false,
-            "message": "You have to select a subject first"
+            "message": "You have to SELECT a subject first"
         }';
     }
     

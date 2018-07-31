@@ -1,0 +1,58 @@
+<div class="wrapper animated fadeIn">
+    <!-- header -->
+    <app-header></app-header>
+    <!-- inner-wrapper -->
+    <div class="inner-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6 offset-md-3 animated pulse">
+                    <div class="jumbotron">
+                        <div class="row">
+                            <!-- Caption -->
+
+                            <!--user login form -->
+                            <div class="col-12  col-md-12 p-5 ">
+                                <!-- Material form login -->
+                                <form #loginForm="ngForm" (ngSubmit)='login(loginForm.value)'>
+                                    <p class="h4 text-center mb-4">Sign in</p>
+
+                                    <!-- Material input email -->
+                                    <div class="md-form">
+                                        <i class="fa fa-user prefix grey-text"></i>
+                                        <!-- Input field -->
+                                        <input type="text" id="materialFormLoginUsernameEx" class="form-control" name="username" #username="ngModel" [(ngModel)]="loginModel.username" [class.is-invalid]="username.invalid && username.touched" required>
+                                        <!-- Label -->
+                                        <label for="materialFormLoginUsernameEx">Your username</label>
+                                        <div class="text-right">
+                                            <small class="animated fadeIn text-danger" [class.d-none]="username.valid || username.untouched">Field is required</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Material input ward -->
+                                    <div class="md-form">
+                                        <!-- icon -->
+                                        <i class="fa fa-user prefix grey-text"></i>
+                                        <!-- input -->
+                                        <input type="text" id="materialFormLoginwardEx" class="form-control" name="ward" #ward="ngModel" [(ngModel)]="loginModel.ward" [class.is-invalid]="ward.invalid && ward.touched" required>
+                                        <!-- label -->
+                                        <label for="materialFormLoginwardEx">Ward's username</label>
+                                        <div class="text-right">
+                                            <small class="animated fadeIn text-danger" [class.d-none]="ward.valid || ward.untouched">Field is required</small>
+                                        </div>
+                                    </div>
+                                    <small class="text-center d-block text-danger animated fadeIn">{{loginFalse}}</small>
+                                    <div class="text-center mt-4">
+                                        <button class="btn btn-success" type="submit" [disabled]="username.invalid || username.pristine || ward.invalid || ward.pristine">Login</button>
+                                        <br>
+                                        <small>Forgot ward's username?</small>
+                                    </div>
+                                </form>
+                                <!-- Material form login -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

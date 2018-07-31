@@ -15,6 +15,6 @@ constructor (
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return true;
+    return this.misc.loginChk;
   }
 }

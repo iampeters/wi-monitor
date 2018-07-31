@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
     this.misc.isLoggedIn().subscribe( data => {
       if (data.success === true) {
         this.router.navigate(['/welcome']);
+        this.misc.setLoggedin(true);
       }
     });
   }
@@ -34,7 +35,10 @@ export class LoginComponent implements OnInit {
 
     this.misc.loginUser(username, password).subscribe(data => {
       if (data.success === true) {
+
+        this.misc.setLoggedin(true);
         this.router.navigate(['/welcome']);
+
       } else {
         this.info = data.message;
       }

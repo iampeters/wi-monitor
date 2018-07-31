@@ -267,6 +267,7 @@ html {
     // background: radial-gradient( #1c4ebe, #0c2c70, #143c94);
     background: radial-gradient( rgba(28, 78, 190, 0.49), rgba(12, 44, 112, 0.5), rgba(20, 60, 148, 0.54));
     // padding: 0 10px;
+    position: relative;
 }
 
 .q-panel .q-panel-header {
@@ -459,4 +460,72 @@ a.btn {
 
 input[type="radio"] {
     display: none !important;
+}
+
+.waiting {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    // background-color: rgba(255, 255, 255, .9);
+    background: radial-gradient( rgba(28, 78, 190, 1), rgba(12, 44, 112, 1), rgba(20, 60, 148, 1));
+    z-index: 3000;
+    height: 100%;
+    text-align: center;
+    h6 {
+        color: #fff;
+        font-weight: bold;
+        position: absolute;
+        top: 58%;
+        left: 50%;
+        margin-left: -29.133px;
+        margin-top: -10.5px;
+    }
+    .preloader-wrapper {
+        position: fixed;
+        top: 45%;
+        margin-left: -32px;
+        margin-top: -32px;
+    }
+}
+
+.c-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, .76);
+    z-index: 3000;
+}
+
+.container-fluid .row .card {
+    position: absolute;
+    z-index: 3001;
+    margin-top: 100px;
+}
+
+.container-fluid .row .card .card-body #txt {
+    width: 100%;
+    height: 50px;
+    margin-top: 10px;
+}
+
+.container-fluid .row .card .card-body .area {
+    width: 100%;
+    height: auto;
+}
+
+.c-left,
+.c-right {
+    border-radius: 20px !important;
+    min-width: 100px;
+    width: auto !important;
+    padding: 5px 20px !important;
+    display: inline-block;
+    clear: both;
+}
+
+#chat {
+    display: none;
 }

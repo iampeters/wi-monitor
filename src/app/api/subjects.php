@@ -13,14 +13,6 @@
 
     if (!$conn->connect_error) {
 
-        // file to store our query
-        $file = "/opt/lampp/htdocs/data.json";
-        if(!file_exists($file)){
-            touch($file);
-            chmod($file, 0777);
-        }
-        $f = fopen($file, 'w+'); // Open in write mode
-
         // query database
         $sql = "select subject_id, subject from Subjects";
         $query = mysqli_query($conn, $sql);

@@ -13,9 +13,18 @@ export class ControlComponent implements OnInit {
   userModel = new User('', '');
   public info;
 
-  constructor( private admin: AdminLoginService, private router: Router ) { }
+  constructor(
+    private admin: AdminLoginService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+      // Checks if the admin is already logged in
+      this.admin.adminLoginChk().subscribe(data => {
+        if (data.success === true) {
+          this.router.navigate(['dashboard']);
+        }
+      });
   }
 
   login(e) {
@@ -29,13 +38,12 @@ export class ControlComponent implements OnInit {
       if (data.success === true) {
         // login user
         this.router.navigate(['dashboard']);
+
       } else {
         // display error message
-        // this.info = data.message;
-        window.alert(data.message);
+        this.info = 'Invalid login credentials';
       }
     });
-    // console.log(email, password);
 
   }
 

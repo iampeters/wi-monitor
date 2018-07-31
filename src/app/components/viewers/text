@@ -1,0 +1,205 @@
+<div class="wrapper">
+    <nav id="nav">
+        <div class="score-bar col-12">
+            <div class="container">
+                <div class="row">
+                    <div class="col-5 f-bar">
+                        <span class="d-block col-12">{{activity.p_fullname}}</span>
+                        <span class="d-block col-12">
+                            <em class="bg-success p-2"><b class="">Correct:</b> {{activity.p_correct}}</em>&nbsp;&nbsp;
+                            <em class="bg-danger p-2"><b class="">Wrong:</b> {{activity.p_wrong}}</em>&nbsp;&nbsp;
+                            <em class="bg-warning p-2"><b>Score:</b> {{activity.p_scores}}</em>
+                        </span>
+                    </div>
+                    <div class="col-2 v-bar text-center mt-4">VS</div>
+                    <div class="col-5 s-bar text-right">
+                        <span class="d-block col-12">{{activity.o_fullname}}</span>
+                        <span class="d-block col-12">
+                            <em class="bg-warning p-2"><b>Score:</b> {{activity.o_scores}}</em>&nbsp;&nbsp;
+                            <em class="bg-danger p-2"><b class="">Wrong:</b> {{activity.o_wrong}}</em>&nbsp;&nbsp;
+                            <em class="bg-success p-2"><b class="">Correct:</b> {{activity.o_correct}}</em>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- <div class="col-8 offset-2 gid">Game ID: gid_4232</div> -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-6 col-6">
+                <div class="col-12 bg-white pt-4 pb-4">
+                    <div class="jumbotron">
+                        <ul>
+                            <li class="mb-15">
+                                <span>1. Who was the first man in the moon?</span>
+                                <br>
+                                <span class='text-danger ml-15'>Choice: Elon Musk</span> &nbsp;
+                                <span class="text-success"> Answer: Neil Amstrong</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="jumbotron">
+                        <ul>
+                            <li class="mb-15">
+                                <span>2. Who was the first man in the moon?</span>
+                                <br>
+                                <span class='text-danger ml-15'>Choice: Elon Musk</span> &nbsp;
+                                <span class="text-success"> Answer: Neil Amstrong</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-6">
+                <div class="col-12 bg-white pt-4 pb-4">
+                    <div class="jumbotron">
+                        <ul>
+                            <li class="mb-15">
+                                <span>1. Who was the first man in the moon?</span>
+                                <br>
+                                <span class='text-danger ml-15'>Choice: Elon Musk</span> &nbsp;
+                                <span class="text-success"> Answer: Neil Amstrong</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="jumbotron">
+                        <ul>
+                            <li class="mb-15">
+                                <span>2. Who was the first man in the moon?</span>
+                                <br>
+                                <span class='text-danger ml-15'>Choice: Elon Musk</span> &nbsp;
+                                <span class="text-success"> Answer: Neil Amstrong</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+/* CSS */
+// Variables
+$score-bar-padding: 10px 20px;
+$bg-primary: #fff;
+$txt-shadow: 0 1px 2px #444;
+* {
+    box-sizing: border-box;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background: #f7f7f7;
+}
+
+ul {
+    padding-bottom: 1rem;
+}
+
+#nav {
+    background: $bg-primary;
+    width: 100%;
+    padding: 10px;
+    height: auto !important;
+    // box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .19);
+    // background: #f7f7f7;
+    text-shadow: $txt-shadow;
+}
+
+.score-bar {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.f-bar {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+    padding: 0 !important;
+    border-radius: 10px;
+    // Children Element
+    span:nth-child(1) {
+        padding: $score-bar-padding;
+        border-radius: 0 10px 0 0;
+        color: #fff;
+        font-weight: bold;
+        background-color: #009fd6;
+    }
+    span:nth-child(2) {
+        padding: $score-bar-padding;
+        border-radius: 0 0 0 10px;
+        background-color: #fff;
+        font-weight: bold;
+        color: #fff;
+    }
+}
+
+.s-bar {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+    padding: 0 !important;
+    border-radius: 10px;
+    // Children Element
+    span:nth-child(1) {
+        padding: $score-bar-padding;
+        border-radius: 10px 0 0 0;
+        color: #fff;
+        font-weight: bold;
+        background-color: #009fd6;
+        // background-color: #ab0a10;
+    }
+    span:nth-child(2) {
+        padding: $score-bar-padding;
+        border-radius: 0 0 10px 0;
+        // background-color: #19a8da;
+        background-color: #fff;
+        font-weight: bold;
+        // color: #ab0a10;
+        color: #fff;
+    }
+}
+
+.v-bar {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    font-style: italic;
+    // color: #009fd6;
+}
+
+.gid {
+    font-family: 'consolas';
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #19a8da;
+    padding: 10px 20px;
+    border-radius: 0 0 10px 10px;
+    color: #fff;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16);
+    text-align: center;
+}
+
+em {
+    border-radius: 5px;
+}
+
+.jumbotron {
+    padding: 5px 20px !important;
+    // padding-top: 20px !important;
+    // padding-bottom: 20px !important;
+}
+
+.pb-4 {
+    padding-bottom: 1.5rem;
+}

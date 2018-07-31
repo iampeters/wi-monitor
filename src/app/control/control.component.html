@@ -12,7 +12,7 @@
                             <div class="col-12  col-md-6 d-none d-md-block p-5">
                                 <!-- Caption header -->
                                 <div class="caption-header col mb-3 mt-3">
-                                    <h6>Welcome</h6>
+                                    <h6>Welcome to</h6>
                                     <h5>Control Room</h5>
                                 </div>
                                 <!-- caption body -->
@@ -21,7 +21,7 @@
                                     <ul class="ul-list">
                                         <li><i class="fa fa-angle-double-right"></i> Add a new subject</li>
                                         <li><i class="fa fa-angle-double-right"></i> Create new questions</li>
-                                        <li><i class="fa fa-angle-double-right"></i> Manage already created questions</li>
+                                        <li><i class="fa fa-angle-double-right"></i> Add new parent/guardian</li>
                                         <li></li>
                                     </ul>
                                 </div>
@@ -39,9 +39,9 @@
 
                                         <input type="email" #email="ngModel" id="materialFormLoginEmailEx" class="form-control" name="email" #email="ngModel" [(ngModel)]="userModel.email" [class.is-invalid]="email.invalid && email.touched" required>
 
-                                        <label for="materialFormLoginEmailEx">Your email</label>
+                                        <label for="materialFormLoginEmailEx">Your email or username</label>
                                         <div class="text-right">
-                                            <small class="animated fadeIn text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
+                                            <small class="animated fadeIn text-danger" [class.d-none]="email.valid || email.untouched">Field is required</small>
                                             <!-- <small>Invalid email address</small> -->
                                         </div>
                                     </div>
@@ -55,9 +55,11 @@
                                         <!-- label -->
                                         <label for="materialFormLoginPasswordEx">Your password</label>
                                         <div class="text-right">
-                                            <small class="animated fadeIn text-danger" [class.d-none]="password.valid || password.untouched">Password is required</small>
+                                            <small class="animated fadeIn text-danger" [class.d-none]="password.valid || password.untouched">Field is required</small>
                                         </div>
                                     </div>
+
+                                    <small class="text-center text-danger d-block animated fadeIn">{{info}}</small>
 
                                     <div class="text-center mt-4">
                                         <button class="btn btn-default" type="submit" [disabled]="email.invalid || email.untouched && password.invalid || password.pristine">Login</button>

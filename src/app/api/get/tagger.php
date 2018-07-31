@@ -18,12 +18,14 @@
         $username = $_SESSION['username'];
         $subject_id = $_SESSION['subject_id'];
         $subject = $_SESSION['subject'];
-        $rand = 'gid_'.rand(0000, 9999);
+        $rand = 'gid_'.rand(000000, 999999);
 
         # Query the database
-        $query = mysqli_query($conn, "select * from tag where subject_id = '$subject_id' and has_ended = false ");
+        $query = mysqli_query($conn, "SELECT * from tag where subject_id = '$subject_id' and has_ended = 'false' ");
         if (mysqli_num_rows($query) > 0) {
+
             $rows = mysqli_fetch_assoc($query);
+
             $tag_id = $rows['tag_id'];
             $tag_session_key = $rows['session_key'];
             $opponent = $rows['opponent_id'];
@@ -31,10 +33,10 @@
             $has_ended = $rows['has_ended'];
 
             # Checks if logged in user is not the player_id in the database and the opponent field is empty
-            if (($logged_in_user_id != $tag_user_id && !empty($tag_user_id)) && empty($opponent)) {
+            if ( empty($opponent) && $logged_in_user_id != $tag_user_id ) {
 
                 # Add logged in user as an opponent
-                $query1 = mysqli_query($conn, "update tag set opponent_id = '$logged_in_user_id', session_key = '$rand' ");
+                $query1 = mysqli_query($conn, "UPDATE tag set opponent_id = '$logged_in_user_id', session_key = '$rand' where subject_id = '$subject_id' and session_key = '' ");
 
                 # Is there an error?
                 if (!$query1) {
@@ -80,6 +82,27 @@
                             $opponent_row = mysqli_fetch_assoc($select_users2);
                         }
 
+                        $o_id = $rows['opponent_id'];
+                        $tag_id = $rows['tag_id'];
+
+                        # Making sure user doesn't already exist
+                        $turn_chk = mysqli_query($conn, "select * from turns where tag_id = '$tag_id' and player_id = '$o_id' ");
+
+                        if ( mysqli_num_rows($turn_chk ) == 0) {
+
+                            # Inserting in to the turn table
+                            $turn_insert = mysqli_query($conn, "insert into turns (player_id, is_player, tag_id) values ('$o_id', '0', '$tag_id') ");
+
+                            if (!$turn_insert) {
+                                echo '{
+                                    "success" : false,
+                                    "message": "Could not insert into Turn tbl"
+                                }';
+                            }
+
+                        }
+
+
                         # Create a standard class
                         $data = new stdClass();
 
@@ -117,7 +140,7 @@
                     
                 }
 
-            } elseif (($logged_in_user_id == $tag_user_id ) && empty($opponent)) {
+            } elseif ($logged_in_user_id == $tag_user_id  && empty($opponent)) {
 
                 echo '{
                     "message" : "Waiting for opponent to join the game",
@@ -149,6 +172,28 @@
                         if ( mysqli_num_rows($select_users2) > 0 ) {
                             $opponent_row = mysqli_fetch_assoc($select_users2);
                         }
+
+                        $o_id = $rows['opponent_id'];
+                        $tag_id = $rows['tag_id'];
+                        $game_id = $rows['game_id'];
+
+                        # Making sure user doesn't already exist
+                        $turn_chk = mysqli_query($conn, "select * from turns where tag_id = '$tag_id' and player_id = '$o_id' ");
+
+                        if ( mysqli_num_rows($turn_chk ) == 0) {
+
+                            # Inserting in to the turn table
+                            $turn_insert = mysqli_query($conn, "insert into turns (player_id, is_player, tag_id) values ('$o_id', '0', '$tag_id') ");
+
+                            if (!$turn_insert) {
+                                echo '{
+                                    "success" : false,
+                                    "message": "Could not insert into Turn tbl"
+                                }';
+                            }
+
+                        }
+
 
                         # Create a standard class
                         $data = new stdClass();
@@ -191,6 +236,33 @@
                 }
                 else {
 
+                    # Getting back the tag
+                    $get_tag = mysqli_query($conn, "select * from tag where player_id = '$logged_in_user_id' and subject_id = '$subject_id' and has_ended = 'false' limit 1 ");
+
+                    if (mysqli_num_rows($get_tag) == 1) {
+                        $get_rows = mysqli_fetch_assoc($get_tag);
+                        $tid = $get_rows['tag_id'];
+                    }
+                    
+
+                    # Making sure user doesn't already exist
+
+                    $turn_chk = mysqli_query($conn, "select * from turns where tag_id = '$tid' and player_id = '$logged_in_user_id'");
+
+                    if ( mysqli_num_rows($turn_chk ) == 0) {
+
+                        # Inserting in to the turn table
+                         $turn_insert = mysqli_query($conn, "insert into turns (player_id, is_player, tag_id) values ('$logged_in_user_id', '1', '$tid') ");
+
+                        if (!$turn_insert) {
+                            echo '{
+                                "success" : false,
+                                "message": "Could not insert into Turn tbl"
+                            }';
+                        }
+
+                    }
+
                     # We will return some value
                     echo '{
                         "success" : true,
@@ -200,10 +272,6 @@
                     }';
 
                 }
-                // echo '{
-                //     "message" : "Error",
-                //     "success": false
-                // }';
             }
             
         } else {
@@ -221,6 +289,33 @@
                 }';
             }
             else {
+
+                # Getting back the tag
+                $get_tag = mysqli_query($conn, "select * from tag where player_id = '$logged_in_user_id' and subject_id = '$subject_id' and has_ended = 'false' limit 1 ");
+
+                if (mysqli_num_rows($get_tag) == 1) {
+                    $get_rows = mysqli_fetch_assoc($get_tag);
+                    $tid = $get_rows['tag_id'];
+                }
+                
+
+                 # Making sure user doesn't already exist
+
+                    $turn_chk = mysqli_query($conn, "select * from turns where tag_id = '$tid' and player_id = '$logged_in_user_id' ");
+
+                    if ( mysqli_num_rows($turn_chk ) == 0) {
+
+                        # Inserting in to the turn table
+                         $turn_insert = mysqli_query($conn, "insert into turns (player_id, is_player, tag_id) values ('$logged_in_user_id', '1', '$tid') ");
+
+                        if (!$turn_insert) {
+                            echo '{
+                                "success" : false,
+                                "message": "Could not insert into Turn tbl"
+                            }';
+                        }
+
+                    }
 
                 # We will return some value
                 echo '{
