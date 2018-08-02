@@ -12,6 +12,27 @@
 </div> -->
 <!-- Preloader -->
 
+<!-- Game over section -->
+<div class="container-fluid" id="game-over">
+    <div class="row">
+        <div class="jumbotron col-6 offset-3">
+            <div class="col-12 col-md-6">
+                <h6>Player 1</h6>
+                <h6>score: 30</h6>
+                <h6>Wrong Choices: 4</h6>
+                <h6>Right Choices: 6</h6>
+            </div>
+            <div class="col-12 col-md-6">
+                <h6>Player 1</h6>
+                <h6>score: 30</h6>
+                <h6>Wrong Choices: 4</h6>
+                <h6>Right Choices: 6</h6>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Game over section -->
+
 <!-- chat -->
 <div class="container-fluid" id="chat">
     <div class="row">
@@ -73,7 +94,7 @@
 
                         <!-- Waing preloader -->
                         <ng-template #waiting>
-                            <div class="col-12 waiting animated fadeIn">
+                            <div class="col-12 waiting">
                                 <div class="preloader-wrapper big active">
                                     <div class="spinner-layer spinner-blue">
                                         <div class="circle-clipper left">
@@ -152,7 +173,7 @@
                                 <h6 class="text-white text-right">
                                     Time left:
                                 </h6>
-                                <span class="badge">{{time}} secs</span>
+                                <span class="badge">{{p_time}} secs</span>
 
                             </div>
                         </div>
@@ -168,45 +189,14 @@
                                     <!-- Question board content -->
                                     <div #qBoard class="q-board-content">
                                         <div class="row">
-                                            <div class="col-12 col-md-6 p-0">
-                                                <label for="A" class="form-check-label btn btn-white btn-mod">
-                                                    <input type="radio" #option="ngModel" name="option" value="{{ answer}}" [ngModel] class="d-none" id="A">
-                                                    <span class="badge ">A: </span>
-                                                    <span class="ans">{{answer}}</span>
+                                            <div class="col-12 col-md-6 p-0" *ngFor="let choice of choices; let i = index">
+                                                <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
+                                                    <input type="radio" #option="ngModel" name="option" value="{{ choice.answer}}" [ngModel] class="d-none" id="_{{i+1}}">
+                                                    <span class="badge "></span>
+                                                    <span class="ans">{{choice.answer}}</span>
                                                     <span class="b-mask"></span>
                                                 </label>
                                             </div>
-
-                                            <div class="col-12 col-md-6 p-0">
-                                                <label for="B" class="form-check-label btn btn-white btn-mod">
-                                                    <input type="radio" #option="ngModel" name="option" value="{{ option1}}" [ngModel] class="d-none" id="B">
-                                                    <span class="badge ">B: </span>
-                                                    <span class="ans">{{option1}}</span>
-                                                    <span class="b-mask"></span>
-                                                </label>
-                                            </div>
-
-
-                                            <div class="col-12 col-md-6 p-0">
-                                                <label for="C" class="form-check-label btn btn-white btn-mod">
-                                                    <input type="radio" #option="ngModel" name="option" value="{{ option2}}" [ngModel] class="d-none" id="C">
-                                                    <span class="badge ">C: </span>
-                                                    <span class="ans">{{option2}}</span>
-                                                    <span class="b-mask"></span>
-                                                </label>
-
-                                            </div>
-
-
-                                            <div class="col-12 col-md-6 p-0">
-                                                <label for="D" class="form-check-label btn btn-white btn-mod">
-                                                    <input type="radio" #option="ngModel" name="option" value="{{ option3}}" [ngModel] class="d-none" id="D"/>
-                                                    <span class="badge ">D: </span>
-                                                    <span class="ans">{{option3}}</span>
-                                                    <span class="b-mask"></span>
-                                                </label>
-                                            </div>
-
 
                                             <div class="col-12 mt-5">
                                                 <button id="submit" type="submit" class="btn btn-success">Submit</button>
@@ -241,7 +231,7 @@
                                 <div class="row">
                                     <!-- life line -->
                                     <div class="col-3">
-                                        <button (click)="life()" class="btn btn-warning life-line">
+                                        <button id="life" (click)="life()" class="btn btn-warning life-line">
                                             <i class="fa fa-phone "></i> Parent</button>
                                     </div>
                                     <div class="col-3 ">
@@ -259,6 +249,155 @@
 
 
                 <!-- Player 2 Screen -->
+                <div class="col-md-12 col-lg-6 col-12 player-2">
+                    <!-- Preloader -->
+                    <!-- <div class="waiting-preloader">
+                                        <div class="box">
+                                            <h6>waiting...</h6>
+                                        </div>
+                                    </div> -->
+
+                    <div class="col-12 q-panel p-0">
+
+                        <span *ngIf="!turn; else Waiting"></span>
+
+                        <!-- Waing preloader -->
+                        <ng-template #Waiting>
+                            <div class="col-12 waiting">
+                                <div class="preloader-wrapper big active">
+                                    <div class="spinner-layer spinner-blue">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-red">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-yellow">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-green">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6>Waiting</h6>
+                            </div>
+                        </ng-template>
+                        <!-- Waing preloader -->
+
+                        <!--Panel header -->
+                        <div class="q-panel-header col-12">
+                            <div class="col-4 score p-0">
+                                <h6 class="text-white">{{opponent}}</h6>
+                                <span class="badge bg-success">Correct:</span> &nbsp;
+                                <span class="badge bg-success">{{o_correct}}</span>
+                                <br>
+                                <span class="badge bg-danger">Wrong:&nbsp;</span> &nbsp;
+                                <span class="badge bg-danger">{{o_wrong}}</span>
+                            </div>
+                            <div class="col-4 time text-center p-0">
+                                <h6 class="viewer text-white">Viewers</h6>
+                                <span class="badge bg-success">{{viewers}}</span> &nbsp;
+                            </div>
+
+                            <div class="col-4 time text-right p-0">
+                                <h6 class="text-white text-right">
+                                    Time left:
+                                </h6>
+                                <span class="badge">{{o_time}} secs</span>
+
+                            </div>
+                        </div>
+                        <!-- Panel body -->
+                        <div class="q-panel-body col-12">
+                            <div class="q-board">
+                                <form #answerForm="ngForm" (ngSubmit)="userAns(answerForm.value); answerForm.reset()" *ngIf="isMerged; else showDiv">
+                                    <!-- Question board header -->
+                                    <div class="q-board-header">
+                                        <h5>{{ question }}</h5>
+                                    </div>
+                                    <!-- Question board content -->
+                                    <div #qBoard class="q-board-content">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 p-0" *ngFor="let choice of choices; let i = index">
+                                                <label for="_{{i+5}}" class="form-check-label btn btn-white btn-mod">
+                                                    <span class="ans">{{choice.answer}}</span>
+                                                </label>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <!-- end of form  -->
+
+                                <!-- This will be displayed if the user has not been merged -->
+                                <ng-template #showDiv>
+                                    <h6 class="text-white text-center">{{ msg }}</h6>
+                                </ng-template>
+                            </div>
+                            <!-- ./ Panel body -->
+                        </div>
+                        <!-- Course -->
+                        <div class="">
+                            <div class="col-12 col-md-11 offset-md-1 text-white">
+                                <span class="badge red">Subject:</span> {{ subject }} &nbsp;
+                                <span class="badge red">Questions:</span> {{q_count}} &nbsp;
+                                <span class="badge red">Score:</span> {{marks}}
+                            </div>
+                        </div>
+
+                        <!-- Panel footer -->
+                        <div class="q-panel-footer col-12 mt-5">
+                            <form #lifeLine="ngForm">
+                                <div class="row">
+                                    <!-- life line -->
+                                    <div class="col-3">
+                                        <button disabled id="life" (click)="life()" class="btn btn-warning life-line">
+                                            <i class="fa fa-phone "></i> Parent</button>
+                                    </div>
+                                    <div class="col-3 ">
+                                        <button disabled id="btn" name="btn" (click)="skip()" class="btn btn-light-blue life-line">Skip</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- end of form  -->
+                        </div>
+                    </div>
+                </div>
 
 
             </div>

@@ -18,59 +18,41 @@
         $player = $_SESSION['player'];
         $opponent = $_SESSION['opponent'];
 
-        # Query for player 1 questions
-        $p_sql = mysqli_query($conn, "SELECT * from vQues where session_key = '$key' and user_id = '$player' order by id desc limit 1 ");
-        $p_rows = mysqli_fetch_assoc($p_sql);
-        $p_qid = $p_rows['question_id'];
+        # Query for questions from vQues tbl
+        $sql = mysqli_query($conn, "SELECT * from vQues where session_key = '$key' order by id desc limit 1 ");
+        $rows = mysqli_fetch_assoc($sql);
+        $qid = $rows['question_id'];
+        $sid = $rows['subject_id'];
         
         # Get the actual question
-        $p_getQuestion = mysqli_query($conn, "SELECT question from questions where questions_id = '$p_qid' ");
-        $p_ques_row = mysqli_fetch_assoc($p_getQuestion);
-        $p_question = $p_ques_row['question'];
+        $getQuestion = mysqli_query($conn, "SELECT question from questions where questions_id = '$qid' ");
+        $ques_row = mysqli_fetch_assoc($getQuestion);
+        $question = $ques_row['question'];
 
         # Get the answers
-        $p_getAns = mysqli_query($conn, "SELECT * from answers where question_id = '$p_qid' ");
-        $p_ans_rows = mysqli_fetch_assoc($p_getAns);
-        $p_option_1 = $p_ans_rows['option_1'];
-        $p_option_2 = $p_ans_rows['option_2'];
-        $p_option_3 = $p_ans_rows['option_3'];
-        $p_answer = $p_ans_rows['answer'];
+        $getAns = mysqli_query($conn, "SELECT * from answers where question_id = '$qid' ");
+        $ans_rows = mysqli_fetch_assoc($getAns);
+        // $option_1 = $ans_rows['option_1'];
+        // $option_2 = $ans_rows['option_2'];
+        // $option_3 = $ans_rows['option_3'];
+        $answer = $ans_rows['answer'];
 
-         # Query for opponent questions
-        $o_sql = mysqli_query($conn, "SELECT * from vQues where session_key = '$key' and user_id = '$opponent' order by id desc limit 1 ");
-        $o_rows = mysqli_fetch_assoc($o_sql);
-        $o_qid = $o_rows['question_id'];
+        # Session
+        $_SESSION['questions_id'] = $qid;
+        $_SESSION['subject_id'] = $sid;
+
         
-        # Get the actual question
-        $o_getQuestion = mysqli_query($conn, "SELECT question from questions where questions_id = '$o_qid' ");
-        $o_ques_row = mysqli_fetch_assoc($o_getQuestion);
-        $o_question = $o_ques_row['question'];
-
-        # Get the answers
-        $o_getAns = mysqli_query($conn, "SELECT * from answers where question_id = '$o_qid' ");
-        $o_ans_rows = mysqli_fetch_assoc($o_getAns);
-        $o_option_1 = $o_ans_rows['option_1'];
-        $o_option_2 = $o_ans_rows['option_2'];
-        $o_option_3 = $o_ans_rows['option_3'];
-        $o_answer = $o_ans_rows['answer'];
-
         # Standard class where all our value will live       
         $std = new stdClass();
         
         # player
         $std->success = true;
-        $std->p_question = $p_question;
-        $std->p_option_1 = $p_option_1;
-        $std->p_option_2 = $p_option_2;
-        $std->p_option_3 = $p_option_3;
-        $std->p_answer = $p_answer;
+        $std->question = $question;
+        // $std->option_1 = $option_1;
+        // $std->option_2 = $option_2;
+        // $std->option_3 = $option_3;
+        $std->answer = $answer;
         
-        # Opponent
-        $std->o_question = $o_question;
-        $std->o_option_1 = $o_option_1;
-        $std->o_option_2 = $o_option_2;
-        $std->o_option_3 = $o_option_3;
-        $std->o_answer = $o_answer;
 
         # Return values in json format
         echo json_encode($std);

@@ -25,6 +25,7 @@
             $tag_id = $rows['tag_id'];
 
             $_SESSION['tag_id'] = $tag_id;
+            $_SESSION['sub_id'] = $subject_id;
 
             # Getting player names
             $p_name = mysqli_query($conn, "SELECT * from users where user_id = '$player' ");

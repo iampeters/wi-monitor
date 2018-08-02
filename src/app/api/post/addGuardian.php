@@ -26,7 +26,7 @@
         } else {
 
             // Inserting new guardian if username is available
-            $query = mysqli_query($conn, "INSERT INTO guardian Values('', '$username', '$ward_id', '$fullname', '$email','$phone','$relationship')");
+            $query = mysqli_query($conn, "INSERT INTO guardian Values(null, '$username', '$ward_id', '$fullname', '$email','$phone','$relationship', 0)");
 
             if ($query) {
                 echo '{

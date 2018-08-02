@@ -1,4 +1,69 @@
-<!-- Preloader -->
+<?php
+
+    # Session
+    session_start();
+
+    # Header
+    header('Access-Control-Allow-Origin: *');
+
+    if (isset($_GET['gid'])) {
+        $key = $_GET['gid'];
+
+        # Dependency
+        require 'db.php';
+
+        # Get tag
+        $sql = mysqli_query($conn, "SELECT * from tag where session_key = '$key'  ");
+
+        if ( mysqli_num_rows($sql) == 1 ) {
+            $rows = mysqli_fetch_assoc($sql);
+
+            $player_id = $rows['player_id'];
+            $opponent_id = $rows['opponent_id'];
+            $subject_id = $rows['subject_id'];
+
+
+            
+        } else {
+            echo $message = 'Sorry! There are no games with that key';
+        }
+
+        # Get questions
+        $getQuestion = mysqli_query($conn, "SELECT * FROM vQues WHERE session_key = '$key' order by id desc limit 1");
+        
+
+
+    } else {
+        # Goto login page
+        // headers('location: ../index.php');
+        echo 'Not allowed';
+    }
+    
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WI-MOINTO</title>
+    
+    <!-- LINKS -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/mdb.min.css">
+    <link rel="stylesheet" href="../../assets/css/compiled.min.css">
+    <link rel="stylesheet" href="../../assets/css/style.min.css?t='<?php echo time(); ?>'">
+    
+    <!-- SCRIPT -->
+    <script src="../../assets/js/jquery-3.3.1.min.js"></script>
+    <script src="../../assets/js/bootstrap.js"></script>
+    <script src="../../assets/js/mdb.js"></script>
+    <script src="../../assets/js/index.js?t='<?php echo time(); ?>'"></script>
+</head>
+<body>
+    <!-- Preloader -->
 <!-- <div class="preloader">
     <div class="loader animated pulse">
         <div class="loader__bar"></div>
@@ -345,4 +410,6 @@
 
 
 <!-- Footer -->
-<app-footer></app-footer>
+<!-- <app-footer></app-footer> -->
+</body>
+</html>

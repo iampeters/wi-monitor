@@ -33,7 +33,7 @@
             $has_ended = $rows['has_ended'];
 
             # Checks if logged in user is not the player_id in the database and the opponent field is empty
-            if ( empty($opponent) && $logged_in_user_id != $tag_user_id ) {
+            if ( ( empty($opponent) && $logged_in_user_id != $tag_user_id) && !empty($tag_user_id) ) {
 
                 # Add logged in user as an opponent
                 $query1 = mysqli_query($conn, "UPDATE tag set opponent_id = '$logged_in_user_id', session_key = '$rand' where subject_id = '$subject_id' and session_key = '' ");
@@ -140,7 +140,9 @@
                     
                 }
 
-            } elseif ($logged_in_user_id == $tag_user_id  && empty($opponent)) {
+            } 
+            
+            if ($logged_in_user_id == $tag_user_id  && empty($opponent)) {
 
                 echo '{
                     "message" : "Waiting for opponent to join the game",
@@ -148,7 +150,8 @@
                     "subject" : "'.$subject.'"
                 }';
             }
-            elseif ( ($logged_in_user_id == $tag_user_id || $logged_in_user_id == $opponent ) && $has_ended == 'false' ) {
+            
+            if ( ($logged_in_user_id == $tag_user_id || $logged_in_user_id == $opponent ) ) {
 
                 # Get all player details and resume the game.
                     $select_tag = mysqli_query($conn, "select * from tag as T, game as G where T.session_key = G.session_key and T.subject_id = G.subject_id");
@@ -171,7 +174,6 @@
 
                         if ( mysqli_num_rows($select_users2) > 0 ) {
                             $opponent_row = mysqli_fetch_assoc($select_users2);
-                        }
 
                         $o_id = $rows['opponent_id'];
                         $tag_id = $rows['tag_id'];
@@ -218,6 +220,7 @@
 
                         echo json_encode($data);
                     }
+                }
                 
             } else {
 

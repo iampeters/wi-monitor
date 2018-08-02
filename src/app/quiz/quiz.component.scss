@@ -529,3 +529,12 @@ input[type="radio"] {
 #chat {
     display: none;
 }
+
+#game-over {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background: rgba(0, 0, 0, .79);
+    z-index: 3002;
+    display: none;
+}

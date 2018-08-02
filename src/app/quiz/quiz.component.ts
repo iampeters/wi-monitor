@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { GetQuestionsService } from '../services/get-questions.service';
 import { MiscService } from '../services/misc.service';
@@ -12,14 +12,9 @@ import { Answer, Chat } from '../classes/user';
 
 export class QuizComponent implements OnInit {
 
-  @ViewChild('qBoard') qBoard: ElementRef;
 
   subject;
   public question;
-  option1;
-  option2;
-  option3;
-  answer;
   Qid;
   isMerged;
   msg;
@@ -30,15 +25,20 @@ export class QuizComponent implements OnInit {
   error;
   player;
   opponent;
+  o_scores = 0;
+  o_correct = 0;
+  o_wrong = 0;
   wrong = 0;
   right = 0;
 
   q_count = 10;
   marks = 0;
-  time;
+  p_time = 15;
+  o_time = 15;
   counter = 15;
   expired = 0;
-  chats = [];
+  public chats = [];
+  public choices = [];
 
   answerModel = new Answer('');
   chatModel = new Chat('', '');
@@ -93,13 +93,15 @@ export class QuizComponent implements OnInit {
         this.choice.getQuestions().subscribe(data1 => {
           if (data1.success === true) {
             this.question = data1.question;
-            this.option1 = data1.option1;
-            this.option2 = data1.option2;
-            this.option3 = data1.option3;
-            this.answer = data1.answer;
+
           } else {
             this.error = data1.message;
           }
+        });
+
+        // getting answers
+        this.misc.getAnswers().subscribe( data3 => {
+          this.choices = data3;
         });
 
       } else {
@@ -108,13 +110,9 @@ export class QuizComponent implements OnInit {
         this.subject = data.subject;
         this.isMerged = false;
         this.msg = data.message;
-        this.time = 0;
 
       }
     });
-
-
-
   }
   // End of onInit
 
@@ -129,17 +127,16 @@ export class QuizComponent implements OnInit {
         if (data.success === true && data.msg === true) {
           this.turn = true;
 
-          // This will get the current time
-          // this.misc.getTime().subscribe(data1 => {
-          //   if (data1.success === true) {
-          //     this.time = data1.time;
-          //   }
-          // });
-
         } else {
           this.turn = false;
-          this.time = 0;
+
         }
+      });
+
+      this.misc.getOpp().subscribe( data5 => {
+          this.o_correct = data5.o_correct;
+          this.o_scores = data5.o_scores;
+          this.o_wrong = data5.o_wrong;
       });
 
     }, 1000);
@@ -159,6 +156,49 @@ export class QuizComponent implements OnInit {
 
     }, 1000);
 
+    // player 1 Timer
+   if (this.isMerged === true ) {
+     const p_timer = setInterval(() => {
+       if (this.p_time === 2) {
+
+         // This will switch turns between players
+         this.misc.setter().subscribe();
+       }
+
+       if (this.p_time === 1) {
+         // Getting new question
+         this.choice.generator().subscribe(data => {
+           if (data.success === true) {
+             this.question = data.question;
+
+           } else {
+             console.log(data.message);
+           }
+         });
+
+
+         // getting answers
+         this.misc.getAnswers().subscribe(data3 => {
+           this.choices = data3;
+         });
+       }
+
+       if (this.p_time === 0) {
+         // clearInterval(p_timer);
+
+         this.o_time = 15;
+         this.p_time = 15;
+
+       } else {
+         this.p_time -= 1;
+         this.o_time -= 1;
+       }
+     }, 1000);
+   } else {
+     this.o_time = 0;
+     this.p_time = 0;
+   }
+
   }
 
 
@@ -166,78 +206,55 @@ export class QuizComponent implements OnInit {
   userAns(event) {
     const userChoice = event.option;
 
-    // This will switch turns between players
+   if (this.q_count < 1 ) {
+      // Game over
+      alert ('Game Over' + ' ' + 'Score: ' + this.marks);
+   } else {
+
+     // Set player 2 time
+     this.o_time = 15;
+     this.p_time = 15;
+
+     // Decrement question count
+     this.q_count = this.q_count - 1;
+
+     // Checks for correct answer
+     this.misc.chkAnswer(userChoice).subscribe(data4 => {
+       if (data4.success === true && data4.message === 'Correct') {
+          this.right = data4.value;
+          this.marks = data4.scores;
+
+       } else if (data4.success === true && data4.message === 'Wrong') {
+          this.wrong = data4.value;
+
+       } else {
+        // <3
+       }
+
+     });
+
+     // Getting new question
+     this.choice.generator().subscribe(data => {
+       if (data.success === true) {
+         this.question = data.question;
+
+       } else {
+         console.log(data.message);
+       }
+     });
+
+     // This will switch turns between players
     this.misc.setter().subscribe();
 
+     // getting answers
+     this.misc.getAnswers().subscribe(data3 => {
+       this.choices = data3;
+     });
+
+   }
+
     // This will set the user timer
-    this.misc.timer().subscribe();
-
-    // I stopped here. i will remove this when i come back
-    // this.misc.getTime().subscribe(data2 => {
-    //   if (data2.success === true) {
-    //     this.time = data2.time;
-    //     // console.log(data2.time);
-    //   }
-    // });
-
-    if (userChoice === this.answer) {
-      if (this.q_count < 1) {
-        alert('Game Over' + ' ' + 'Score: ' + this.marks);
-      } else {
-        this.q_count = this.q_count - 1;
-
-        const score = 1;
-
-        // Inserting into scores table when the user picked the correct answer
-        this.misc.ansCorrect(score).subscribe(data => {
-          if (data.success === true) {
-            this.right = data.value;
-            // incrementing the marks
-            this.marks = data.scores;
-          }
-        });
-
-        this.choice.generator().subscribe(data => {
-          if (data.success === true) {
-            this.question = data.question;
-            this.option1 = data.option1;
-            this.option2 = data.option2;
-            this.option3 = data.option3;
-            this.answer = data.answer;
-          } else {
-            this.error = data.message;
-          }
-        });
-      }
-
-    } else {
-      if (this.q_count < 1) {
-        alert('Game Over' + ' ' + 'Score: ' + this.marks);
-      } else {
-        this.q_count = this.q_count - 1;
-
-        const score = 1;
-
-        // Inserting into scores table when the user picked the wrong answer
-        this.misc.ansWrong(score).subscribe(data => {
-          if (data.success === true) {
-            this.wrong = data.value;
-          }
-        });
-
-        this.choice.generator().subscribe(data => {
-          if (data.success === true) {
-            this.question = data.question;
-            this.option1 = data.option1;
-            this.option2 = data.option2;
-            this.option3 = data.option3;
-            this.answer = data.answer;
-          } else {
-            this.error = data.message;
-          }
-        });
-      }
-    }
+    // this.misc.timer().subscribe();
   }
 
   quit() {
@@ -257,25 +274,37 @@ export class QuizComponent implements OnInit {
     this.choice.generator().subscribe(data => {
       if (data.success === true) {
         this.question = data.question;
-        this.option1 = data.option1;
-        this.option2 = data.option2;
-        this.option3 = data.option3;
-        this.answer = data.answer;
       } else {
         // If there are errors
         this.error = data.message;
       }
     });
+
+    // getting answers
+    this.misc.getAnswers().subscribe(data3 => {
+      this.choices = data3;
+    });
+
+
+    const btn = <HTMLInputElement>document.getElementById('btn');
+    // btn.setAttribute('disabled', 'disabled')
+    btn.disabled = true;
   }
 
   // LifeLIne
   life() {
-    const e = this.question;
-    // this.choice.chat(e).subscribe( data => {})
+    // Ask for help
     const chat = document.getElementById('chat');
     chat.style.display = 'block';
+
     const open = true;
     this.misc.open(open).subscribe();
+
+    // This will disable the button once it is clicked
+    const btn = document.getElementById('life');
+    btn.setAttribute('disabled', 'disabled');
+
+
   }
   // Close chat
   close() {

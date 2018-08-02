@@ -65,6 +65,7 @@
         $gid = $_SESSION['gid'];
         $tid = $_SESSION['tid'];
         $key = $_SESSION['key'];
+        $sid = $_SESSION['subject_id'];
 
         # Post values
         $wrong = $_POST['wrong'];

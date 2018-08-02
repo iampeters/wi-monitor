@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MiscService } from '../../services/misc.service';
 import { Game } from '../../classes/user';
 import { Router } from '@angular/router';
@@ -34,6 +34,10 @@ export class GidComponent implements OnInit {
         this.http.navigate(['viewerlogin']);
       }
     });
+
+    // const body = <HTMLBodyElement>document.getElementsByTagName('body');
+
+    // body.onbeforeunload =
   }
 
   // Getting the user's choice of game to view

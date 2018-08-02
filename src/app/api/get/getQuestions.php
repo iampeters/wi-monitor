@@ -46,16 +46,14 @@
                     $c_answer = $row1['answer'];
 
                     # Inserting into vQues tbl
-                    $vQues = mysqli_query($conn, "INSERT INTO vQues values(null, '$uid', '$id', '$Qid', '$key') ");
+                    $vQues = mysqli_query($conn, "INSERT INTO vQues values(null, '$id', '$Qid', '$key') ");
+
+                    $_SESSION['questions_id'] = $Qid;
 
                     echo '{
                         "success" : true,
                         "Qid" : "'.$Qid.'",
-                        "question" : "'.$question.'",
-                        "option1" : "'.$option1.'",
-                        "option2" : "'.$option2.'",
-                        "option3" : "'.$option3.'",
-                        "answer" : "'.$c_answer.'"
+                        "question" : "'.$question.'"
                     }';
 
                 } else {

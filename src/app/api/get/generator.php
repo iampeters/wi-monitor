@@ -25,6 +25,9 @@
             $question = $row['question'];
             $answer = $row['answer'];
 
+            # Adding quesions id to session
+            $_SESSION['questions_id'] = $Qid;
+
             // getting available options
             $sql1 = "SELECT * from answers where question_id = $Qid";
             $res = mysqli_query($conn, $sql1);
@@ -38,16 +41,14 @@
                 $c_answer = $row1['answer'];
 
                 # Inserting into vQues tbl
-                $vQues = mysqli_query($conn, "INSERT INTO vQues values(null, '$uid', '$sid', '$Qid', '$key') ");
+                $vQues = mysqli_query($conn, "INSERT INTO vQues values(null, '$sid', '$Qid', '$key') ");
 
+                
+                
                 echo '{
                     "success": true,
                     "Qid": "'.$Qid.'",
-                    "question": "'.$question.'",
-                    "option1": "'.$option1.'",
-                    "option2": "'.$option2.'",
-                    "option3": "'.$option3.'",
-                    "answer": "'.$c_answer.'"
+                    "question": "'.$question.'"
                 }';
 
             } else {

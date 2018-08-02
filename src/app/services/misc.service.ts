@@ -33,6 +33,9 @@ export class MiscService {
   chatterUrl = '/wi-monitor/src/app/api/get/chatter.php';
   neededUrl = '/wi-monitor/src/app/api/get/needed.php';
   vLogoutUrl = '/wi-monitor/src/app/api/user/vLogout.php';
+  answers = '/wi-monitor/src/app/api/get/getAnswers.php';
+  chkAnswers = '/wi-monitor/src/app/api/post/chkAnswer.php';
+  getP2Url = '/wi-monitor/src/app/api/get/scores.php';
 
   private loggedInStatus = false;
 
@@ -234,6 +237,28 @@ export class MiscService {
   // Logout viewer
   vLogout() {
     return this.http.get<Chatter>(this.vLogoutUrl);
+  }
+
+  // Get answers
+  getAnswers() {
+    return this.http.get<Myface[]>(this.answers);
+  }
+
+  // Get answers for viewers
+  vgetAnswers() {
+    return this.http.get<Myface[]>(this.answers);
+  }
+
+  // Checking for correct answer
+  chkAnswer(choice) {
+    return this.http.post<Tagger>(this.chkAnswers, {
+      choice
+    });
+  }
+
+  // Get player 2 scores
+  getOpp() {
+    return this.http.get<Activity>(this.getP2Url);
   }
 
 }

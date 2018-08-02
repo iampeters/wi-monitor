@@ -1,0 +1,360 @@
+body {
+    background: #f7f7f7;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+
+/* Font reset */
+
+@font-face {
+    font-family: GothamRounded;
+    src: url('../font/gothamrnd-book.woff');
+}
+
+
+/* // Main style starts here */
+
+.quiz-wrapper {
+    background: url('/assets/img/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #e3f2fd;
+    height: 100vh;
+    width: 100%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+
+/* // Rewrite container to max-width of 1300px */
+
+.container {
+    max-width: 1700px;
+    /* // width: 1500px; */
+}
+
+.mask {
+    z-index: 1;
+}
+
+.player-1,
+.player-2 {
+    padding: 20px;
+    position: relative;
+    background: radial-gradient( rgba(28, 78, 190, 0.49), rgba(12, 44, 112, 0.5), rgba(20, 60, 148, 0.54));
+}
+
+.player-2 .waiting-preloader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .79);
+    z-index: 5;
+}
+
+.player-2 .waiting-preloader .box {
+    width: 100px;
+    border-radius: 100px;
+    /* // background: #fff; */
+    margin: 0 auto;
+    position: relative;
+    top: 45%;
+}
+
+.player-2 .waiting-preloader h6 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.q-panel-holder {
+    width: 100%;
+    height: auto;
+    display: flex;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    padding: 5px;
+    border-radius: 4px;
+    /* // background: radial-gradient( #1c4ebe, #0c2c70, #143c94); */
+    position: relative;
+    z-index: 3;
+}
+
+.q-panel {
+    /* // background: radial-gradient( #1c4ebe, #0c2c70, #143c94); */
+    background: radial-gradient( rgba(28, 78, 190, 0.49), rgba(12, 44, 112, 0.5), rgba(20, 60, 148, 0.54));
+    /* // padding: 0 10px; */
+    position: relative;
+}
+
+.q-panel .q-panel-header {
+    display: flex;
+    padding: 10px 10px;
+}
+
+.q-panel-header .time {
+    text-transform: uppercase;
+}
+
+.q-panel-header .score h6 {
+    text-transform: uppercase;
+}
+
+.q-panel .q-panel-body {
+    padding: 20px;
+    box-shadow: inset 0 2px 5px 0 rgba(0, 0, 0, 0.16), inset 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    height: auto;
+}
+
+.q-board {
+    width: 100%;
+    min-height: 300px;
+    height: auto;
+    border: 2px solid white;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, .06);
+    padding: 30px 20px;
+}
+
+.q-board-header {
+    width: 80%;
+    margin: 0 auto;
+    height: auto;
+    min-width: 50px;
+    /* // background: white; */
+    border: 2px solid #fff;
+    position: relative;
+    padding: 10px;
+    border-radius: 48px;
+}
+
+.q-board-header h5 {
+    font-weight: 900 !important;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 0;
+    letter-spacing: 1px;
+}
+
+.q-board-header::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 48%;
+    left: 100%;
+    width: 50px;
+    height: 3px;
+    background: #fff;
+}
+
+.q-board-header::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 48%;
+    right: 100%;
+    width: 50px;
+    height: 3px;
+    background: #fff;
+}
+
+.q-board-content {
+    width: 100%;
+    height: auto;
+    margin: 40px auto 0;
+    text-align: center;
+    padding: 0 50px;
+}
+
+.badge {
+    font-size: 14px;
+}
+
+
+/* // button modification */
+
+label.btn-mod {
+    background: none !important;
+    border: 2px solid #fff;
+    color: #fff !important;
+    cursor: default !important;
+}
+
+
+/* // label.btn-mod:hover {
+//     background: #fff !important;
+//     color: #333 !important;
+//     .badge {
+//         color: #333 !important;
+//     }
+// } */
+
+label.btn {
+    padding: 0;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* // badge */
+
+.badge {
+    font-size: 14px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 48px 0 0 48px;
+    height: inherit;
+    width: 30px;
+    text-align: center;
+    line-height: 25px;
+    font-weight: 800 !important;
+    background: none !important;
+    box-shadow: none !important;
+    z-index: 2;
+}
+
+.ans {
+    position: relative;
+    margin-left: 10px;
+    line-height: 32px;
+    z-index: 2;
+}
+
+label.btn .b-mask {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    z-index: 1;
+}
+
+input[type="radio"]:checked~.b-mask {
+    background: #fff;
+    z-index: 1;
+}
+
+input[type="radio"]:checked~.ans,
+input[type="radio"]:checked~.badge,
+{
+    z-index: 2;
+    color: #333 !important;
+}
+
+button.life-line {
+    width: 100%;
+    min-width: 60px;
+    padding: 10px !important;
+    height: 60px !important;
+    border-radius: 4px;
+}
+
+
+/* // Reseting all buttons with .btn class */
+
+.btn {
+    padding: 0px 24px;
+    border-radius: 60px;
+    font-size: 14px !important;
+    height: 35px;
+    min-width: 100%;
+    width: auto;
+    font-weight: 600;
+}
+
+.badge {
+    line-height: 23px !important;
+}
+
+button.btn[type="submit"] {
+    height: 35px;
+    min-width: 150px;
+    width: auto;
+    font-weight: 600;
+}
+
+a.btn {
+    color: #fff !important;
+}
+
+input[type="radio"] {
+    display: none !important;
+}
+
+.waiting {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* // background-color: rgba(255, 255, 255, .9); */
+    background: radial-gradient( rgba(28, 78, 190, 1), rgba(12, 44, 112, 1), rgba(20, 60, 148, 1));
+    z-index: 3000;
+    height: 100%;
+    text-align: center;
+}
+
+h6 {
+    color: #fff;
+    font-weight: bold;
+    position: absolute;
+    top: 58%;
+    left: 50%;
+    margin-left: -29.133px;
+    margin-top: -10.5px;
+}
+
+.preloader-wrapper {
+    position: fixed;
+    top: 45%;
+    margin-left: -32px;
+    margin-top: -32px;
+}
+
+.c-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, .76);
+    z-index: 3000;
+}
+
+.container-fluid .row .card {
+    position: absolute;
+    z-index: 3001;
+    margin-top: 100px;
+}
+
+.container-fluid .row .card .card-body #txt {
+    width: 100%;
+    height: 50px;
+    margin-top: 10px;
+}
+
+.container-fluid .row .card .card-body .area {
+    width: 100%;
+    height: auto;
+}
+
+.c-left,
+.c-right {
+    border-radius: 20px;
+    min-width: 100px;
+    width: auto !important;
+    padding: 5px 20px;
+    display: inline-block;
+    clear: both;
+}
+
+#chat {
+    display: none;
+}

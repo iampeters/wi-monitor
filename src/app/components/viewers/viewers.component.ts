@@ -16,6 +16,7 @@ export class ViewersComponent implements OnInit {
   chats = [];
   empty;
   needed = false;
+  choices = [];
 
   chatModel = new Chat('', '');
 
@@ -68,7 +69,13 @@ export class ViewersComponent implements OnInit {
       this.vQues.vQues().subscribe( data => {
         this.Ques = data;
       });
-    }, 2000);
+
+      // getting answers
+      this.misc.getAnswers().subscribe(data3 => {
+        this.choices = data3;
+      });
+
+    }, 1000);
   }
 
   // LifeLIne
