@@ -21,19 +21,18 @@
                 <h6 class="badge red d-inline-block p-3">Wrong Choices: &nbsp;{{p1.p_wrong}}</h6>&nbsp;&nbsp;
                 <h6 class="badge green d-inline-block p-3">Right Choices: &nbsp;{{p1.p_correct}}</h6>&nbsp;&nbsp;
                 <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{p1.p_scores}}</h6><br><br>
-                <h5 *ngIf="GameOver.player == 'Win'; " class="p-3 text-center text-success animated fadeIn mb-1"><i class="fas fa-trophy fa-5x"></i><br>You won</h5>
-                <h5 *ngIf="GameOver.player == 'Lost'; " class="p-3 text-center text-danger animated fadeIn mb-1"><i class="fas fa-frown fa-5x"></i><br>You lost</h5>
-                <h5 *ngIf="GameOver.player == 'Draw'; " class="p-3 text-center text-warning animated fadeIn mb-1"><i class="fas fa-handshake fa-5x"></i><br>Draw</h5>
+                <h5 *ngIf="GameOver.player == 'Win'; " class="p-3 text-center text-success animated fadeIn mb-3"><i class="fas fa-trophy fa-5x"></i><br>Won</h5>
+                <h5 *ngIf="GameOver.player == 'Lost'; " class="p-3 text-center text-danger animated fadeIn mb-3"><i class="fas fa-frown fa-5x"></i><br>Lost</h5>
+                <h5 *ngIf="GameOver.player == 'Draw'; " class="p-3 text-center text-warning animated fadeIn mb-3"><i class="fas fa-handshake fa-5x"></i><br>Draw</h5>
             </div>
             <div class="col-12 col-md-5 offset-md-2 animated pulse">
                 <h3 class="p-3 text-center">{{opponent}}</h3>
                 <h6 class="badge red d-inline-block p-3">Wrong Choices: &nbsp;{{opp.o_wrong}}</h6>&nbsp;&nbsp;
                 <h6 class="badge green d-inline-block p-3">Right Choices: &nbsp;{{opp.o_correct}}</h6>&nbsp;&nbsp;
                 <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{opp.o_scores}}</h6> <br><br>
-                <h5 *ngIf="GameOver.opponent == 'Win'; " class="p-3 text-center text-success animated fadeIn mb-1"> <i class="fas fa-trophy fa-5x"></i><br>You won</h5>
-                <h5 *ngIf="GameOver.opponent == 'Lost'; " class="p-3 text-center text-danger animated fadeIn mb-1"><i class="fas fa-frown fa-5x"></i><br>You lost</h5>
-                <h5 *ngIf="GameOver.opponent == 'Draw'; " class="p-3 text-center text-warning animated fadeIn mb-1"><i class="fas fa-handshake fa-5x"></i> <br> Draw</h5>
-                <!-- <h5 class="p-3 text-center text-success"> <i class="fas fa-user-lock fa-5x"></i></h5> -->
+                <h5 *ngIf="GameOver.opponent == 'Win'; " class="p-3 text-center text-success animated fadeIn mb-3"> <i class="fas fa-trophy fa-5x"></i><br>Won</h5>
+                <h5 *ngIf="GameOver.opponent == 'Lost'; " class="p-3 text-center text-danger animated fadeIn mb-3"><i class="fas fa-frown fa-5x"></i><br>Lost</h5>
+                <h5 *ngIf="GameOver.opponent == 'Draw'; " class="p-3 text-center text-warning animated fadeIn mb-3"><i class="fas fa-handshake fa-5x"></i> <br>Draw</h5>
 
             </div>
         </div>
