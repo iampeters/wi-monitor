@@ -34,8 +34,14 @@ export class MiscService {
   neededUrl = '/wi-monitor/src/app/api/get/needed.php';
   vLogoutUrl = '/wi-monitor/src/app/api/user/vLogout.php';
   answers = '/wi-monitor/src/app/api/get/getAnswers.php';
+  answersViewers = '/wi-monitor/src/app/api/get/viewersAnswers.php';
   chkAnswers = '/wi-monitor/src/app/api/post/chkAnswer.php';
   getP2Url = '/wi-monitor/src/app/api/get/scores.php';
+  getQuesUrl = '/wi-monitor/src/app/api/post/getQuestions.php';
+  scoreUpdateUrl = '/wi-monitor/src/app/api/get/scoresUpdate.php';
+  gameOverUrl = '/wi-monitor/src/app/api/get/gameOver.php';
+  vGameOverUrl = '/wi-monitor/src/app/api/post/vGameOver.php';
+  quesDecUrl = '/wi-monitor/src/app/api/post/quesDec.php';
 
   private loggedInStatus = false;
 
@@ -244,6 +250,16 @@ export class MiscService {
     return this.http.get<Myface[]>(this.answers);
   }
 
+  // Get viewers answers
+  getViewersAnswers() {
+    return this.http.get<Myface[]>(this.answersViewers);
+  }
+
+  // Get questions
+  getQues() {
+    return this.http.get<Myface>(this.getQuesUrl);
+  }
+
   // Get answers for viewers
   vgetAnswers() {
     return this.http.get<Myface[]>(this.answers);
@@ -258,7 +274,27 @@ export class MiscService {
 
   // Get player 2 scores
   getOpp() {
-    return this.http.get<Activity>(this.getP2Url);
+    return this.http.get<Activity[]>(this.getP2Url);
+  }
+
+  // Get player 1 scores
+  getP1Scores() {
+    return this.http.get<Activity[]>(this.scoreUpdateUrl);
+  }
+
+  // Game over
+  gameOver() {
+    return this.http.get<GameOver[]>(this.gameOverUrl);
+  }
+
+  // Parents/Viewers Game over display
+  vGameOver() {
+    return this.http.get<GameOver[]>(this.vGameOverUrl);
+  }
+
+  // This will decrement questions
+  quesDec() {
+    return this.http.get(this.quesDecUrl);
   }
 
 }
@@ -273,9 +309,11 @@ export interface Myface {
   option1: string;
   option2: string;
   option3: string;
+  option4: string;
   answer: string;
   question: string;
   ward: string;
+  question_id: number;
 }
 
 export interface Chatter {
@@ -335,4 +373,11 @@ export interface Activity {
   p_count: number;
   p_turn: number;
   o_turn: number;
+  p_questions: number;
+  o_questions: number;
+}
+
+export interface GameOver {
+  player: string;
+  opponent: string;
 }

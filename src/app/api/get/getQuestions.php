@@ -5,6 +5,7 @@
     header('Access-Control-Allow-Origin: *');
     header("Content-Type: application/json; charset=UTF-8");
 
+
     if (isset($_SESSION['subject'])) {
 
         $id = $_SESSION['subject_id'];
@@ -51,16 +52,16 @@
                     $_SESSION['questions_id'] = $Qid;
 
                     echo '{
-                        "success" : true,
-                        "Qid" : "'.$Qid.'",
-                        "question" : "'.$question.'"
+                        "success" : true
                     }';
 
+                    exit();
                 } else {
                     echo '{
                         "success": false,
                         "message": "A fatal error has occured"
                     }';
+                    exit();
                 }
 
             } else {
@@ -68,6 +69,7 @@
                     "success": false,
                     "message": "There are no questions to display"
                 }';
+                exit();
             }
             
 
@@ -78,6 +80,7 @@
             "success": false,
             "message": "You have to SELECT a subject first"
         }';
+        exit();
     }
     
 

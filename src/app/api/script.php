@@ -5,39 +5,69 @@
 
     # Header
     header('Access-Control-Allow-Origin: *');
+    // header('Content-Type: application/json', true);
 
-    if (isset($_GET['gid'])) {
-        $key = $_GET['gid'];
+    // if (isset($_GET['gid'])) {
+    //     $key = $_GET['gid'];
 
-        # Dependency
-        require 'db.php';
+    $uid = $_SESSION['uid'];
+    $sid = 13;
+    // $key = $_SESSION['key'];
 
-        # Get tag
-        $sql = mysqli_query($conn, "SELECT * from tag where session_key = '$key'  ");
+        function getRandQues() {
+            global $sid;
 
-        if ( mysqli_num_rows($sql) == 1 ) {
-            $rows = mysqli_fetch_assoc($sql);
+            # Dependency
+            require 'db.php';
 
-            $player_id = $rows['player_id'];
-            $opponent_id = $rows['opponent_id'];
-            $subject_id = $rows['subject_id'];
+            # Get tag
+            $sql = mysqli_query($conn, "SELECT question, questions_id from questions where subject_id = '$sid' order by rand() limit 1");
 
+            if ( mysqli_num_rows($sql) >  0 ) {
+                $rows = mysqli_fetch_assoc($sql);
+                $question = $rows['question'];
+                $id = $rows['questions_id'];
 
-            
-        } else {
-            echo $message = 'Sorry! There are no games with that key';
-        }
-
-        # Get questions
-        $getQuestion = mysqli_query($conn, "SELECT * FROM vQues WHERE session_key = '$key' order by id desc limit 1");
-        
+                echo $id . '<br>';
 
 
-    } else {
-        # Goto login page
-        // headers('location: ../index.php');
-        echo 'Not allowed';
-    }
+                // function vQues() {
+                    // global $sid;
+                    // global $id;
+
+                    # Dependency
+                    require 'db.php';
+
+
+                    # Select from vQues table
+                    $select = mysqli_query($conn, "SELECT question_id from vQues where subject_id = '$sid' and question_id = '$id' ");
+
+                    if (mysqli_num_rows($select) > 0) {
+                        // echo 'found one question';
+                        getRandQues();
+                    } else {
+                        echo 'found nothing';
+                    }
+                
+                
+                    # Insert into vQues table
+                    // $insert = mysqli_query($conn, "");
+            //     }
+
+            //    vQues();
+                
+            } else {
+                echo $message = 'Sorry! There are no questions';
+            }
+       }
+
+       getRandQues();
+
+    // } else {
+    //     # Goto login page
+    //     // headers('location: ../index.php');
+    //     echo 'Not allowed';
+    // }
     
 
 ?>

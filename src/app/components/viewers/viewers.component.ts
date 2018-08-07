@@ -17,6 +17,10 @@ export class ViewersComponent implements OnInit {
   empty;
   needed = false;
   choices = [];
+  q_count;
+  gameOver = [];
+  p_count;
+  o_count;
 
   chatModel = new Chat('', '');
 
@@ -32,6 +36,7 @@ export class ViewersComponent implements OnInit {
    setInterval(() => {
      this.misc.viewerInit().subscribe(data => {
        this.activity = data;
+      //  console.log(data);
 
      });
 
@@ -53,6 +58,13 @@ export class ViewersComponent implements OnInit {
      this.misc.parentChatter().subscribe( data => {
        this.chats = data;
      });
+
+     // Getting the points
+     this.misc.vGameOver().subscribe( data => {
+       this.gameOver = data;
+
+     });
+
    }, 1000);
 
     // Checks if the parent isLoggedIn
@@ -71,10 +83,9 @@ export class ViewersComponent implements OnInit {
       });
 
       // getting answers
-      this.misc.getAnswers().subscribe(data3 => {
+      this.misc.getViewersAnswers().subscribe(data3 => {
         this.choices = data3;
       });
-
     }, 1000);
   }
 

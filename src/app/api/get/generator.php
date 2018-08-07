@@ -26,7 +26,7 @@
             $answer = $row['answer'];
 
             # Adding quesions id to session
-            $_SESSION['questions_id'] = $Qid;
+            // $_SESSION['questions_id'] = $Qid;
 
             // getting available options
             $sql1 = "SELECT * from answers where question_id = $Qid";

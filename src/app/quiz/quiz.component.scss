@@ -470,7 +470,7 @@ input[type="radio"] {
     // background-color: rgba(255, 255, 255, .9);
     background: radial-gradient( rgba(28, 78, 190, 1), rgba(12, 44, 112, 1), rgba(20, 60, 148, 1));
     z-index: 3000;
-    height: 100%;
+    height: 560px;
     text-align: center;
     h6 {
         color: #fff;
@@ -534,7 +534,13 @@ input[type="radio"] {
     width: 100%;
     height: 100vh;
     position: relative;
-    background: rgba(0, 0, 0, .79);
+    background: #212529;
     z-index: 3002;
-    display: none;
+    display: block;
+    padding: 120px 20px;
+}
+
+.game-over {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+    padding: 40px;
 }

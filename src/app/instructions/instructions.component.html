@@ -48,7 +48,7 @@
                         <div *ngFor="let subject of subjects">
                             <div class="form-check">
                                 <input #input="ngModel" class="form-check-input with-gap radio-value" name="group" type="radio" id="radio{{subject.subject_id}}" value="{{ subject.subject_id }}" required ngModel>
-                                <label class="form-check-label" for="radio{{subject.subject_id}}">{{ subject.subject }}</label>
+                                <label class="form-check-label" for="radio{{subject.subject_id}}">{{ subject.subject }}</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <small class="text-success text-right">Waiting</small>
                             </div>
                         </div>
 

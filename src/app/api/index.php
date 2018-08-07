@@ -13,7 +13,7 @@
         require 'db.php';
 
         # Get tag
-        $sql = mysqli_query($conn, "SELECT * from tag where session_key = '$key'  ");
+        $sql = mysqli_query($conn, "SELECT * from tag where session_key = '$key' and has_ended = 'false' ");
 
         if ( mysqli_num_rows($sql) == 1 ) {
             $rows = mysqli_fetch_assoc($sql);
@@ -22,21 +22,62 @@
             $opponent_id = $rows['opponent_id'];
             $subject_id = $rows['subject_id'];
 
+            # Get question id
+            $getQuestionId = mysqli_query($conn, "SELECT * FROM vQues WHERE session_key = '$key' and subject_id = '$subject_id'  order by id desc limit 1");
+            $ques_row = mysqli_fetch_assoc($getQuestionId);
+            $question_id = $ques_row['question_id'];
 
+            # Get questions
+            $getQuestion = mysqli_query($conn, "SELECT * from questions where questions_id = '$question_id' and subject_id = '$subject_id' ");
+            $ques_rows = mysqli_fetch_assoc($getQuestion);
+            $answer = $ques_rows['answer'];
+            $question = $ques_rows['question'];
+
+            # Get player 1 users
+            $getPlayer1 = mysqli_query($conn, "select username from users where user_id = '$player_id' ");
+            $player_row = mysqli_fetch_assoc($getPlayer1);
+            $p_name = $player_row['username'];
+
+            # Get player 2 users
+            $getPlayer2 = mysqli_query($conn, "select username from users where user_id = '$opponent_id' ");
+            $player2_row = mysqli_fetch_assoc($getPlayer2);
+            $p2_name = $player2_row['username'];
+
+            # Get answers
+            $ans = mysqli_query($conn, "select * from answers where question_id = '$question_id' ");
             
-        } else {
-            echo $message = 'Sorry! There are no games with that key';
-        }
-
-        # Get questions
-        $getQuestion = mysqli_query($conn, "SELECT * FROM vQues WHERE session_key = '$key' order by id desc limit 1");
+            $arr = array();
         
 
+            # Get subjects
+            $sub = mysqli_query($conn, "select subject from Subjects where subject_id = '$subject_id' ");
+            $sub_row = mysqli_fetch_assoc($sub);
+            $subject = $sub_row['subject'];
 
+            # Get Scores for player 1
+            $score = mysqli_query($conn, "select * from scores where session_key = '$key' and player_id = '$player_id' ");
+            $score_row = mysqli_fetch_assoc($score);
+            $correct = $score_row['correct'];
+            $wrong = $score_row['wrong'];
+            $scores = $score_row['scores'];
+
+            # Get Scores for player 1
+            $o_score = mysqli_query($conn, "select * from scores where session_key = '$key' and player_id = '$opponent_id' ");
+            $o_score_row = mysqli_fetch_assoc($o_score);
+            $o_correct = $o_score_row['correct'];
+            $o_wrong = $o_score_row['wrong'];
+            $o_scores = $o_score_row['scores'];
+
+
+                
+        } else {
+            header('location: http://localhost/wi-monitor/src/app/api/?has_ended=ended');
+            echo $message = 'Sorry! The game has ended';
+            exit();
+        }
     } else {
-        # Goto login page
-        // headers('location: ../index.php');
-        echo 'Not allowed';
+        echo $message = 'Sorry! There are no games with that key';
+        exit();
     }
     
 
@@ -61,61 +102,10 @@
     <script src="../../assets/js/bootstrap.js"></script>
     <script src="../../assets/js/mdb.js"></script>
     <script src="../../assets/js/index.js?t='<?php echo time(); ?>'"></script>
+    <script src="http://localhost/wi-monitor/src/assets/js/index.js?t='<?php echo time(); ?>'"></script>
 </head>
 <body>
-    <!-- Preloader -->
-<!-- <div class="preloader">
-    <div class="loader animated pulse">
-        <div class="loader__bar"></div>
-        <div class="loader__bar"></div>
-        <div class="loader__bar"></div>
-        <div class="loader__bar"></div>
-        <div class="loader__bar"></div>
-        <div class="loader__ball"></div>
-
-    </div>
-</div> -->
-<!-- Preloader -->
-
-<!-- chat -->
-<div class="container-fluid" id="chat">
-    <div class="row">
-        <div class="c-overlay"></div>
-        <div class="col-4 offset-4 card p-0">
-            <form #chatForm="ngForm" (ngSubmit)="chat(chatForm.value); chatForm.reset()">
-                <div class="card-header"> Lifeline panel - Kindly be of assistance
-                    <span (click)="close()" class="close" id="close">
-                        <i class="fa fa-close"></i>
-                    </span>
-                </div>
-
-                <div class="card-body">
-                    <div class="area p-2" id="area">
-                        <input type="hidden" name="hidden" #hidden="ngModel" [(ngModel)]="chatModel.chats" />
-
-                        <div *ngFor="let chat of chats">
-                            <div>
-                                <span class="c-right bg-info mb-2">
-                                    <span style="font-size: 10px" class="mb-2 text-white">{{ chat.sender}}</span>
-                                <br>
-                                <span>{{ chat.message }}</span>
-                                </span>
-                            </div>
-
-                        </div>
-                    </div>
-                    <textarea name="txt" #txt='ngModel' [(ngModel)]=chatModel.message id="txt"></textarea>
-                </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Send</button> &nbsp; <small class="text-danger text-center">{{empty}}</small>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- chat -->
-
+<input class="linker" type="hidden" id="<?php echo $key; ?>" value="<?php echo $key; ?>">
 <!-- Main wrapper -->
 <div class="quiz-wrapper view">
     <div class="mask pattern-6"></div>
@@ -131,7 +121,7 @@
                         <span *ngIf="activity.p_turn == 1; else waiting" class="animated fadeIn"></span>
 
                         <!-- Waing preloader -->
-                        <ng-template #waiting>
+                        <!-- <ng-template #waiting>
                             <div class="col-12 waiting animated fadeIn">
                                 <div class="preloader-wrapper big active">
                                     <div class="spinner-layer spinner-blue">
@@ -170,7 +160,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="spinner-layer spinner-green">
+                                    <div class="spinner-layer spinner-red">
                                         <div class="circle-clipper left">
                                             <div class="circle"></div>
                                         </div>
@@ -184,22 +174,25 @@
                                 </div>
                                 <h6>Waiting</h6>
                             </div>
-                        </ng-template>
+                        </ng-template> -->
                         <!-- Waing preloader -->
 
                         <!--Panel header -->
                         <div class="q-panel-header col-12">
                             <div class="col-4 score p-0">
-                                <h6 class="text-white">{{activity.p_fullname}}</h6>
-                                <span class="badge bg-success">Correct:</span> &nbsp;
-                                <span class="badge bg-success">{{activity.p_correct}}</span>
-                                <br>
-                                <span class="badge bg-danger">Wrong:&nbsp;</span> &nbsp;
-                                <span class="badge bg-danger">{{activity.p_wrong}}</span>
+                                <h6 class="text-white"><?php echo $p_name; ?></h6>
+                                <span class=" badge bg-success">Correct: 
+                                    <span class="p1_correct"></span>
+                                </span> &nbsp;
+                                <span class="badge bg-success"></span>
+                                <span class="badge bg-danger">Wrong:&nbsp;
+                                    <span class="p1_wrong"></span>    
+                                </span> &nbsp;
+                                <span class="badge bg-danger"></span>
                             </div>
                             <div class="col-4 time text-center p-0">
                                 <h6 class="viewer text-white">Viewers</h6>
-                                <span class="badge bg-success">{{activity.viewers}}</span> &nbsp;
+                                <span class="badge bg-success"></span> &nbsp;
                             </div>
 
                             <!-- <div class="col-3 time text-right p-0">
@@ -212,7 +205,7 @@
                                 <h6 class="text-white text-right">
                                     Time left:
                                 </h6>
-                                <span class="badge">{{time}} secs</span>
+                                <span class="badge"> secs</span>
 
                             </div>
                         </div>
@@ -223,15 +216,29 @@
                                 <!-- {{ answerForm.value | json }} -->
                                 <!-- Question board header -->
                                 <div class="q-board-header">
-                                    <h5>{{ Ques.question }}</h5>
+                                    <h5 class="question"></h5>
                                 </div>
                                 <!-- Question board content -->
                                 <div #qBoard class="q-board-content">
-                                    <div class="row">
+                                    <div class="row append">
+                                        <div class="col-12 col-md-6 p-0">
+                                            <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
+                                                    <span class="ans option1"></span>
+                                                </label>
+                                        </div>
                                         <div class="col-12 col-md-6 p-0" *ngFor="let option of choices; let i = index">
                                             <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
-                                                    <span class="badge "> </span>
-                                                    <span class="ans">{{option.answer}}</span>
+                                                    <span class="ans option2"></span>
+                                                </label>
+                                        </div>
+                                        <div class="col-12 col-md-6 p-0" *ngFor="let option of choices; let i = index">
+                                            <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
+                                                    <span class="ans option3"></span>
+                                                </label>
+                                        </div>
+                                        <div class="col-12 col-md-6 p-0" *ngFor="let option of choices; let i = index">
+                                            <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
+                                                    <span class="ans option4"></span>
                                                 </label>
                                         </div>
                                     </div>
@@ -242,7 +249,7 @@
 
                                 <!-- This will be displayed if the user has not been merged -->
                                 <ng-template #showDiv>
-                                    <h6 class="text-white text-center">{{ msg }}</h6>
+                                    <!-- <h6 class="text-white text-center">{{ msg }}</h6> -->
                                 </ng-template>
                             </div>
                             <!-- ./ Panel body -->
@@ -250,9 +257,11 @@
                         <!-- Course -->
                         <div class="">
                             <div class="col-12 col-md-11 offset-md-1 text-white">
-                                <span class="badge red">Subject:</span> {{ activity.subject }} &nbsp;
-                                <span class="badge red">Questions:</span> {{activity.p_count}} &nbsp;
-                                <span class="badge red">Score:</span> {{ activity.p_scores }}
+                                <span class="badge red p-1"><b>Subject:</b></span> <?php echo $subject;?>
+                                <span class="red badge p-1"><b>Questions:</b> &nbsp;  <span class="p1_questions"></span></span>
+                                <span class="red badge p-1"><b>Score:</b> &nbsp;
+                                <span class="p1_score"></span>
+                            </span>
                             </div>
                         </div>
 
@@ -275,7 +284,7 @@
                         <span *ngIf="activity.o_turn == 1; else waitin"></span>
 
                         <!-- Waing preloader -->
-                        <ng-template #waitin>
+                        <!-- <ng-template #waitin>
                             <div class="col-12 waiting animated fadeIn">
                                 <div class="preloader-wrapper big active">
                                     <div class="spinner-layer spinner-blue">
@@ -314,7 +323,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="spinner-layer spinner-green">
+                                    <div class="spinner-layer spinner-red">
                                         <div class="circle-clipper left">
                                             <div class="circle"></div>
                                         </div>
@@ -328,29 +337,32 @@
                                 </div>
                                 <h6>Waiting</h6>
                             </div>
-                        </ng-template>
+                        </ng-template> -->
                         <!-- Waing preloader -->
 
                         <!--Panel header -->
                         <div class="q-panel-header col-12">
                             <div class="col-4 score p-0">
-                                <h6 class="text-white">{{activity.o_fullname}}</h6>
-                                <span class="badge bg-success">Correct:</span> &nbsp;
-                                <span class="badge bg-success">{{activity.o_correct}}</span>
-                                <br>
-                                <span class="badge bg-danger">Wrong:&nbsp;</span> &nbsp;
-                                <span class="badge bg-danger">{{activity.o_wrong}}</span>
+                                <h6 class="text-white"><?php echo $p2_name; ?></h6>
+                                <span class=" badge bg-success">Correct:  
+                                    <span class="p2_correct"></span>
+                                </span> &nbsp;
+                                <span class="badge bg-success"></span>
+                                <span class="badge bg-danger">Wrong:&nbsp; 
+                                    <span class="p2_wrong"></span>
+                                </span> &nbsp;
+                                <span class="badge bg-danger"></span>
                             </div>
                             <div class="col-4 time text-center p-0">
                                 <h6 class="viewer text-white">Viewers</h6>
-                                <span class="badge bg-success">{{activity.viewers}}</span> &nbsp;
+                                <span class="badge bg-success"></span> &nbsp;
                             </div>
 
                             <div class="col-4 time text-right p-0">
                                 <h6 class="text-white text-right">
                                     Time left:
                                 </h6>
-                                <span class="badge">{{time}} secs</span>
+                                <span class="badge"> secs</span>
 
                             </div>
                         </div>
@@ -358,16 +370,30 @@
                         <div class="q-panel-body col-12">
                             <div class="q-board">
                                 <div class="q-board-header">
-                                    <h5>{{ Ques.question }}</h5>
+                                    <h5 class="question"></h5>
                                 </div>
                                 <!-- Question board content -->
                                 <div #qBoard class="q-board-content">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6 p-0" *ngFor="let choice of choices; let i = index">
-                                            <label for="_{{i+5}}" class="form-check-label btn btn-white btn-mod">
-                                                <span class="badge "> </span>
-                                                <span class="ans">{{choice.answer}}</span>
-                                            </label>
+                                    <div class="row append">
+                                        <div class="col-12 col-md-6 p-0">
+                                            <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
+                                                    <span class="ans option1"></span>
+                                                </label>
+                                        </div>
+                                        <div class="col-12 col-md-6 p-0" *ngFor="let option of choices; let i = index">
+                                            <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
+                                                    <span class="ans option2"></span>
+                                                </label>
+                                        </div>
+                                        <div class="col-12 col-md-6 p-0" *ngFor="let option of choices; let i = index">
+                                            <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
+                                                    <span class="ans option3"></span>
+                                                </label>
+                                        </div>
+                                        <div class="col-12 col-md-6 p-0" *ngFor="let option of choices; let i = index">
+                                            <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
+                                                    <span class="ans option4"></span>
+                                                </label>
                                         </div>
                                     </div>
                                 </div>
@@ -375,7 +401,7 @@
 
                                 <!-- This will be displayed if the user has not been merged -->
                                 <ng-template #showDiv>
-                                    <h6 class="text-white text-center">{{ msg }}</h6>
+                                    <!-- <h6 class="text-white text-center">{{ msg }}</h6> -->
                                 </ng-template>
                             </div>
                             <!-- ./ Panel body -->
@@ -383,9 +409,11 @@
                         <!-- Course -->
                         <div class="">
                             <div class="col-12 col-md-11 offset-md-1 text-white">
-                                <span class="badge red">Subject:</span> {{ activity.subject }} &nbsp;
-                                <span class="badge red">Questions:</span> {{activity.o_count}} &nbsp;
-                                <span class="badge red">Score:</span> {{ activity.o_scores }}
+                                <span class="badge red p-1"><b>Subject:</b></span> <?php echo $subject;?>
+                                <span class="red badge p-1"><b>Questions:</b> &nbsp; <span class="p2_questions"></span></span>
+                                <span class="red badge p-1"><b>Score:</b> &nbsp;
+                                <span class="p2_score"></span>
+                            </span>
                             </div>
                         </div>
 
@@ -404,12 +432,14 @@
         </div>
     </div>
     <div align="right" class="col-1" style="position: absolute; bottom: 40px; right: 70px; z-index: 30001;">
-        <button (click)="logout()" class="btn btn-danger" style="font-size: 12px;">Logout</button>
+        <button class="btn btn-danger" style="font-size: 12px;">Close</button>
     </div>
 </div>
 
 
-<!-- Footer -->
-<!-- <app-footer></app-footer> -->
+<script>
+
+
+</script>
 </body>
 </html>

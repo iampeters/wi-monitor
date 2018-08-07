@@ -31,14 +31,18 @@ export class QuizComponent implements OnInit {
   wrong = 0;
   right = 0;
 
+  opp = [];
+  p1 = [];
+
   q_count = 10;
   marks = 0;
-  p_time = 15;
-  o_time = 15;
+  p_time = 30;
+  o_time = 30;
   counter = 15;
   expired = 0;
   public chats = [];
   public choices = [];
+  GameOver;
 
   answerModel = new Answer('');
   chatModel = new Chat('', '');
@@ -90,14 +94,7 @@ export class QuizComponent implements OnInit {
         }
 
         // Getting questions from user preferred subject
-        this.choice.getQuestions().subscribe(data1 => {
-          if (data1.success === true) {
-            this.question = data1.question;
-
-          } else {
-            this.error = data1.message;
-          }
-        });
+        this.choice.getQuestions().subscribe();
 
         // getting answers
         this.misc.getAnswers().subscribe( data3 => {
@@ -119,85 +116,131 @@ export class QuizComponent implements OnInit {
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
 
-    const chatArea = document.getElementById('area');
+    // Get questions
+   setInterval(() => {
+     this.misc.getQues().subscribe(data => {
+       this.question = data.question;
+     });
 
-    // Getting the current player
-    const getter = setInterval(() => {
-      this.misc.getter().subscribe(data => {
-        if (data.success === true && data.msg === true) {
-          this.turn = true;
+     // getting answers
+     this.misc.getAnswers().subscribe(data3 => {
+       this.choices = data3;
+     });
+
+    //  Game over
+     if (this.q_count < 1) {
+
+     }
+
+     // Game Over
+     this.misc.gameOver().subscribe(data => {
+       this.GameOver = data;
+     });
+
+   }, 1000);
+
+    // if (this.isMerged === true) {
+      const chatArea = document.getElementById('area');
+
+      // Getting the current player
+      const getter = setInterval(() => {
+        this.misc.getter().subscribe(data => {
+          if (data.success === true && data.msg === true) {
+            this.turn = true;
+
+          } else {
+            this.turn = false;
+
+          }
+        });
+
+        // Get player one scores
+        this.misc.getP1Scores().subscribe( data => {
+          this.p1 = data;
+        });
+
+        // Get player two scores
+        this.misc.getOpp().subscribe(data5 => {
+          this.opp = data5;
+        });
+
+      }, 1000);
+
+      // Getting viewers
+      setInterval(() => {
+        this.misc.getViewers().subscribe(data => {
+          this.viewers = data.message;
+        });
+
+        // Getting the chat
+        this.misc.chatter().subscribe(data => {
+
+          this.chats = data;
+
+        });
+
+      }, 1000);
+
+      // player 1 Timer
+      //  if (this.isMerged === true ) {
+      const p_timer = setInterval(() => {
+        if (this.p_time === 2) {
+
+          // This will switch turns between players
+          // this.misc.setter().subscribe();
+        }
+
+        if (this.p_time === 1) {
+          // Getting new question
+          // this.choice.generator().subscribe(data => {
+          //   if (data.success === true) {
+          //     this.question = data.question;
+
+          //   } else {
+          //     console.log(data.message);
+          //   }
+          // });
+
+
+          // // getting answers
+          // this.misc.getAnswers().subscribe(data3 => {
+          //   this.choices = data3;
+          // });
+        }
+
+        if (this.p_time === 0) {
+          // clearInterval(p_timer);
+
+          // const userChoice = 'slfdosdld;ljlsd';
+          // // Checks for correct answer
+          // this.misc.chkAnswer(userChoice).subscribe(data4 => {
+          //   if (data4.success === true && data4.message === 'Correct') {
+          //     this.right = data4.value;
+          //     this.marks = data4.scores;
+
+          //   } else if (data4.success === true && data4.message === 'Wrong') {
+          //     this.wrong = data4.value;
+
+          //   } else {
+          //     // <3
+          //   }
+
+          // });
+
+          this.o_time = 30;
+          this.p_time = 30;
 
         } else {
-          this.turn = false;
-
+          this.p_time -= 1;
+          this.o_time -= 1;
         }
-      });
+      }, 1000);
+  //  } else {
+  //    this.o_time = 0;
+  //    this.p_time = 0;
+  //  }
 
-      this.misc.getOpp().subscribe( data5 => {
-          this.o_correct = data5.o_correct;
-          this.o_scores = data5.o_scores;
-          this.o_wrong = data5.o_wrong;
-      });
-
-    }, 1000);
-
-    // Getting viewers
-    setInterval(() => {
-      this.misc.getViewers().subscribe(data => {
-        this.viewers = data.message;
-      });
-
-      // Getting the chat
-      this.misc.chatter().subscribe( data => {
-
-        this.chats = data;
-
-      });
-
-    }, 1000);
-
-    // player 1 Timer
-   if (this.isMerged === true ) {
-     const p_timer = setInterval(() => {
-       if (this.p_time === 2) {
-
-         // This will switch turns between players
-         this.misc.setter().subscribe();
-       }
-
-       if (this.p_time === 1) {
-         // Getting new question
-         this.choice.generator().subscribe(data => {
-           if (data.success === true) {
-             this.question = data.question;
-
-           } else {
-             console.log(data.message);
-           }
-         });
-
-
-         // getting answers
-         this.misc.getAnswers().subscribe(data3 => {
-           this.choices = data3;
-         });
-       }
-
-       if (this.p_time === 0) {
-         // clearInterval(p_timer);
-
-         this.o_time = 15;
-         this.p_time = 15;
-
-       } else {
-         this.p_time -= 1;
-         this.o_time -= 1;
-       }
-     }, 1000);
-   } else {
-     this.o_time = 0;
-     this.p_time = 0;
-   }
+    // }
 
   }
 
@@ -208,7 +251,12 @@ export class QuizComponent implements OnInit {
 
    if (this.q_count < 1 ) {
       // Game over
-      alert ('Game Over' + ' ' + 'Score: ' + this.marks);
+      const gameOver = document.getElementById('game-over');
+      const quizWrapper = document.getElementById('quiz-wrapper');
+
+      gameOver.style.display = 'block';
+      quizWrapper.style.display = 'none';
+
    } else {
 
      // Set player 2 time
@@ -217,9 +265,11 @@ export class QuizComponent implements OnInit {
 
      // Decrement question count
      this.q_count = this.q_count - 1;
+     this.misc.quesDec().subscribe();
 
      // Checks for correct answer
      this.misc.chkAnswer(userChoice).subscribe(data4 => {
+
        if (data4.success === true && data4.message === 'Correct') {
           this.right = data4.value;
           this.marks = data4.scores;
@@ -234,14 +284,7 @@ export class QuizComponent implements OnInit {
      });
 
      // Getting new question
-     this.choice.generator().subscribe(data => {
-       if (data.success === true) {
-         this.question = data.question;
-
-       } else {
-         console.log(data.message);
-       }
-     });
+     this.choice.generator().subscribe();
 
      // This will switch turns between players
     this.misc.setter().subscribe();
@@ -271,14 +314,7 @@ export class QuizComponent implements OnInit {
   // Skip
   skip() {
     // This will generate a new question for the user
-    this.choice.generator().subscribe(data => {
-      if (data.success === true) {
-        this.question = data.question;
-      } else {
-        // If there are errors
-        this.error = data.message;
-      }
-    });
+    this.choice.generator().subscribe();
 
     // getting answers
     this.misc.getAnswers().subscribe(data3 => {
