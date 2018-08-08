@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class QuestionsService {
 
-  url = 'wi-monitor/src/app/api/questions.php';
+  url = '/wi-monitor/src/app/api/questions.php';
 
   constructor( private http: HttpClient ) { }
 

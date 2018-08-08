@@ -1,29 +1,12 @@
 <!-- Game over section -->
-<div id="game-over" *ngIf='activity.o_count == 0; else  showQuiz' class="animated fadeIn">
+<div id="game-over" *ngIf='activity.o_question == 0; else  showQuiz' class="animated fadeIn">
     <div class="container game-over bg-white" style="max-width: 1000px">
         <div align="center" class="row">
             <div class="col-12 col-md-5 animated pulse">
-                <h3 class="p-3 text-center">{{activity.p_fullname}}</h3>
-                <h6 class="badge red d-inline-block p-3">Wrong Choices: &nbsp;{{activity.p_wrong}}</h6>&nbsp;&nbsp;
-                <h6 class="badge green d-inline-block p-3">Right Choices: &nbsp;{{activity.p_correct}}</h6>&nbsp;&nbsp;
-                <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{activity.p_scores}}</h6>
-                <br>
-                <br>
-                <h5 *ngIf="gameOver.opponent == 'Win'; " class="p-3 text-center text-success animated fadeIn">
-                    <i class="fas fa-trophy fa-5x mb-3"></i>
-                    <br>Won</h5>
-                <h5 *ngIf="gameOver.opponent == 'Lost'; " class="p-3 text-center text-danger animated fadeIn">
-                    <i class="fas fa-frown fa-5x mb-3"></i>
-                    <br>Lost</h5>
-                <h5 *ngIf="gameOver.opponent == 'Draw'; " class="p-3 text-center text-warning animated fadeIn">
-                    <i class="fas fa-handshake fa-5x mb-3"></i>
-                    <br>Draw</h5>
-            </div>
-            <div class="col-12 col-md-5 offset-md-2 animated pulse">
-                <h3 class="p-3 text-center">{{activity.o_fullname}}</h3>
-                <h6 class="badge red d-inline-block p-3">Wrong Choices: &nbsp;{{activity.o_wrong}}</h6>&nbsp;&nbsp;
-                <h6 class="badge green d-inline-block p-3">Right Choices: &nbsp;{{activity.o_correct}}</h6>&nbsp;&nbsp;
-                <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{activity.o_scores}}</h6>
+                <h3 class="p-3 text-center">{{activity.p_name}}</h3>
+                <h6 class="badge red d-inline-block p-3">Wrong Choices: &nbsp;{{activity.wrong}}</h6>&nbsp;&nbsp;
+                <h6 class="badge green d-inline-block p-3">Right Choices: &nbsp;{{activity.correct}}</h6>&nbsp;&nbsp;
+                <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{activity.scores}}</h6>
                 <br>
                 <br>
                 <h5 *ngIf="gameOver.player == 'Win'; " class="p-3 text-center text-success animated fadeIn">
@@ -34,6 +17,23 @@
                     <br>Lost</h5>
                 <h5 *ngIf="gameOver.player == 'Draw'; " class="p-3 text-center text-warning animated fadeIn">
                     <i class="fas fa-handshake fa-5x mb-3"></i>
+                    <br>Draw</h5>
+            </div>
+            <div class="col-12 col-md-5 offset-md-2 animated pulse">
+                <h3 class="p-3 text-center">{{activity.p2_name}}</h3>
+                <h6 class="badge red d-inline-block p-3">Wrong Choices: &nbsp;{{activity.o_wrong}}</h6>&nbsp;&nbsp;
+                <h6 class="badge green d-inline-block p-3">Right Choices: &nbsp;{{activity.o_correct}}</h6>&nbsp;&nbsp;
+                <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{activity.o_scores}}</h6>
+                <br>
+                <br>
+                <h5 *ngIf="gameOver.opponent == 'Win'; " class="p-3 text-center text-success animated fadeIn">
+                    <i class="fas fa-trophy fa-5x mb-3"></i>
+                    <br>Won</h5>
+                <h5 *ngIf="gameOver.opponent == 'Lost'; " class="p-3 text-center text-danger animated fadeIn">
+                    <i class="fas fa-frown fa-5x mb-3"></i>
+                    <br>Lost</h5>
+                <h5 *ngIf="gameOver.opponent == 'Draw'; " class="p-3 text-center text-warning animated fadeIn">
+                    <i class="fas fa-handshake fa-5x mb-3"></i>
                     <br> Draw</h5>
                 <!-- <h5 class="p-3 text-center text-success"> <i class="fas fa-user-lock fa-5x mb-3"></i></h5> -->
 
@@ -42,45 +42,6 @@
     </div>
 </div>
 <!-- Game over section -->
-
-<!-- chat -->
-<div class="container-fluid" id="chat">
-    <div class="row">
-        <div class="c-overlay"></div>
-        <div class="col-4 offset-4 card p-0">
-            <form #chatForm="ngForm" (ngSubmit)="chat(chatForm.value); chatForm.reset()">
-                <div class="card-header"> Lifeline panel - Kindly be of assistance
-                    <span (click)="close()" class="close" id="close">
-                        <i class="fa fa-close"></i>
-                    </span>
-                </div>
-
-                <div class="card-body">
-                    <div class="area p-2" id="area">
-                        <input type="hidden" name="hidden" #hidden="ngModel" [(ngModel)]="chatModel.chats" />
-
-                        <div *ngFor="let chat of chats">
-                            <div>
-                                <span class="c-right bg-info mb-2">
-                                    <span style="font-size: 10px" class="mb-2 text-white">{{ chat.sender}}</span>
-                                <br>
-                                <span>{{ chat.message }}</span>
-                                </span>
-                            </div>
-
-                        </div>
-                    </div>
-                    <textarea name="txt" #txt='ngModel' [(ngModel)]=chatModel.message id="txt"></textarea>
-                </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Send</button> &nbsp; <small class="text-danger text-center">{{empty}}</small>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- chat -->
 
 <!-- Main wrapper -->
 <ng-template #showQuiz>
@@ -95,16 +56,16 @@
 
                         <div class="col-12 q-panel p-0">
 
-                            <div *ngIf="activity.p_turn == 1; else waiting" class="animated fadeIn">
+                            <div *ngIf="activity.p1_turn == 1; else waiting" class="animated fadeIn">
                                 <!--Panel header -->
                                 <div class="q-panel-header col-12">
                                     <div class="col-4 score p-0">
-                                        <h6 class="text-white">{{activity.p_fullname}}</h6>
+                                        <h6 class="text-white">{{activity.p_name}}</h6>
                                         <span class="badge bg-success">Correct:</span> &nbsp;
-                                        <span class="badge bg-success">{{activity.p_correct}}</span>
+                                        <span class="badge bg-success">{{activity.correct}}</span>
                                         <br>
                                         <span class="badge bg-danger">Wrong:&nbsp;</span> &nbsp;
-                                        <span class="badge bg-danger">{{activity.p_wrong}}</span>
+                                        <span class="badge bg-danger">{{activity.wrong}}</span>
                                     </div>
                                     <div class="col-4 time text-center p-0">
                                         <h6 class="viewer text-white">Viewers</h6>
@@ -132,16 +93,34 @@
                                         <!-- {{ answerForm.value | json }} -->
                                         <!-- Question board header -->
                                         <div class="q-board-header">
-                                            <h5>{{ Ques.question }}</h5>
+                                            <h5>{{ activity.question }}</h5>
                                         </div>
                                         <!-- Question board content -->
                                         <div #qBoard class="q-board-content">
                                             <div class="row">
-                                                <div class="col-12 col-md-6 p-0" *ngFor="let option of choices; let i = index">
-                                                    <label for="_{{i+1}}" class="form-check-label btn btn-white btn-mod">
+                                                <div class="col-12 col-md-6 p-0">
+                                                    <label for="A" class="form-check-label btn btn-white btn-mod">
                                                         <span class="badge "> </span>
-                                                        <span class="ans">{{option.answer}}</span>
-                                                    </label>
+                                                        <span class="ans">{{choices.option1}}</span>
+                                                      </label>
+                                                </div>
+                                                <div class="col-12 col-md-6 p-0">
+                                                    <label for="B" class="form-check-label btn btn-white btn-mod">
+                                                        <span class="badge "> </span>
+                                                        <span class="ans">{{choices.option2}}</span>
+                                                      </label>
+                                                </div>
+                                                <div class="col-12 col-md-6 p-0">
+                                                    <label for="C" class="form-check-label btn btn-white btn-mod">
+                                                        <span class="badge "> </span>
+                                                        <span class="ans">{{choices.option3}}</span>
+                                                      </label>
+                                                </div>
+                                                <div class="col-12 col-md-6 p-0">
+                                                    <label for="D" class="form-check-label btn btn-white btn-mod">
+                                                        <span class="badge "> </span>
+                                                        <span class="ans">{{choices.option4}}</span>
+                                                      </label>
                                                 </div>
                                             </div>
 
@@ -160,8 +139,8 @@
                                 <div class="">
                                     <div class="col-12 col-md-11 offset-md-1 text-white">
                                         <span class="badge red">Subject:</span> {{ activity.subject }} &nbsp;
-                                        <span class="badge red">Questions:</span> {{activity.p_count}} &nbsp;
-                                        <span class="badge red">Score:</span> {{ activity.p_scores }}
+                                        <span class="badge red">Questions:</span> {{activity.p_question}} &nbsp;
+                                        <span class="badge red">Score:</span> {{ activity.scores }}
                                     </div>
                                 </div>
 
@@ -241,11 +220,11 @@
 
                         <div class="col-12 q-panel p-0">
 
-                            <div *ngIf="activity.o_turn == 1; else waitin" class="animated fadeIn">
+                            <div *ngIf="activity.p2_turn == 1; else waitin" class="animated fadeIn">
                                 <!--Panel header -->
                                 <div class="q-panel-header col-12">
                                     <div class="col-4 score p-0">
-                                        <h6 class="text-white">{{activity.o_fullname}}</h6>
+                                        <h6 class="text-white">{{activity.p2_name}}</h6>
                                         <span class="badge bg-success">Correct:</span> &nbsp;
                                         <span class="badge bg-success">{{activity.o_correct}}</span>
                                         <br>
@@ -269,16 +248,34 @@
                                 <div class="q-panel-body col-12">
                                     <div class="q-board">
                                         <div class="q-board-header">
-                                            <h5>{{ Ques.question }}</h5>
+                                            <h5>{{ activity.question }}</h5>
                                         </div>
                                         <!-- Question board content -->
                                         <div #qBoard class="q-board-content">
                                             <div class="row">
-                                                <div class="col-12 col-md-6 p-0" *ngFor="let choice of choices; let i = index">
-                                                    <label for="_{{i+5}}" class="form-check-label btn btn-white btn-mod">
-                                                        <span class="badge "> </span>
-                                                        <span class="ans">{{choice.answer}}</span>
-                                                    </label>
+                                                <div class="col-12 col-md-6 p-0">
+                                                    <label for="A" class="form-check-label btn btn-white btn-mod">
+                              <span class="badge "> </span>
+                              <span class="ans">{{choices.option1}}</span>
+                            </label>
+                                                </div>
+                                                <div class="col-12 col-md-6 p-0">
+                                                    <label for="B" class="form-check-label btn btn-white btn-mod">
+                              <span class="badge "> </span>
+                              <span class="ans">{{choices.option2}}</span>
+                            </label>
+                                                </div>
+                                                <div class="col-12 col-md-6 p-0">
+                                                    <label for="C" class="form-check-label btn btn-white btn-mod">
+                              <span class="badge "> </span>
+                              <span class="ans">{{choices.option3}}</span>
+                            </label>
+                                                </div>
+                                                <div class="col-12 col-md-6 p-0">
+                                                    <label for="D" class="form-check-label btn btn-white btn-mod">
+                              <span class="badge "> </span>
+                              <span class="ans">{{choices.option4}}</span>
+                            </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -295,7 +292,7 @@
                                 <div class="">
                                     <div class="col-12 col-md-11 offset-md-1 text-white">
                                         <span class="badge red">Subject:</span> {{ activity.subject }} &nbsp;
-                                        <span class="badge red">Questions:</span> {{activity.o_count}} &nbsp;
+                                        <span class="badge red">Questions:</span> {{activity.o_question}} &nbsp;
                                         <span class="badge red">Score:</span> {{ activity.o_scores }}
                                     </div>
                                 </div>

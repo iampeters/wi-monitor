@@ -1,0 +1,46 @@
+header {
+    // padding-left: 240px !important;
+    z-index: 996;
+}
+
+.light-blue-skin .side-nav {
+    background-color: #6a9ed3;
+}
+
+#sidenav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120vh;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 1031;
+    will-change: opacity;
+    display: none;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.collapsible-header {}
+
+.collapsible-body {}
+
+main {
+    margin-top: 100px;
+}
+
+select {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+    option {
+        color: #757575 !important;
+        padding: 10px 0;
+    }
+}
+
+.form-control {
+    color: #757575 !important;
+    option {
+        color: #757575 !important;
+        padding: 10px 0;
+    }
+}

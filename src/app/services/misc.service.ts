@@ -42,6 +42,8 @@ export class MiscService {
   gameOverUrl = '/wi-monitor/src/app/api/get/gameOver.php';
   vGameOverUrl = '/wi-monitor/src/app/api/post/vGameOver.php';
   quesDecUrl = '/wi-monitor/src/app/api/post/quesDec.php';
+  liveUrl = 'wi-monitor/src/app/api/sample.php';
+  liveAnswerUrl = 'wi-monitor/src/app/api/getAnswers.php';
 
   private loggedInStatus = false;
 
@@ -297,6 +299,17 @@ export class MiscService {
     return this.http.get(this.quesDecUrl);
   }
 
+  // Live viewers links
+  getLiveData(id) {
+    return this.http.post<Data[]>(this.liveUrl, {
+      id
+    });
+  }
+
+  getLiveAns() {
+    return this.http.get<Data[]>(this.liveAnswerUrl);
+  }
+
 }
 export interface Myface {
   success: boolean;
@@ -380,4 +393,28 @@ export interface Activity {
 export interface GameOver {
   player: string;
   opponent: string;
+}
+
+export interface Data {
+  o_scores: number;
+  scores: number;
+  o_wrong: number;
+  wrong: number;
+  correct: number;
+  o_correct: number;
+  subject: string;
+  p2_name: string;
+  p_name: string;
+  p_question: string;
+  o_question: string;
+  question: string;
+  p1_turn: number;
+  p2_turn: number;
+  viewers: number;
+
+  // Options from the set question
+  option1: string;
+  option2: string;
+  option3: string;
+  option4: string;
 }

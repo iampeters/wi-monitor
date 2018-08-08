@@ -2,7 +2,7 @@
     session_start();
 
     header('Access-Control-Allow-Origin: *');
-
+    header("Content-Type: application/json; charset=UTF-8");
     
     if(isset($_SESSION['QID'])) {
         
@@ -29,4 +29,5 @@
 
     } else {
         echo 'Question id is not set';
+        exit();
     }

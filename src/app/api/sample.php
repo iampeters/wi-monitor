@@ -1,11 +1,13 @@
 <?php
     session_start();
 
-    header('Access-Control-Allow-Origin: *');
+    // header('Access-Control-Allow-Origin: *');
+    // header("Content-Type: application/json; charset=UTF-8");
+    $_POST = json_decode(file_get_contents('php://input'), true);
 
     
-    if(isset($_POST['key'])) {
-        $key = $_POST['key'];
+    if(isset($_POST['id'])) {
+        $key = $_POST['id'];
 
         # Dependency
         require 'db.php';
@@ -19,11 +21,11 @@
             $player_id = $rows['player_id'];
             $opponent_id = $rows['opponent_id'];
             $subject_id = $rows['subject_id'];
+            $tag_id = $rows['tag_id'];
 
-
-            
         } else {
             echo $message = 'Sorry! There are no games with that key';
+            exit();
         }
 
         # Get question id
@@ -37,15 +39,15 @@
         $answer = $ques_rows['answer'];
         $question = $ques_rows['question'];
 
-        # Get player 1 users
-        $getPlayer1 = mysqli_query($conn, "select username from users where user_id = '$player_id' ");
+        # Get player 1 fullname
+        $getPlayer1 = mysqli_query($conn, "select fullname from users where user_id = '$player_id' ");
         $player_row = mysqli_fetch_assoc($getPlayer1);
-        $p_name = $player_row['username'];
+        $p_name = $player_row['fullname'];
 
-        # Get player 2 users
-        $getPlayer2 = mysqli_query($conn, "select username from users where user_id = '$opponent_id' ");
+        # Get player 2 fullname
+        $getPlayer2 = mysqli_query($conn, "select fullname from users where user_id = '$opponent_id' ");
         $player2_row = mysqli_fetch_assoc($getPlayer2);
-        $p2_name = $player2_row['username'];
+        $p2_name = $player2_row['fullname'];
 
         # Get answers
         $ans = mysqli_query($conn, "select * from answers where question_id = '$question_id' ");
@@ -74,6 +76,21 @@
         $o_scores = $o_score_row['scores'];
         $o_questions = $o_score_row['questions'];
 
+        # Get player 1 turn from turns tbl
+        $p1 = mysqli_query($conn, "SELECT is_player from turns where tag_id = '$tag_id' and player_id = '$player_id' ");
+        $p1_row = mysqli_fetch_assoc($p1);
+        $p1turn = $p1_row['is_player'];
+
+        # Get player 2 turn from turns tbl
+        $p2 = mysqli_query($conn, "SELECT is_player from turns where tag_id = '$tag_id' and player_id = '$opponent_id' ");
+        $p2_row = mysqli_fetch_assoc($p2);
+        $p2turn = $p2_row['is_player'];
+        
+        # Get viewers from game tbl
+        $viewers = mysqli_query($conn, "SELECT viewers from game where session_key = '$key' ");
+        $v_row = mysqli_fetch_assoc($viewers);
+        $v_count = $v_row['viewers'];
+
         $std = new stdClass();
         $std->o_scores = $o_score_row['scores'];
         $std->o_wrong = $o_score_row['wrong'];
@@ -82,14 +99,19 @@
         $std->wrong = $score_row['wrong'];
         $std->correct = $score_row['correct'];
         $std->subject = $sub_row['subject'];
-        $std->p2_name = $player2_row['username'];
-        $std->p_name = $player_row['username'];
+        $std->p2_name = $player2_row['fullname'];
+        $std->p_name = $player_row['fullname'];
         $std->question = $ques_rows['question'];
         $std->p_question = $questions;
         $std->o_question = $o_questions;
+        $std->p1_turn = $p1turn;
+        $std->p2_turn = $p2turn;
+        $std->viewers = $v_count;
 
         # session variable
         $_SESSION['QID'] = $question_id;
+        $_SESSION['wid'] = $player_id;
+        $_SESSION['game'] = $key;
         
         # Return class as json
         echo json_encode($std);

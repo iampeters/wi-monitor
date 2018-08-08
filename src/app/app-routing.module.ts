@@ -13,6 +13,8 @@ import { AuthGuard } from './auth.guard';
 import { ViewersComponent } from './components/viewers/viewers.component';
 import { ViewerloginComponent } from './components/viewerlogin/viewerlogin.component';
 import { GidComponent } from './components/gid/gid.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { LiveComponent } from './live/live.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -27,6 +29,8 @@ const routes: Routes = [
   { path: 'viewers', component: ViewersComponent },
   { path: 'viewerlogin', component: ViewerloginComponent },
   { path: 'gid', component: GidComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'live/:id', component: LiveComponent },
   { path: '**', component: ErrorPageComponent }
 
 ];
@@ -48,5 +52,7 @@ export const routingComponents = [
   AddComponent,
   ViewersComponent,
   ViewerloginComponent,
-  GidComponent
+  GidComponent,
+  ProfileComponent,
+  LiveComponent
 ];
