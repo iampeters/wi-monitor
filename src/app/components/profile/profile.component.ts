@@ -12,4 +12,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   }
 
+  logout() {
+    window.close();
+  }
+
 }

@@ -382,12 +382,12 @@ export interface Activity {
   o_fullname: string;
   p_fullname: string;
   viewers: number;
-  o_count: number;
+  o_count: any;
   p_count: number;
   p_turn: number;
   o_turn: number;
   p_questions: number;
-  o_questions: number;
+  o_questions: any;
 }
 
 export interface GameOver {
@@ -406,7 +406,7 @@ export interface Data {
   p2_name: string;
   p_name: string;
   p_question: string;
-  o_question: string;
+  o_question: any;
   question: string;
   p1_turn: number;
   p2_turn: number;
