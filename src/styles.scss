@@ -13,7 +13,7 @@ html {
 .btn {
     padding: $btn-padding-reset;
     border-radius: $btn-radius;
-    font-size: $btn-font-size;
+    // font-size: $btn-font-size;
     height: 35px;
     width: 150px;
     font-weight: 600;
@@ -21,6 +21,17 @@ html {
     .badge {
         line-height: 23px !important;
     }
+}
+
+.card {
+    overflow: hidden;
+    min-height: 200px;
+    height: auto;
+    border: none !important;
+}
+
+.card-header {
+    border: none !important;
 }
 
 a.btn {
@@ -81,7 +92,7 @@ a.navbar-brand {
 }
 
 .mt-10 {
-    margin-top: 10px;
+    margin-top: 6rem !important;
 }
 
 .mt-15 {
@@ -164,4 +175,8 @@ p-0 {
 
 p {
     font-size: 14px;
+}
+
+.text-gray {
+    color: #d0d0d0 !important;
 }

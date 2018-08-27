@@ -1,0 +1,162 @@
+<div class="white-skin">
+    <!--Double navigation-->
+    <header>
+        <!-- Sidebar navigation -->
+        <div id="side_nav" class="side_nav text-white">
+            <div class="col-12 text-white text-center">
+                <i class="fa fa-user-circle fa-5x"></i><br>
+                <p class="tag mt-2 text-bold">John Doe</p>
+            </div>
+            <div class="mt-5">
+                <div class="col-12">
+                    <span class="">Level 2</span>
+                    <span class="pull-right">Level 3</span>
+                    <!-- Progress bar -->
+                    <!-- Blue -->
+                    <div class="progress mb-1" style="height: 10px">
+                        <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" style="width:30%; height: 10px"></div>
+                    </div>
+                    <span class="">230XP</span>
+                    <span class="pull-right">300XP</span>
+                </div>
+            </div>
+            <div class="mt-10">
+                <!-- <h5 class="col-12 text-center mb-2 text-bold text-upper">Menu</h5> -->
+                <ul class="menu-ul">
+                    <li class="nav-link text-bold mb-2" routerLink="/profile">
+                        <a routerLink="/profile"> &nbsp;<i class="fa fa-bolt mr-3 fa-fw"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-link text-bold its-active mb-2">
+                        <i class="fa fa-star mr-3 fa-fw"></i>Leaderboard
+                    </li>
+                    <li class="nav-link text-bold mb-2" routerLink="/history">
+                        <a routerLink="/history">
+                            <i class="fa fa-history mr-3 fa-fw"></i>History</a>
+                    </li>
+                    <li class="nav-link text-bold mb-2" routerLink="/instructions">
+                        <a routerLink="/instructions">
+                            <i class="fa fa-gamepad mr-3 fa-fw"></i>Enter Challenge</a>
+                    </li>
+                    <!-- <li class="nav-link text-bold">
+                        <i class="fa fa-users mr-3"></i> Friends
+                    </li> -->
+                </ul>
+            </div>
+            <!-- FOOTER -->
+            <div class="footer text-center">
+                <p>&copy;2018 | www.justwebtech.com</p>
+            </div>
+        </div>
+        <!--/. Sidebar navigation -->
+        <!-- Navbar -->
+        <nav class="navbar fixed-top navbar-toggleable-md navbar-expand-lg scrolling-navbar double-nav">
+            <!-- SideNav slide-out button -->
+            <div class="float-left d-lg-none">
+                <a (click)="breadcomb()" data-activates="slide-out" class="button-collapse" id="breadcumb">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-dn mr-auto">
+                <p>WI-MONITO</p>
+            </div>
+            <ul class="nav navbar-nav nav-flex-icons ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fa fa-bell"></i>
+                        <!-- <span class="badge red">2</span> -->
+                        <span class="clearfix d-none d-sm-inline-block">Notification</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="fa fa-user"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Account</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Profile
+          </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a (click)='logout()' class="dropdown-item">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.Navbar -->
+    </header>
+    <!--/.Double navigation-->
+
+    <!--Main Layout-->
+    <main>
+        <div class="container">
+            <!-- History and Leaderboard-->
+            <div class="row">
+                <div class="col-12 col-md-8 offset-md-2">
+                    <div class="card">
+                        <h6 class="card-header">Leaderboard</h6>
+                        <div class="card-body">
+                            <!-- leader div -->
+                            <div class="row m-0 leader-bar p-2 mb-2">
+                                <div class="col-1 text-center">
+                                    <i class="fa fa-user fa-2x"></i>
+                                </div>
+                                <div class="col-5 l-h-1">
+                                    <span class=" text-primary">Username <br style="line-height:0"></span>
+                                    <span style="font-size: 12px">Level 20</span>
+                                </div>
+                                <div class="col-4 text-right p-0">
+                                    <span style="line-height:2" class="text-bold text-success">4075XP</span>
+                                </div>
+                                <div class="col-2 text-right">
+                                    <span style="line-height:2" class="">1</span>
+                                </div>
+                            </div>
+                            <!-- leader div -->
+                            <div class="row m-0 leader-bar p-2 mb-2">
+                                <div class="col-1 text-center">
+                                    <i class="fa fa-user fa-2x"></i>
+                                </div>
+                                <div class="col-5 l-h-1">
+                                    <span class=" text-primary">Username <br style="line-height:0"></span>
+                                    <span style="font-size: 12px">Level 20</span>
+                                </div>
+                                <div class="col-4 text-right p-0">
+                                    <span style="line-height:2" class="text-bold text-success">4075XP</span>
+                                </div>
+                                <div class="col-2 text-right">
+                                    <span style="line-height:2" class="">1</span>
+                                </div>
+                            </div>
+                            <!-- leader div -->
+                            <div class="row m-0 leader-bar p-2 mb-2">
+                                <div class="col-1 text-center">
+                                    <i class="fa fa-user fa-2x"></i>
+                                </div>
+                                <div class="col-5 l-h-1">
+                                    <span class=" text-primary">Username <br style="line-height:0"></span>
+                                    <span style="font-size: 12px">Level 20</span>
+                                </div>
+                                <div class="col-4 text-right p-0">
+                                    <span style="line-height:2" class="text-bold text-success">4075XP</span>
+                                </div>
+                                <div class="col-2 text-right">
+                                    <span style="line-height:2" class="">1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-12">
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <!--Main Layout-->
+    <div (click)="close()" id="mask" class="animated fadeIn"></div>
+</div>

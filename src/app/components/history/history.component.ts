@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  selector: 'app-history',
+  templateUrl: './history.component.html',
+  styleUrls: ['./history.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class HistoryComponent implements OnInit {
 
   constructor() { }
 
   ngOnInit() {
-
   }
 
   logout() {
@@ -49,4 +48,5 @@ export class ProfileComponent implements OnInit {
     sideNav.style.transform = 'translateX(-250px)';
     bars.style.opacity = '1';
   }
+
 }

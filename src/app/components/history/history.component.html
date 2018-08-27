@@ -23,15 +23,14 @@
             <div class="mt-10">
                 <!-- <h5 class="col-12 text-center mb-2 text-bold text-upper">Menu</h5> -->
                 <ul class="menu-ul">
-                    <li class="nav-link text-bold its-active mb-2">
-                        <i class="fa fa-bolt mr-3 fa-fw"></i>Dashboard
+                    <li class="nav-link text-bold mb-2" routerLink="/profile">
+                        <a routerLink="/profile"><i class="fa fa-bolt mr-3 fa-fw"></i>Dashboard</a>
                     </li>
                     <li class="nav-link text-bold mb-2" routerLink="/leaderboard">
                         <a routerLink="/leaderboard"><i class="fa fa-star mr-3 fa-fw"></i>Leaderboard</a>
                     </li>
-                    <li class="nav-link text-bold mb-2" routerLink="/history">
-                        <a routerLink="/history">
-                            <i class="fa fa-history mr-3 fa-fw"></i>History</a>
+                    <li class="nav-link text-bold mb-2 its-active">
+                        <i class="fa fa-history mr-3 fa-fw"></i>History
                     </li>
                     <li class="nav-link text-bold mb-2" routerLink="/instructions">
                         <a routerLink="/instructions">
@@ -95,97 +94,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12  col-lg-6">
-                    <div class="card">
-                        <h6 class="card-header">Rating</h6>
-                        <div class="card-body part">
-                            <div class="row p-0 m-0">
-                                <div class="col-2 col-md-2 l-h-9 level">Level 6</div>
-                                <div class="progress col-8 col-md-8 p-0" style="height:10px">
-                                    <span class="progress-bar" style="width:60%;height:10px; background: #8E24AA;"></span>
-                                </div>
-                                <span class="col-2 col-md-2 l-h-9 xp">600XP</span>
-                            </div>
-                            <div class="row p-0 m-0">
-                                <div class="col-md-2 l-h-9 col-2 level">Level 5</div>
-                                <div class="progress col-md-8 col-8 p-0" style="height:10px">
-                                    <span class="progress-bar" style="width:50%;height:10px; background: #9C27B0;"></span>
-                                </div>
-                                <span class="col-md-2 l-h-9 col-2 xp">500XP</span>
-                            </div>
-                            <div class="row p-0 m-0">
-                                <div class="col-md-2 l-h-9 col-2 level">Level 4</div>
-                                <div class="progress col-md-8 col-8 p-0" style="height:10px">
-                                    <span class="progress-bar" style="width:40%;height:10px; background: #AB47BC;"></span>
-                                </div>
-                                <span class="col-md-2 l-h-9 col-2 xp">400XP</span>
-                            </div>
-                            <div class="row p-0 m-0">
-                                <div class="col-md-2 l-h-9 col-2 level">Level 3</div>
-                                <div class="progress col-md-8 col-8 p-0" style="height:10px">
-                                    <span class="progress-bar" style="width:30%;height:10px; background: #BA68C8;"></span>
-                                </div>
-                                <span class="col-md-2 l-h-9 col-2 xp">300XP</span>
-                            </div>
-                            <div class="row p-0 m-0">
-                                <div class="col-md-2 l-h-9 col-2 level">Level 2</div>
-                                <div class="progress col-md-8 col-8 p-0" style="height:10px">
-                                    <span class="progress-bar bg-success" style="width:20%;height:10px"></span>
-                                </div>
-                                <span class="col-md-2 text-success text-bold l-h-9 col-2 xp">200XP</span>
-                            </div>
-                            <div class="row p-0 m-0">
-                                <div class="col-md-2 l-h-9 col-2 level">Level 1</div>
-                                <div class="progress col-md-8 p-0 col-8" style="height:10px">
-                                    <span class="progress-bar" style="width:10%;height:10px; background: #E1BEE7;"></span>
-                                </div>
-                                <span class="col-md-2 l-h-9 col-2 xp">100XP</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-6">
-                    <div class="card">
-                        <h6 class="card-header">Waiting Games</h6>
-                        <div class="card-body part">
-                            <div class="row m-0 bar mb-3">
-                                <!-- <i class="fa fa-user-circle"></i> -->
-                                <div class="col-1">
-                                    <div class="img"></div>
-                                </div>
-                                <div class="d-none d-md-inline col-sm-2 pr-0 col-xl-p">
-                                    <span class="">Jane Doe</span>
-                                    <!-- <span class="text-success">Level 7</span> -->
-                                </div>
-                                <div class="col-6 col-sm-5 col-xl-p text-center">
-                                    <span class="mb-0">Current Affairs</span>
-                                </div>
-                                <div class="col-2 col-xl-p text-success text-center">+25XP</div>
-                                <div class="col-2 col-xl-p text-danger text-center">-15XP</div>
-                            </div>
-                            <div class="row m-0 bar mb-3">
-                                <!-- <i class="fa fa-user-circle"></i> -->
-                                <div class="col-1">
-                                    <div class="img"></div>
-                                </div>
-                                <div class="d-none d-md-inline col-sm-2 pr-0 col-xl-p">
-                                    <span class="">Nikki Ed</span>
-                                    <!-- <span class="text-success">Level 10</span> -->
-                                </div>
-                                <div class="col-6 col-sm-5 col-xl-p text-center">
-                                    <span class="mb-0">Computer Science</span>
-                                </div>
-                                <div class="col-2 col-xl-p text-success text-center">+45XP</div>
-                                <div class="col-2 col-xl-p text-danger text-center">-20XP</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- History and Leaderboard-->
-            <div class="row">
-                <div class="col-lg-5 col-12">
+                    <!-- history -->
                     <div class="card">
                         <h6 class="card-header">History</h6>
                         <div class="card-body">
@@ -212,8 +121,8 @@
                                         <i class="fa fa-user-circle fa-2x"></i>
                                     </div>
                                     <!-- <div class="col-12 p-0">
-                                                    <p class="m-0">Jim_34</p>
-                                                </div> -->
+                                                                        <p class="m-0">Jim_34</p>
+                                                                    </div> -->
                                 </div>
                             </div>
                             <div class="row m-0 history" style="background-color: #4caf504d; border: 1px solid #0080002e">
@@ -239,8 +148,8 @@
                                         <i class="fa fa-user-circle fa-2x"></i>
                                     </div>
                                     <!-- <div class="col-12 p-0">
-                                                                                <p class="m-0">Jim_34</p>
-                                                                            </div> -->
+                                                                                                    <p class="m-0">Jim_34</p>
+                                                                                                </div> -->
                                 </div>
                             </div>
                             <div class="row m-0 history" style="background-color: #f443364d; border: 1px solid #ff00002e">
@@ -266,37 +175,51 @@
                                         <i class="fa fa-user-circle fa-2x"></i>
                                     </div>
                                     <!-- <div class="col-12 p-0">
-                                                    <p class="m-0">Jim_34</p>
-                                                </div> -->
+                                                                        <p class="m-0">Jim_34</p>
+                                                                    </div> -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-7">
+                <div class="col-12 col-lg-6">
                     <div class="card">
-                        <h6 class="card-header">Leaderboard</h6>
-                        <div class="card-body">
-                            <div class="row m-0 leader-bar p-2">
-                                <div class="col-1 text-center">
-                                    <i class="fa fa-user fa-2x"></i>
+                        <h6 class="card-header">Waiting Games</h6>
+                        <div class="card-body part">
+                            <div class="row m-0 bar mb-3">
+                                <!-- <i class="fa fa-user-circle"></i> -->
+                                <div class="col-1">
+                                    <div class="img"></div>
                                 </div>
-                                <div class="col-5 l-h-1">
-                                    <span class=" text-primary">Username <br style="line-height:0"></span>
-                                    <span style="font-size: 12px">Level 20</span>
+                                <div class="d-none d-md-inline col-sm-2 pr-0 col-xl-p">
+                                    <span class="">Jane</span>
+                                    <!-- <span class="text-success">Level 7</span> -->
                                 </div>
-                                <div class="col-4 text-right p-0">
-                                    <span style="line-height:2" class="text-bold text-success">4075XP</span>
+                                <div class="col-6 col-sm-5 col-xl-p text-center">
+                                    <span class="mb-0">Current Affairs</span>
                                 </div>
-                                <div class="col-2 text-right">
-                                    <span style="line-height:2" class="">1</span>
+                                <div class="col-2 col-xl-p text-success text-center">+25XP</div>
+                                <div class="col-2 col-xl-p text-danger text-center">-15XP</div>
+                            </div>
+                            <div class="row m-0 bar mb-3">
+                                <!-- <i class="fa fa-user-circle"></i> -->
+                                <div class="col-1">
+                                    <div class="img"></div>
                                 </div>
+                                <div class="d-none d-md-inline col-sm-2 pr-0 col-xl-p">
+                                    <span class="">Nikki</span>
+                                    <!-- <span class="text-success">Level 10</span> -->
+                                </div>
+                                <div class="col-6 col-sm-5 col-xl-p text-center">
+                                    <span class="mb-0">Computer Science</span>
+                                </div>
+                                <div class="col-2 col-xl-p text-success text-center">+45XP</div>
+                                <div class="col-2 col-xl-p text-danger text-center">-20XP</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Badges and rewards -->
             <div class="row">
                 <div class="col-12 col-lg-6">
@@ -389,26 +312,6 @@
                 </div>
             </div>
 
-            <!-- footer -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">Chart</div>
-                        <div class="card-body">
-                            <div class="row m-0 p-0">
-                                <div class="d-none d-sm-block col-12 col-lg-7 mb-3 p-0">
-                                    <!-- Chart -->
-                                    <canvas id="barChart" width="auto" height="auto"></canvas>
-                                </div>
-                                <div class="col-12 col-lg-5 mb-3 p-0">
-                                    <!-- Pie Chart -->
-                                    <canvas id="pieChart" width="auto" height="auto"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
     <!--Main Layout-->

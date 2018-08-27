@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
       if (data.success === true) {
 
         this.misc.setLoggedin(true);
-        this.router.navigate(['/welcome']);
+        this.router.navigate(['/profile']);
 
       } else {
         this.info = data.message;

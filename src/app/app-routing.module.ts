@@ -15,6 +15,8 @@ import { ViewerloginComponent } from './components/viewerlogin/viewerlogin.compo
 import { GidComponent } from './components/gid/gid.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { LiveComponent } from './live/live.component';
+import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
+import { HistoryComponent } from './components/history/history.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -31,6 +33,8 @@ const routes: Routes = [
   { path: 'gid', component: GidComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'live/:id', component: LiveComponent },
+  { path: 'history', component: HistoryComponent },
+  { path: 'leaderboard', component: LeaderboardComponent },
   { path: '**', component: ErrorPageComponent }
 
 ];
@@ -54,5 +58,7 @@ export const routingComponents = [
   ViewerloginComponent,
   GidComponent,
   ProfileComponent,
-  LiveComponent
+  LiveComponent,
+  HistoryComponent,
+  LeaderboardComponent
 ];

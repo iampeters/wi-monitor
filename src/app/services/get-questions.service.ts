@@ -6,11 +6,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class GetQuestionsService {
 
-  url = '/wi-monitor/src/app/api/get/subjectChoice.php';
-  url1 = '/wi-monitor/src/app/api/get/getQuestions.php';
-  url2 = '/wi-monitor/src/app/api/get/generator.php';
-  url3 = '/wi-monitor/src/app/api/get/vQues.php';
-  chatUrl = '/wi-monitor/src/app/api/get/chat.php';
+  url = '/quizzer/api/get/subjectChoice.php';
+  url1 = '/quizzer/api/get/getQuestions.php';
+  url2 = '/quizzer/api/get/generator.php';
+  url3 = '/quizzer/api/get/vQues.php';
+  chatUrl = '/quizzer/api/get/chat.php';
 
   constructor( private http: HttpClient ) { }
 

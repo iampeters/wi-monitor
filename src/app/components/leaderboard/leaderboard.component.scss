@@ -95,6 +95,9 @@ ul.menu-ul>li.its-active {
     color: #fff !important;
     background-color: rgba(255, 255, 255, .1);
     border-radius: 50px;
+    a {
+        color: #fff !important;
+    }
 }
 
 ul.menu-ul>li {
@@ -102,9 +105,10 @@ ul.menu-ul>li {
     color: #b7b7b7;
     cursor: pointer;
     &:hover {
-        color: #fff !important;
         background-color: rgba(255, 255, 255, .1);
+        transition: cubic-bezier(0.075, 0.82, 0.165, 1);
         border-radius: 50px;
+        color: #fff !important;
     }
 }
 
@@ -134,7 +138,7 @@ ul.menu-ul>li {
 }
 
 .part {
-    // background: linear-gradient(161deg, white 48%, #ececec5e 40%);
+    background: linear-gradient(161deg, white 48%, #ececec5e 40%);
 }
 
 .l-h-9 {
