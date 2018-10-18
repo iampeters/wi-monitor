@@ -44,6 +44,7 @@ export class MiscService {
   quesDecUrl = '/wi-monitor/src/app/api/post/quesDec.php';
   liveUrl = 'wi-monitor/src/app/api/sample.php';
   liveAnswerUrl = 'wi-monitor/src/app/api/getAnswers.php';
+  leaderboardUrl = 'wi-monitor/src/app/api/get/leaderboard.php';
 
   private loggedInStatus = false;
 
@@ -310,6 +311,20 @@ export class MiscService {
     return this.http.get<Data[]>(this.liveAnswerUrl);
   }
 
+  // Leaderboard
+  leaderboard() {
+    return this.http.get<Points[]>(this.leaderboardUrl);
+  }
+
+  postlogin(username, password) {
+    return this.http.post<Log>('http://localhost:3000/signin', {username, password});
+  }
+
+  // get all users
+  getallusers() {
+    return this.http.get<Log[]>('http://localhost:3000/users');
+  }
+
 }
 export interface Myface {
   success: boolean;
@@ -418,3 +433,25 @@ export interface Data {
   option3: string;
   option4: string;
 }
+
+
+export interface Points {
+  userid: number;
+  username: string;
+  points: number;
+  wins: number;
+  losses: number;
+  draws: number;
+  id: number;
+  level: number;
+}
+
+export interface Log{
+  username: string;
+  password: string;
+  fullname;
+}
+
+
+
+

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MiscService } from '../../services/misc.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,10 +8,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  leaderboard = [];
+
+  constructor( private misc: MiscService) { }
 
   ngOnInit() {
+    this.misc.leaderboard().subscribe(data => {
+      this.leaderboard = data;
+    });
 
+    // var conn = new WebSocket('ws://localhost:8080');
+    // conn.onopen = function(e) {
+    //     console.log("Connection established!");
+
+    // };
+
+    // conn.onmessage = function(e) {
+    //     // console.log(e.data);
+    //     var data = e.data;
+
+    //     // var msg = JSON.parse(data);
+    //     console.log(data);
+        
+    // };
+
+    // var data = {
+    //     name: 'update',
+    //     message: 'hello'
+    // };
+    // conn.send(JSON.stringify(data));
   }
 
   logout() {

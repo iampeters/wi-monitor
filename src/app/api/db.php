@@ -4,7 +4,7 @@
     $dbname = 'wi-monitor';
     $dbuser = 'root';
     $dbpass = "";
-    $dbhost = 'localhost';
+    $dbhost = '127.0.0.1';
 
     // Establish database connection
     $conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);

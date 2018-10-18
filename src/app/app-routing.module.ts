@@ -17,6 +17,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { LiveComponent } from './live/live.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { HistoryComponent } from './components/history/history.component';
+import { SampleComponent } from './components/sample/sample.component';
+import { SocketComponent } from './components/socket/socket.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -35,6 +37,8 @@ const routes: Routes = [
   { path: 'live/:id', component: LiveComponent },
   { path: 'history', component: HistoryComponent },
   { path: 'leaderboard', component: LeaderboardComponent },
+  { path: 'sample', component: SampleComponent },
+  { path: 'socket', component: SocketComponent },
   { path: '**', component: ErrorPageComponent }
 
 ];
@@ -60,5 +64,7 @@ export const routingComponents = [
   ProfileComponent,
   LiveComponent,
   HistoryComponent,
-  LeaderboardComponent
+  LeaderboardComponent,
+  SampleComponent,
+  SocketComponent
 ];

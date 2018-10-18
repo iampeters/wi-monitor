@@ -2,14 +2,17 @@
     # starting session
     session_start();
 
-
     header('Access-Control-Allow-Origin: *');
     header("Content-Type: application/json; charset=UTF-8");
+    // $_SESSION['subject_id'] = 3;
+    // $_SESSION['username'] = 'iampeters';
 
     if (isset($_SESSION['username']) && isset($_SESSION['subject_id'])) {
 
         # Dependencies
         require '../db.php';
+        // require '../../../../socket/Db/Database.php';
+
 
         # Storing session variables
         $logged_in_user_id = $_SESSION['uid'];

@@ -44,7 +44,7 @@ $(function() {
             labels: ["Mathematics", "Eng. Language", "Comp. Science", "Agric Science", "Biology", "Geography"],
             datasets: [{
                 label: 'Score',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [25, 50, 35, 5, 10, 15],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.5)',
                     'rgba(54, 162, 235, 0.5)',
