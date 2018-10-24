@@ -8,6 +8,4 @@ const conn = mysql.createConnection({
     database: 'wi-monitor'
 })
 
-conn.connect();
-
 module.exports = conn

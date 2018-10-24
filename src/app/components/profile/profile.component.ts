@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MiscService } from '../../services/misc.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -10,37 +11,33 @@ export class ProfileComponent implements OnInit {
 
   leaderboard = [];
 
-  constructor( private misc: MiscService) { }
+  constructor(
+    private misc: MiscService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    this.misc.leaderboard().subscribe(data => {
-      this.leaderboard = data;
+    this.misc.isLoggedIn().subscribe( data => {
+      if (data.success !== true) {
+        this.misc.setLoggedin(false);
+        this.router.navigate(['/login']);
+      } {
+        this.misc.setLoggedin(true);
+      }
     });
 
-    // var conn = new WebSocket('ws://localhost:8080');
-    // conn.onopen = function(e) {
-    //     console.log("Connection established!");
-
-    // };
-
-    // conn.onmessage = function(e) {
-    //     // console.log(e.data);
-    //     var data = e.data;
-
-    //     // var msg = JSON.parse(data);
-    //     console.log(data);
-        
-    // };
-
-    // var data = {
-    //     name: 'update',
-    //     message: 'hello'
-    // };
-    // conn.send(JSON.stringify(data));
+    this.misc.leaderboard().subscribe(data => {
+      this.leaderboard = data;
+      // console.log(data);
+    });
   }
 
   logout() {
-    window.close();
+    this.misc.logoutUser().subscribe(data => {
+      if (data.success === true) {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   breadcomb() {

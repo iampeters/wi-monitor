@@ -6,17 +6,18 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class SubjectsService {
+  __server = 'http://localhost:3000/';
 
   constructor( private http: HttpClient ) { }
 
   // Getting subjects
   getSubjects() {
-    return this.http.get<Data[]>('/wi-monitor/src/app/api/subjects.php');
+    return this.http.get<Data[]>(this.__server + 'subjects');
   }
 
   // Getting wards
   getWards() {
-    return this.http.get<Data[]>('/wi-monitor/src/app/api/get/wards.php');
+    return this.http.get<Data[]>(this.__server + 'wards');
   }
 
 }

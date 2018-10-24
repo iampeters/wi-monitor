@@ -1,7 +1,7 @@
-<?php 
+<?php
     header('Access-Control-Allow-Origin: *');
     header("Content-Type: application/json; charset=UTF-8");
-    
+
     // Database parameters
     $dbname = 'wi-monitor';
     $dbuser = 'root';
@@ -17,18 +17,6 @@
         $sql = "select subject_id, subject from Subjects";
         $query = mysqli_query($conn, $sql);
 
-        // $query_waiting = mysqli_query($conn, "SELECT subject_id from tag where is_merged = 0 ");
-        // if (mysqli_num_rows($query_waiting) > 0) {
-        //     $wait_row = mysqli_fetch_assoc($query_waiting);
-        //     $wait_sub = $wait_row['subject_id'];
-
-        // } else {
-        //     # if there are no waiting games
-        //     echo '{
-        //         $wait_sub = 
-        //     }';
-        // }
-
         if (mysqli_num_rows($query) > 0) {
 
             $stdds= array();
@@ -38,10 +26,10 @@
                 $stdds[] = $rows;
 
             }
-            
+
             // Convert array to json
             echo json_encode($stdds);
-            
+
         }
         else {
             echo '{

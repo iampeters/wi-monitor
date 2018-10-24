@@ -22,7 +22,7 @@ export class ControlComponent implements OnInit {
       // Checks if the admin is already logged in
       this.admin.adminLoginChk().subscribe(data => {
         if (data.success === true) {
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['/dashboard']);
         }
       });
   }
@@ -37,7 +37,7 @@ export class ControlComponent implements OnInit {
     this.admin.adminLogin(email, password).subscribe(data => {
       if (data.success === true) {
         // login user
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['/dashboard']);
 
       } else {
         // display error message

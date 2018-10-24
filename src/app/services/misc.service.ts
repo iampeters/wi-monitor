@@ -1,38 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class MiscService {
+  __server = 'http://localhost:3000/';
 
   url = '/wi-monitor/src/app/api/get/sessionUnset.php';
-  regUrl = '/wi-monitor/src/app/api/user/register.php';
-  loginUrl = '/wi-monitor/src/app/api/user/login.php';
-  logoutUrl = '/wi-monitor/src/app/api/user/logout.php';
   useChkUrl = '/wi-monitor/src/app/api/user/userCheck.php';
-  addQuestionUrl = '/wi-monitor/src/app/api/post/addQuestion.php';
-  addSubjectUrl = '/wi-monitor/src/app/api/post/addSubject.php';
-  addGuardianUrl = '/wi-monitor/src/app/api/post/addGuardian.php';
-  taggerUrl = '/wi-monitor/src/app/api/get/tagger.php';
-  isLoggedInUrl = '/wi-monitor/src/app/api/user/isLoggedIn.php';
   scoresUrl = '/wi-monitor/src/app/api/post/scoresUpdate.php';
   setterUrl = '/wi-monitor/src/app/api/get/setter.php';
   getterUrl = '/wi-monitor/src/app/api/post/getter.php';
   timerUrl = '/wi-monitor/src/app/api/get/timer.php';
   getTimeUrl = '/wi-monitor/src/app/api/get/getTime.php';
   guardianLoginUrl = '/wi-monitor/src/app/api/post/guardianLogin.php';
-  getGameUrl = '/wi-monitor/src/app/api/get/game.php';
-  gameInitUrl = '/wi-monitor/src/app/api/post/gameActivity.php';
   gameInit = '/wi-monitor/src/app/api/post/game.php';
   parentChkUrl = '/wi-monitor/src/app/api/user/parentChk.php';
   getViewersUrl = '/wi-monitor/src/app/api/get/getViewers.php';
   chatUrl = '/wi-monitor/src/app/api/post/chat.php';
-  parentChatUrl = '/wi-monitor/src/app/api/post/parentchat.php';
-  parentChatterUrl = '/wi-monitor/src/app/api/post/parentchatter.php';
   chatterUrl = '/wi-monitor/src/app/api/get/chatter.php';
   neededUrl = '/wi-monitor/src/app/api/get/needed.php';
-  vLogoutUrl = '/wi-monitor/src/app/api/user/vLogout.php';
   answers = '/wi-monitor/src/app/api/get/getAnswers.php';
   answersViewers = '/wi-monitor/src/app/api/get/viewersAnswers.php';
   chkAnswers = '/wi-monitor/src/app/api/post/chkAnswer.php';
@@ -40,11 +30,10 @@ export class MiscService {
   getQuesUrl = '/wi-monitor/src/app/api/post/getQuestions.php';
   scoreUpdateUrl = '/wi-monitor/src/app/api/get/scoresUpdate.php';
   gameOverUrl = '/wi-monitor/src/app/api/get/gameOver.php';
-  vGameOverUrl = '/wi-monitor/src/app/api/post/vGameOver.php';
   quesDecUrl = '/wi-monitor/src/app/api/post/quesDec.php';
   liveUrl = 'wi-monitor/src/app/api/sample.php';
   liveAnswerUrl = 'wi-monitor/src/app/api/getAnswers.php';
-  leaderboardUrl = 'wi-monitor/src/app/api/get/leaderboard.php';
+
 
   private loggedInStatus = false;
 
@@ -58,7 +47,7 @@ export class MiscService {
 
   // Register a new user
   registerUser(fname, username, password) {
-    return this.http.post<Myface>(this.regUrl, {
+    return this.http.post<Myface>(this.__server + 'register', {
       fname,
       username,
       password
@@ -67,7 +56,7 @@ export class MiscService {
 
   // Login user
   loginUser(username, password) {
-    return this.http.post<Myface>(this.loginUrl, {
+    return this.http.post<Myface>(this.__server + 'login', {
       username,
       password
     });
@@ -75,7 +64,7 @@ export class MiscService {
 
   // Logout user
   logoutUser() {
-    return this.http.get<Myface>(this.logoutUrl);
+    return this.http.get<Myface>(this.__server + 'logout');
   }
 
   // Check which user isLoggedIn
@@ -85,31 +74,31 @@ export class MiscService {
 
   // Add subject
   addSubject(subject) {
-    return this.http.post<Myface>(this.addSubjectUrl, {
+    return this.http.post<Myface>(this.__server + '/add/subjects', {
       subject
     });
   }
 
   // Add question
   addQuestion(question, subject, option1, option2, option3, answer) {
-    return this.http.post<Myface>(this.addQuestionUrl, {
+    return this.http.post<Myface>(this.__server + 'add/questions', {
       question, subject, option1, option2, option3, answer
     });
   }
 
   // This will tag the players
   tagger() {
-    return this.http.get<Tagger>(this.taggerUrl);
+    return this.http.get<Tagger>(this.__server + 'tagger');
   }
 
   // This will check if a user is logged in for all template
   isLoggedIn() {
-    return this.http.get<Myface>(this.isLoggedInUrl);
+    return this.http.get<Myface>(this.__server + 'is-logged-in');
   }
 
   // Checks if a parent is logged in
   isParentLoggedIn() {
-    return this.http.get<Myface>(this.parentChkUrl);
+    return this.http.get<Myface>(this.__server + 'parent/is-logged-in');
   }
 
 
@@ -120,6 +109,10 @@ export class MiscService {
   get loginChk() {
     return this.loggedInStatus;
   }
+
+  // loginChk() {
+  //   return this.http.get(this.__server + 'is-logged-in');
+  // }
 
   // This will update the scores table when the user answer is wrong
   ansWrong(wrong) {
@@ -137,7 +130,7 @@ export class MiscService {
 
   // Checking if the admin is logged in
   isLoggedInUser() {
-    return this.http.get(this.isLoggedInUrl);
+    return this.http.get(this.__server + 'is-logged-in');
   }
 
   // This method will get and set the player turn in the database
@@ -162,7 +155,7 @@ export class MiscService {
 
   // This will add Guardian/Parents
   addGuardian(guardian, ward, relationship, phone, email, username) {
-    return this.http.post<Tagger>(this.addGuardianUrl, {
+    return this.http.post<Tagger>(this.__server + 'add/guardian', {
       guardian,
       ward,
       relationship,
@@ -174,24 +167,24 @@ export class MiscService {
 
   // Guardian login
   guardianLogin(username, ward) {
-    return this.http.post<Tagger>(this.guardianLoginUrl, {
+    return this.http.post<Tagger>(this.__server + 'parent/login', {
       username, ward
     });
   }
 
   // Getting game sessions
   getGame() {
-    return this.http.get<Game[]>(this.getGameUrl);
+    return this.http.get<Game[]>(this.__server + 'parent/get-game');
   }
 
   // Viewers Activity
   viewerInit() {
-    return this.http.get<Activity[]>(this.gameInitUrl);
+    return this.http.get<Activity[]>(this.__server + 'game/activity');
   }
 
   // Viewers game activity
   viewerGame(game) {
-    return this.http.post<Tagger>(this.gameInit, {
+    return this.http.post<Tagger>(this.__server + 'game/activity', {
       game
     });
   }
@@ -209,7 +202,7 @@ export class MiscService {
   }
 
   parentChat(message) {
-    return this.http.post<Myface>(this.parentChatUrl, {
+    return this.http.post<Myface>(this.__server + 'parent/chat', {
       message
     });
   }
@@ -219,10 +212,10 @@ export class MiscService {
     return this.http.get<Chatter[]>(this.chatterUrl);
   }
 
-  // Parent Chatter
-  parentChatter() {
-    return this.http.get<Chatter[]>(this.parentChatterUrl);
-  }
+  // // Parent Chatter
+  // parentChatter() {
+  //   return this.http.get<Chatter[]>(this.parentChatterUrl);
+  // }
 
   // Needed
   needed() {
@@ -245,7 +238,7 @@ export class MiscService {
 
   // Logout viewer
   vLogout() {
-    return this.http.get<Chatter>(this.vLogoutUrl);
+    return this.http.get<Chatter>(this.__server + 'parent/logout');
   }
 
   // Get answers
@@ -313,16 +306,16 @@ export class MiscService {
 
   // Leaderboard
   leaderboard() {
-    return this.http.get<Points[]>(this.leaderboardUrl);
+    return this.http.get<Points[]>(this.__server + 'leaderboard');
   }
 
   postlogin(username, password) {
-    return this.http.post<Log>('http://localhost:3000/signin', {username, password});
+    return this.http.post<Log>(this.__server + 'signin', {username, password});
   }
 
   // get all users
   getallusers() {
-    return this.http.get<Log[]>('http://localhost:3000/users');
+    return this.http.get<Log[]>(this.__server + 'users');
   }
 
 }
@@ -446,12 +439,8 @@ export interface Points {
   level: number;
 }
 
-export interface Log{
+export interface Log {
   username: string;
   password: string;
   fullname;
 }
-
-
-
-

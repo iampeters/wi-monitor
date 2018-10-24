@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MiscService } from '../../services/misc.service';
 import { Register } from '../../classes/user';
@@ -8,9 +8,10 @@ import { Register } from '../../classes/user';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   info;
+  subscription;
 
   registerModel = new Register('', '', '');
 
@@ -22,9 +23,13 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.misc.isLoggedIn().subscribe(data => {
       if (data.success === true) {
-        this.router.navigate(['/welcome']);
+        this.router.navigate(['/profile']);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   // New user registration
@@ -34,7 +39,7 @@ export class RegisterComponent implements OnInit {
     const username = target.querySelector('#materialFormRegisterUsernameEx').value;
     const password = target.querySelector('#materialFormLoginPasswordEx').value;
 
-    this.misc.registerUser(fname, username, password).subscribe(data => {
+    this.subscription = this.misc.registerUser(fname, username, password).subscribe(data => {
       // Will do someting here
       if (data.success === true) {
         this.info = data.message;

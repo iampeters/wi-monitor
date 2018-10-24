@@ -12,5 +12,14 @@ export class AppComponent {
   title = 'app';
 
   constructor (
+  	private misc: MiscService
   ) {}
+
+  // ngOnInit() {
+  // 	this.misc.isLoggedIn().subscribe(data => {
+  // 		if(data.success === true) {
+  // 			this.misc.loginChk
+  // 		}
+  // 	})
+  // }
 }

@@ -23,7 +23,7 @@
         $rows = mysqli_fetch_assoc($sql);
         $qid = $rows['question_id'];
         $sid = $rows['subject_id'];
-        
+
         # Get the actual question
         $getQuestion = mysqli_query($conn, "SELECT question from questions where questions_id = '$qid' ");
         $ques_row = mysqli_fetch_assoc($getQuestion);
@@ -41,10 +41,10 @@
         $_SESSION['questions_id'] = $qid;
         $_SESSION['subject_id'] = $sid;
 
-        
-        # Standard class where all our value will live       
+
+        # Standard class where all our value will live
         $std = new stdClass();
-        
+
         # player
         $std->success = true;
         $std->question = $question;
@@ -52,7 +52,7 @@
         // $std->option_2 = $option_2;
         // $std->option_3 = $option_3;
         $std->answer = $answer;
-        
+
 
         # Return values in json format
         echo json_encode($std);
@@ -64,4 +64,3 @@
             "message" : "Hey! Are you sure you wanna do this?"
         }';
     }
-    

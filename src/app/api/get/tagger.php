@@ -4,8 +4,6 @@
 
     header('Access-Control-Allow-Origin: *');
     header("Content-Type: application/json; charset=UTF-8");
-    // $_SESSION['subject_id'] = 3;
-    // $_SESSION['username'] = 'iampeters';
 
     if (isset($_SESSION['username']) && isset($_SESSION['subject_id'])) {
 
@@ -18,7 +16,7 @@
         $logged_in_user_id = $_SESSION['uid'];
         $username = $_SESSION['username'];
         $subject_id = $_SESSION['subject_id'];
-        $subject = $_SESSION['subject'] = 'Current Affairs';
+        $subject = $_SESSION['subject'];
         $rand = 'gid_'.rand(000000, 999999);
 
         # Query the database to check for games with the subject id
@@ -50,7 +48,8 @@
                         "message": "Opponent failed to add"
                     }';
                     exit();
-                } else {
+                }
+                else {
                     # Insert into the game table and intialize the game
                     $insert_game = mysqli_query($conn, "INSERT into game (game_id, subject_id, tag_id, session_key, has_ended, is_merged) values ('', '$subject_id', '$tag_id', '$rand', 0, 1)");
 
@@ -88,7 +87,7 @@
                         if ( mysqli_num_rows($select_users2) > 0 ) {
                             $opponent_row = mysqli_fetch_assoc($select_users2);
                         }
-                        
+                        // be right back
 
                         # Getting the game id
                         $game_query = mysqli_query($conn, "SELECT * from game where session_key = '$tag_key' and is_merged = 1 and has_ended = 0 ");
@@ -103,7 +102,7 @@
                             }';
                          exit();
                         }
-                        
+
 
 
                         # Making sure user doesn't already exist
@@ -152,10 +151,10 @@
                         # Send back data
                         echo json_encode($data);
 
-
                         exit();
 
-                    } else {
+                    }
+                    else {
 
                         echo '{
                             "success": false,
@@ -163,10 +162,10 @@
                         }';
                         exit();
                     }
-                    
+
                 }
 
-            } 
+            }
             elseif ($logged_in_user_id == $tag_user_id  && empty($opponent)) {
 
                 echo '{
@@ -201,7 +200,7 @@
                         $get_rows = mysqli_fetch_assoc($get_tag);
                         $tid = $get_rows['tag_id'];
                     }
-                    
+
 
                     # Making sure user doesn't already exist
                     $turn_chk = mysqli_query($conn, "select * from turns where tag_id = '$tid' and player_id = '$logged_in_user_id'");
@@ -232,9 +231,9 @@
 
                 exit();
             }
-            
-        } 
-        
+
+        }
+
         # Query the database for merged users
         $query_isMerged = mysqli_query($conn, "SELECT * from tag where subject_id = '$subject_id' and ( player_id = '$logged_in_user_id' OR opponent_id = '$logged_in_user_id' ) and has_ended = 'false' and is_merged = 1 ");
 
@@ -242,8 +241,7 @@
 
             $tag_rows = mysqli_fetch_assoc($query_isMerged);
             $tagID = $tag_rows['tag_id'];
-            
-            # Out the values to the user
+
             # Get all player details and resume the game.
             $select_tag = mysqli_query($conn, "SELECT * from tag as T, game as G where (T.tag_id = '".$tagID."' and G.tag_id = '".$tagID."') and T.subject_id = G.subject_id");
 
@@ -319,7 +317,8 @@
                 }';
             }
 
-        } else {
+        }
+        else {
             # This code will add a new tag with the session subject id
             # if there is no tag with the subject_id
             $insert_tag = mysqli_query($conn, "INSERT into tag (player_id, subject_id) values ('$logged_in_user_id', '$subject_id') ");
@@ -379,6 +378,6 @@
             "message" : "You must be logged in first"
         }';
     }
-    
+
 
 ?>

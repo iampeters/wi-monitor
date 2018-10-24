@@ -6,14 +6,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class QuestionsService {
 
-  url = '/wi-monitor/src/app/api/questions.php';
+  url = 'http://localhost:3000/';
 
   constructor( private http: HttpClient ) { }
 
   getQuestions(subject) {
-  return this.http.post<MySub>(this.url, {
-    subject
-  });
+  return this.http.post<MySub>(this.url, subject, { withCredentials: true });
+
   }
 }
 

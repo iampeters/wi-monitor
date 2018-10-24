@@ -9,7 +9,7 @@
     $_POST = json_decode(file_get_contents('php://input'), true);
 
     if (isset($_SESSION['parent'])) {
-        
+
         # Dependency
         require '../db.php';
 
@@ -49,7 +49,7 @@
 
         # Array
         $chats = array();
-        
+
         if (mysqli_num_rows($sql3) > 0) {
 
 
@@ -62,21 +62,13 @@
 
                 $chats[] = $rows;
 
-                // if ($sender == $username) {
-                //     echo '<span class="c-right bg-info mb-2">'.$message.'</span>';
-
-                // } else {
-                //     echo '<span class="c-left bg-info mb-2">'.$message.'</span>';
-
-                // }
-                
             }
 
             # Return result
             echo json_encode($chats);
 
         } else {
-            # when there is no chat 
+            # when there is no chat
             echo json_encode($chats);
         }
 
@@ -90,5 +82,3 @@
         }';
 
     }
-    
-    

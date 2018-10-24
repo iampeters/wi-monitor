@@ -2,11 +2,13 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MiscService } from '../services/misc.service';
 import { GetQuestionsService } from '../services/get-questions.service';
+import { SocketService } from '../../socket.service';
 
 @Component({
   selector: 'app-live',
   templateUrl: './live.component.html',
-  styleUrls: ['./live.component.scss']
+  styleUrls: ['./live.component.scss'],
+  providers: [SocketService]
 })
 export class LiveComponent implements OnInit {
 
@@ -27,7 +29,8 @@ export class LiveComponent implements OnInit {
     private misc: MiscService,
     private actived: ActivatedRoute,
     private http: Router,
-    public vQues: GetQuestionsService
+    public vQues: GetQuestionsService,
+    private socket: SocketService
   ) { }
 
   ngOnInit() {
@@ -37,17 +40,17 @@ export class LiveComponent implements OnInit {
 
     // Getting game activity
     setInterval(() => {
-      this.misc.getLiveData(this.id).subscribe(data => {
+      this.socket.getLiveData(this.id).subscribe(data => {
         this.activity = data;
     });
 
     // Getting the points
-    this.misc.vGameOver().subscribe(data => {
+    this.socket.vGameOver().subscribe(data => {
       this.gameOver = data;
     });
 
     // Get Answers
-    this.misc.getLiveAns().subscribe( data => {
+    this.socket.getLiveAns().subscribe( data => {
       this.choices = data;
     });
 

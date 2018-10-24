@@ -12,14 +12,14 @@
 
         # Validate
         function validate($data) {
-	      $data = trim($data);
-	      $data = strip_tags($data);
-	      $data = stripslashes($data);
-	      $data = htmlspecialchars($data);
-	      $data = nl2br($data);
+  	      $data = trim($data);
+  	      $data = strip_tags($data);
+  	      $data = stripslashes($data);
+  	      $data = htmlspecialchars($data);
+  	      $data = nl2br($data);
           return $data;
-          
-	    }
+
+  	    }
 
         # Dependencies
         require '../db.php';
@@ -38,6 +38,7 @@
             $row = mysqli_fetch_assoc($sql);
             $ward_id = $row['ward_id'];
 
+            # get wards username
             $query = mysqli_query($conn, "SELECT username from users where user_id = '$ward_id' ");
             $rows = mysqli_fetch_assoc($query);
             $ward = $rows['username'];
@@ -59,7 +60,7 @@
             }';
         }
 
-       
+
     } else {
         echo '{
             "message" : "Please enter a message"

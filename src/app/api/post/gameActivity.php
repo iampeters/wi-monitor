@@ -7,9 +7,9 @@
     $_POST = json_decode(file_get_contents('php://input'), true);
 
 
-    if (isset($_SESSION['parent']) && isset($_SESSION['game'])) {
+    if (isset($_SESSION['parent']) && isset($_POST['game'])) {
 
-        $key = $_SESSION['game'];
+        $key = $_POST['game'];
 
         # Dependencies
         require '../db.php';
@@ -130,7 +130,7 @@
 
 
             echo json_encode($std);
-            
+
 
         } else {
             # Return error
@@ -139,7 +139,7 @@
                 "message" : "Sorry! No tags to display"
             }';
         }
-        
+
 
     } else {
         echo '{

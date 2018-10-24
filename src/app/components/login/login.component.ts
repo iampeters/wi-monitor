@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Login } from '../../classes/user';
 import { MiscService } from '../../services/misc.service';
@@ -8,9 +8,10 @@ import { MiscService } from '../../services/misc.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   info;
+  subscription;
 
   loginModel = new Login('', '');
 
@@ -20,12 +21,15 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.misc.isLoggedIn().subscribe( data => {
-      if (data.success === true) {
-        this.router.navigate(['/welcome']);
-        this.misc.setLoggedin(true);
-      }
-    });
+      // login check
+      this.misc.isLoggedIn().subscribe( data => {
+        if (data.success !== true) {
+          this.misc.setLoggedin(false);
+        } else {
+          this.router.navigate(['/profile']);
+          this.misc.setLoggedin(true);
+        }
+      });
   }
 
   // Login user
@@ -33,11 +37,13 @@ export class LoginComponent implements OnInit {
     const username = event.username;
     const password = event.password;
 
-    this.misc.loginUser(username, password).subscribe(data => {
+     this.subscription = this.misc.loginUser(username, password).subscribe(data => {
       if (data.success === true) {
-
+        
         this.misc.setLoggedin(true);
+
         this.router.navigate(['/profile']);
+
 
       } else {
         this.info = data.message;
@@ -48,6 +54,10 @@ export class LoginComponent implements OnInit {
   // This will direct user to register view
   register() {
     this.router.navigate(['/register']);
+  }
+
+  ngOnDestroy(): void {
+    // this.subscription.unsubscribe();
   }
 
 }

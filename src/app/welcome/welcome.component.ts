@@ -16,17 +16,12 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit() {
     // Checking if user is logged in
-      this.misc.isLoggedIn().subscribe(data => {
-        if (data.success === false) {
-          // Setting guard value to false
-          this.misc.setLoggedin(false);
-          this.router.navigate(['/login']);
-
-        } else {
-          // Setting guard value to true
-          this.misc.setLoggedin(true);
-        }
-      });
+      this.misc.isLoggedIn().subscribe( data => {
+      if (data.success !== true) {
+        this.misc.setLoggedin(false);
+        this.router.navigate(['/login']);
+      }
+    });
   }
   nextPage() {
     this.router.navigate(['instructions']);

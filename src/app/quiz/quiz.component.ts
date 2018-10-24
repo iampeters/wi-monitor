@@ -56,10 +56,9 @@ export class QuizComponent implements OnInit {
 
   ngOnInit() {
     // Checking if there is a loggedIn user
-    this.misc.userCheck().subscribe(data => {
-
-      if (data.success === false) {
-        // return to login page if the user is not logged in
+    this.misc.isLoggedIn().subscribe( data => {
+      if (data.success !== true) {
+        this.misc.setLoggedin(false);
         this.router.navigate(['/login']);
       }
     });

@@ -31,13 +31,10 @@ export class GidComponent implements OnInit {
     // Checks if the parent isLoggedIn
     this.misc.isParentLoggedIn().subscribe(data => {
       if (data.success === false) {
-        this.http.navigate(['viewerlogin']);
+        this.http.navigate(['/viewerlogin']);
       }
     });
 
-    // const body = <HTMLBodyElement>document.getElementsByTagName('body');
-
-    // body.onbeforeunload =
   }
 
   // Getting the user's choice of game to view
@@ -53,10 +50,10 @@ export class GidComponent implements OnInit {
       // Getting the activities
       this.misc.viewerGame(game).subscribe( data => {
        if (data.success === true) {
-         this.http.navigate(['viewers']);
+         this.http.navigate(['/viewers']);
 
        } else if (data.success === false && data.message === 'Viewer already added') {
-         this.http.navigate(['viewers']);
+         this.http.navigate(['/viewers']);
 
         } else {
           this.error = data.message;

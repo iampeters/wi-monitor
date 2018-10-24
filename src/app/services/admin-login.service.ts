@@ -6,15 +6,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AdminLoginService {
 
-  url = '/wi-monitor/src/app/api/user/adminLogin.php';
-  adminChkUrl = '/wi-monitor/src/app/api/user/adminChk.php';
-  logoutUrl = '/wi-monitor/src/app/api/user/adminLogout.php';
+  __server = 'http://localhost:3000/';
 
   constructor( private http: HttpClient ) { }
 
   // Admin login
   adminLogin(email, password) {
-    return this.http.post<MyInterface>(this.url, {
+    return this.http.post<MyInterface>(this.__server + 'control', {
       email,
       password
     });
@@ -22,12 +20,12 @@ export class AdminLoginService {
 
   // Admin login check
   adminLoginChk() {
-    return this.http.get<MyInterface>(this.adminChkUrl);
+    return this.http.get<MyInterface>(this.__server + 'adminChk');
   }
 
   // Admin logout
   logout() {
-    return this.http.get<MyInterface>(this.logoutUrl);
+    return this.http.get<MyInterface>(this.__server + 'admin/logout');
   }
 }
 export interface MyInterface {

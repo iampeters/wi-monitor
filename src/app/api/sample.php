@@ -5,7 +5,7 @@
     header("Content-Type: application/json; charset=UTF-8");
     $_POST = json_decode(file_get_contents('php://input'), true);
 
-    
+
     if(isset($_POST['id'])) {
         $key = $_POST['id'];
 
@@ -51,9 +51,9 @@
 
         # Get answers
         $ans = mysqli_query($conn, "select * from answers where question_id = '$question_id' ");
-        
+
         $arr = array();
-       
+
 
         # Get subjects
         $sub = mysqli_query($conn, "select subject from Subjects where subject_id = '$subject_id' ");
@@ -68,7 +68,7 @@
         $scores = $score_row['scores'];
         $questions = $score_row['questions'];
 
-        # Get Scores for player 1
+        # Get Scores for player 2
         $o_score = mysqli_query($conn, "select * from scores where session_key = '$key' and player_id = '$opponent_id' ");
         $o_score_row = mysqli_fetch_assoc($o_score);
         $o_correct = $o_score_row['correct'];
@@ -85,7 +85,7 @@
         $p2 = mysqli_query($conn, "SELECT is_player from turns where tag_id = '$tag_id' and player_id = '$opponent_id' ");
         $p2_row = mysqli_fetch_assoc($p2);
         $p2turn = $p2_row['is_player'];
-        
+
         # Get viewers from game tbl
         $viewers = mysqli_query($conn, "SELECT viewers from game where session_key = '$key' ");
         $v_row = mysqli_fetch_assoc($viewers);
@@ -112,7 +112,7 @@
         $_SESSION['QID'] = $question_id;
         $_SESSION['wid'] = $player_id;
         $_SESSION['game'] = $key;
-        
+
         # Return class as json
         echo json_encode($std);
 
@@ -125,4 +125,3 @@
     } else {
         echo 'Nothing came';
     }
-    

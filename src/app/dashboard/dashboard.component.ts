@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
     // Checks if the admin is logged in
       this.admin.adminLoginChk().subscribe(data => {
         if (data.success === false) {
-          this.router.navigate(['control']);
+          this.router.navigate(['/control']);
         }
       });
 
@@ -112,7 +112,7 @@ export class DashboardComponent implements OnInit {
   logout() {
     this.admin.logout().subscribe( data => {
       if (data.success === true) {
-        this.router.navigate(['control']);
+        this.router.navigate(['/control']);
       }
     });
   }

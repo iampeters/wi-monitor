@@ -6,7 +6,7 @@
     header("Content-Type: application/json; charset=UTF-8");
 
     if (isset($_SESSION['questions_id']) && isset($_SESSION['subject_id'])) {
-        
+
         # session variables
         $ques_id = $_SESSION['questions_id'];
         $sub_id = $_SESSION['subject_id'];
@@ -22,7 +22,7 @@
         $ques_get = mysqli_query($conn, "SELECT question_id from vQues where session_key = '$key' and subject_id = '$sub_id' order by id desc limit 1 ");
 
         if ( mysqli_num_rows($ques_get) == 1 ) {
-            
+
             $rows = mysqli_fetch_assoc($ques_get);
             $question_id = $rows['question_id'];
 
@@ -36,9 +36,9 @@
                 $sql = mysqli_query($conn, "SELECT option_1, option_2, answer, option_3 from answers where question_id = '$question_id' and subject_id = '$sub_id'  ");
 
                 if ( mysqli_num_rows($sql) == 1 ) {
-                    
+
                     while ($rows = mysqli_fetch_assoc($sql)) {
-                        // $list[] = $rows;
+                      
                         $list[0]['answer'] = $rows['option_1'];
                         $list[1]['answer'] = $rows['option_2'];
                         $list[2]['answer'] = $rows['answer'];
@@ -59,14 +59,14 @@
                 }';
             }
 
-            
+
         } else {
             echo '{
                 "question" : "I didnt get anything"
             }';
         }
 
-        
+
     } else {
         echo '{
             "success" : false

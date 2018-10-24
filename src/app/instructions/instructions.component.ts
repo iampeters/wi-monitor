@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SubjectsService } from '../services/subjects.service';
 import { QuestionsService } from '../services/questions.service';
@@ -10,7 +10,8 @@ import { MiscService } from '../services/misc.service';
   templateUrl: './instructions.component.html',
   styleUrls: ['./instructions.component.scss']
 })
-export class InstructionsComponent implements OnInit {
+
+export class InstructionsComponent implements OnInit, OnDestroy {
 
   public subjects = [];
   sub;
@@ -31,9 +32,11 @@ export class InstructionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.misc.isLoggedIn().subscribe( data => {
 
-      if ( data.success === false) {
+    // check if user is logged in
+      this.misc.isLoggedIn().subscribe( data => {
+      if (data.success !== true) {
+        this.misc.setLoggedin(false);
         this.router.navigate(['/login']);
       }
     });
@@ -43,6 +46,10 @@ export class InstructionsComponent implements OnInit {
     //   this.subjects = data;
     // });
     this.getSub();
+  }
+
+  ngOnDestroy(): void {
+    // some code...
   }
 
 
@@ -79,4 +86,3 @@ export class InstructionsComponent implements OnInit {
   }
 
 }
-
