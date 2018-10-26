@@ -42,7 +42,7 @@
         $chats = array();
 
         if (mysqli_num_rows($sql1) > 0) {
-            
+
 
             # Loop
             while( $rows = mysqli_fetch_assoc($sql1)) {
@@ -60,7 +60,7 @@
                 //     echo '<span class="c-left bg-info mb-2">'.$message.'</span>';
 
                 // }
-                
+
             }
 
             # Return result
@@ -71,10 +71,10 @@
             # When there is no chat to display
             echo json_encode($chats);
         }
-        
 
-        
-       
+
+
+
     } else {
         echo '{
             "message" : "You must be logged in"

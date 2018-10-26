@@ -9,7 +9,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class MiscService {
   __server = 'http://localhost:3000/';
 
-  url = '/wi-monitor/src/app/api/get/sessionUnset.php';
   useChkUrl = '/wi-monitor/src/app/api/user/userCheck.php';
   scoresUrl = '/wi-monitor/src/app/api/post/scoresUpdate.php';
   setterUrl = '/wi-monitor/src/app/api/get/setter.php';
@@ -42,7 +41,7 @@ export class MiscService {
 
   // unset subject session variable
   sessionUnset() {
-    return this.http.get<Myface>(this.url);
+    return this.http.get<Myface>(this.__server + 'game/session-unset');
   }
 
   // Register a new user
@@ -135,7 +134,7 @@ export class MiscService {
 
   // This method will get and set the player turn in the database
   setter() {
-    return this.http.get<Tagger>(this.setterUrl);
+    return this.http.get<Tagger>(this.__server + 'game/setter');
   }
 
   // This will check whose turn it is to play
@@ -196,7 +195,7 @@ export class MiscService {
 
   // Chat
   chat(message) {
-    return this.http.post<Myface>(this.chatUrl, {
+    return this.http.post<Myface>(this.__server + 'chat/send', {
       message
     });
   }
@@ -224,14 +223,14 @@ export class MiscService {
 
   // Close needed
   close(close) {
-    return this.http.post<Chatter>(this.neededUrl, {
+    return this.http.post<Chatter>(this.__server + 'chat/close', {
       close
     });
   }
 
   // Open needed
   open(open) {
-    return this.http.post<Chatter>(this.neededUrl, {
+    return this.http.post<Chatter>(this.__server + 'chat/open', {
       open
     });
   }
@@ -263,7 +262,7 @@ export class MiscService {
 
   // Checking for correct answer
   chkAnswer(choice) {
-    return this.http.post<Tagger>(this.chkAnswers, {
+    return this.http.post<Tagger>(this.__server + 'game/choice', {
       choice
     });
   }
@@ -285,12 +284,12 @@ export class MiscService {
 
   // Parents/Viewers Game over display
   vGameOver() {
-    return this.http.get<GameOver[]>(this.vGameOverUrl);
+    // return this.http.get<GameOver[]>(this.vGameOverUrl);
   }
 
   // This will decrement questions
   quesDec() {
-    return this.http.get(this.quesDecUrl);
+    return this.http.get(this.__server + 'question/decrement');
   }
 
   // Live viewers links

@@ -17,7 +17,7 @@ module.exports = (app) => {
             if(err) {
                 console.log('A fatal error occurred');
             } else {
-                if(!rows) {
+                if(rows == 0) {
                     res.json({success: false})
                     res.end()
                 }
@@ -70,7 +70,7 @@ module.exports = (app) => {
           console.log('Error: ${err}');
         }
         else {
-          if (!rows) {
+          if (rows == 0) {
             res.json({success: false, message: 'No ward to display'})
           }
           else {
@@ -105,7 +105,7 @@ module.exports = (app) => {
                 console.log('Error: ${err}');
               }
               else {
-                if (!res) {
+                if (res == 0) {
                   res.json({success : false, message : "Oops! Could not insert guardian at this time"})
                   res.end();
                 }
@@ -138,7 +138,7 @@ module.exports = (app) => {
             console.log('Error: ${err}');
           }
           else {
-            if (!res) {
+            if (res == 0) {
               res.json({success: false, message: 'Sorry! Subject already exist in the server'})
             } else {
               res.json({success: true, message: 'Subject added successfully'})
@@ -157,7 +157,7 @@ module.exports = (app) => {
             console.log('Error: ${err}');
           }
           else {
-            if (!res) {
+            if (res == 0) {
               res.json({success: false, message: 'Sorry! Subject already exist in the server'})
             } else {
               // get back the question id
@@ -166,7 +166,7 @@ module.exports = (app) => {
                   console.log('Error: ${err}');
                 }
                 else {
-                  if (!rows) {
+                  if (rows == 0) {
                     res.json({success: false, message: 'Error! Could not get question id from server'})
                     res.end();
                   }
@@ -180,7 +180,7 @@ module.exports = (app) => {
                         console.log('Error: ${err}');
                       }
                       else {
-                        if (!rows) {
+                        if (rows == 0) {
                           res.json({success: false, message: 'Error! Question could not be added at this time'})
                           res.end();
                         }

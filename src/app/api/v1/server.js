@@ -1,6 +1,6 @@
 const express = require('express')
 const http = require('http')
-const session = require('express-session')({ secret: "sfkfjksl-jfsdfji-848iosdl382-iorc83wu-eewksd8998", resave: true, saveUninitialized: true })
+const dotenv = require('dotenv').config();
 const userController = require('./controllers/users')
 const gameController = require('./controllers/game')
 const adminController = require('./controllers/admin')
@@ -10,6 +10,7 @@ const webSocket = require('./controllers/socket')
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
 const socket = require('socket.io')
+const session = require('express-session')({ secret: 'sfkfjksljfsdfji848iosdl382iorc83wueewksd8998', resave: true, saveUninitialized: true })
 const sharedSession = require('express-socket.io-session')
 
 
@@ -42,8 +43,9 @@ parentController(app);
 webSocket(io);
 
 
+var port = process.env.PORT || 3000;
 
 // listener
-server.listen(3000, () => {
-    console.log('Server listening to port 3000');
+server.listen(port, () => {
+    console.log(`Server listening to port ${port}`);
 });

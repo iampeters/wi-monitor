@@ -23,7 +23,7 @@ module.exports = (app) => {
           console.log(`Error: ${err}`);
         }
         else {
-          if (!rows) {
+          if (rows == 0) {
             res.status(401).json({success: false, message: 'Invalid login credentials'})
             res.end();
           }
@@ -37,7 +37,7 @@ module.exports = (app) => {
                 console.log(`Error: ${err}`);
               }
               else {
-                if (!rows) {
+                if (rows == 0) {
                   res.status(401).json({success: false, message: 'Invalid login credentials'})
                   res.end();
                 }
@@ -100,7 +100,7 @@ module.exports = (app) => {
           console.log(`Error: ${err}`);
         }
         else {
-          if (!rows) {
+          if (rows == 0) {
             res.status(404).json({success: false, message: 'No records found'})
             res.end();
           }
@@ -114,7 +114,7 @@ module.exports = (app) => {
                 console.log(`Error: ${err}`);
               }
               else {
-                if (!rows) {
+                if (rows == 0) {
                   res.status(404).json({success: false, message: 'No records found'})
                   res.end();
                 }
@@ -134,7 +134,7 @@ module.exports = (app) => {
             console.log(`Error: ${err}`);
           }
           else {
-            if (!res) {
+            if (res == 0) {
               res.status(501).json({success: false, message: 'Failed to insert chat'})
               res.end();
             }

@@ -158,6 +158,9 @@ const closed = (uid, callback) => {
   })
 }
 
+
+
+
 // Get subjects
 const getLiveSub = (subject_id, callback) => {
   var sql = `select subject from Subjects where subject_id = '${subject_id}'`;
@@ -222,6 +225,117 @@ const getLiveAns = (question_id, callback) => {
   })
 }
 
+// get some questions
+const getQuizSubId = (id, callback) => {
+  var sql = `SELECT * from questions where subject_id = ${id}  order by rand() limit 1`;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+// getting available options
+const getAvailOpt = (Qid, callback) => {
+  var sql = `SELECT * from answers where question_id = ${Qid}`;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+// getting quiz options
+const getQuizOpt = (sub_id, question_id, callback) => {
+  var sql = `SELECT option_1, option_2, answer, option_3 from answers where question_id = '${question_id}' and subject_id = '${sub_id}'`;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+// Inserting into vQues tbl
+const vQuesInsert = (Qid, id, key, callback) => {
+  var sql = `INSERT INTO vQues values(null, '${id}', '${Qid}', '${key}')`;
+
+  conn.query(sql, (err, res) => {
+    callback(err, res)
+  })
+}
+
+// get quiz qid
+const getQuizQid = (sub_id, key, callback) => {
+  var sql = `SELECT question_id from vQues where session_key = '${key}' and subject_id = '${sub_id}' order by id desc limit 1 `;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+// get quiz actual question
+const getQuizActualQues = (question_id, callback) => {
+  var sql = `SELECT question from questions where questions_id = '${question_id}' `;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+// get all turns from tbl
+const getAllFrmTurn = (tid, uid, callback) => {
+  var sql = `select * from turns where tag_id ='${tid}' and player_id ='${uid}' `;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+// Get the current value of the user's correct answers
+const getUserCorrectScores = (key, player_id, callback) => {
+  var sql = `SELECT correct, wrong, questions, scores from scores where player_id = '${player_id}' and session_key = '${key}'`;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+// Get the current value of the user's correct answers
+const getOppScores = (key, uid, callback) => {
+  var sql = `SELECT * from scores where session_key = '${key}' and player_id != '${uid}'`;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+// Get viewers the current game
+const getViewers = (key, callback) => {
+  var sql = `SELECT viewers from game where session_key = '${key}'`;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+
+// Query id and username from guardian tbl
+const getUserInfo = (uid, callback) => {
+  var sql = `SELECT id, username from guardian where ward_id = '${uid}'`;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+
+// Query chats from the chat tbl
+const getAllChats = (g_uname, username, callback) => {
+  var sql = `SELECT * from chat where (sender = '${username}' and receiver = '${g_uname}' ) or (sender = '${g_uname}' and receiver = '${username}')`;
+
+  conn.query(sql, (err, rows, fields) => {
+    callback(err, rows, fields)
+  })
+}
+
+
 
 
 // Exports
@@ -249,5 +363,17 @@ module.exports = {
   getP2Score: getP2Score,
   getP2Turn: getP2Turn,
   getP1Turn: getP1Turn,
-  getViews: getViews
+  getViews: getViews,
+  getQuizSubId: getQuizSubId,
+  getAvailOpt: getAvailOpt,
+  vQuesInsert: vQuesInsert,
+  getQuizQid: getQuizQid,
+  getQuizActualQues: getQuizActualQues,
+  getQuizOpt: getQuizOpt,
+  getAllFrmTurn: getAllFrmTurn,
+  getUserCorrectScores: getUserCorrectScores,
+  getOppScores: getOppScores,
+  getViewers: getViewers,
+  getUserInfo: getUserInfo,
+  getAllChats: getAllChats
 }

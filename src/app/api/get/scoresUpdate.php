@@ -20,11 +20,11 @@
         $sid = $_SESSION['subject_id'];
         $player_id = $_SESSION['uid'];
 
-        #Get the current value of the user's correct answers
+        # Get the current value of the user's correct answers
         $sql = mysqli_query($conn, "SELECT correct, wrong, questions, scores from scores where player_id = '$player_id' and session_key = '$key' ");
-        
+
         if ( mysqli_num_rows($sql) == 1 ) {
-            
+
             $row = mysqli_fetch_assoc($sql);
             $list->p_correct = $row['correct'] ;
             $list->p_scores = $row['scores'];
@@ -34,7 +34,7 @@
 
             # Return result
             echo json_encode($list);
-            
+
             exit();
         }
         else {
@@ -47,7 +47,7 @@
 
             # Return result
             echo json_encode($list);
-            
+
             exit();
         }
 
@@ -61,7 +61,7 @@
 
         exit();
     }
-    
+
 
 
 ?>

@@ -17,9 +17,10 @@ module.exports = (app) => {
           userModel.login(username, password, (err, rows, fields) => {
               if(err) {
                   console.log('A fatal error occurred');
-              } else {
+              }
+              else {
                   var user = rows[0];
-                  if(!rows) {
+                  if(rows == 0) {
                       res.json({success: false, message: 'Incorrect Login credentials'})
                       res.end();
 
@@ -62,7 +63,7 @@ module.exports = (app) => {
                     console.log('A fatal error occurred');
                 } else {
 
-                    if(!res) {
+                    if(res == 0) {
                         res.json({success: false, message: 'Username already taken'})
                         res.end();
 

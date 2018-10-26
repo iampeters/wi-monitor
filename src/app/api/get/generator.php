@@ -6,7 +6,7 @@
     header("Content-Type: application/json; charset=UTF-8");
 
     if (isset($_SESSION['subject'])) {
-        
+
        # Get session variables
        $sid = $_SESSION['subject_id'];
        $key = $_SESSION['key'];
@@ -43,8 +43,8 @@
                 # Inserting into vQues tbl
                 $vQues = mysqli_query($conn, "INSERT INTO vQues values(null, '$sid', '$Qid', '$key') ");
 
-                
-                
+
+
                 echo '{
                     "success": true,
                     "Qid": "'.$Qid.'",
@@ -54,7 +54,7 @@
             } else {
                 # False
                 echo '{
-                    "success"" false,
+                    "success": false,
                     "message": "A fatal error has occured"
                 }';
             }

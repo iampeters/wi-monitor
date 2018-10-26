@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MiscService } from '../services/misc.service';
 import { GetQuestionsService } from '../services/get-questions.service';
-import { SocketService } from '../../socket.service';
+import { SocketService } from '../socket.service';
 
 @Component({
   selector: 'app-live',
@@ -35,23 +35,23 @@ export class LiveComponent implements OnInit {
 
   ngOnInit() {
     this.actived.paramMap.subscribe( params => {
-      this.id = params.get('id');
+      // this.id = params.get('id');
     });
 
     // Getting game activity
     setInterval(() => {
       this.socket.getLiveData(this.id).subscribe(data => {
-        this.activity = data;
+        // this.activity = data;
     });
 
     // Getting the points
     this.socket.vGameOver().subscribe(data => {
-      this.gameOver = data;
+      // this.gameOver = data;
     });
 
     // Get Answers
     this.socket.getLiveAns().subscribe( data => {
-      this.choices = data;
+      // this.choices = data;
     });
 
     }, 1000);

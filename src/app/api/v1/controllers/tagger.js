@@ -19,12 +19,12 @@ module.exports = (app) => {
           randNum = `gid_${Math.floor(100000 + Math.random() * 900000)}`;
 
            // Query the database to check for games with the subject id
-          gameModel.tagger(subject_id, (err, rows, fields) => {
+          taggerModel.tagger(subject_id, (err, rows, fields) => {
             if ( err ) {
               console.log(`Error!: ${err}`);
             }
             else {
-              if ( !rows ) {
+              if ( rows == 0 ) {
                 console.log('A error occurred');
               }
               else {
@@ -44,7 +44,7 @@ module.exports = (app) => {
                       console.log(`Error!: ${err}`);
                     }
                     else {
-                      if ( !res ) {
+                      if ( res == 0 ) {
                         res.json({success: false, message: 'Opponent failed to add'});
                       }
                       else {
@@ -54,7 +54,7 @@ module.exports = (app) => {
                             console.log(`Error!: ${err}`);
                           }
                           else {
-                              if ( !res ) {
+                              if ( res == 0 ) {
                                 res.json({success: false, message: 'Game could not be initialized'})
                                 res.end();
                               }
@@ -65,7 +65,7 @@ module.exports = (app) => {
                                       console.log(`Error!: ${err}`);
                                     }
                                     else {
-                                        if ( !rows ) {
+                                        if ( rows == 0 ) {
                                             res.json({success: false, message: 'Could not get tag back'})
                                             res.end();
                                         }
@@ -82,7 +82,7 @@ module.exports = (app) => {
                                                     console.log('Error!: ${err}');
                                                 }
                                                 else {
-                                                    if ( !rows ) {
+                                                    if ( rows == 0 ) {
                                                         console.log('Failed to get the selected user');
                                                         res.end();
                                                     }
@@ -99,7 +99,7 @@ module.exports = (app) => {
                                                     console.log(`Error!: ${err}`);
                                                 }
                                                 else {
-                                                    if (!rows) {
+                                                    if (rows == 0) {
                                                         console.log('Failed to get the selected user');
                                                         res.end();
                                                     }
@@ -116,7 +116,7 @@ module.exports = (app) => {
                                                     console.log(`Error!: ${err}`);
                                                 }
                                                 else {
-                                                    if (!rows) {
+                                                    if (rows == 0) {
                                                         res.json({success: false, message: 'Sorry! Could not get the game'})
                                                         res.end();
                                                     }
@@ -133,14 +133,14 @@ module.exports = (app) => {
                                                     console.log(`Error: ${err}`);
                                                 }
                                                 else {
-                                                    if ( !rows ) {
+                                                    if ( rows == 0 ) {
                                                         // Inserting in to the turn table
                                                         taggerModel.turn_insert(o_id, tag_id, (err, res) => {
                                                             if (err) {
                                                                 console.log(`Error: ${err}`);
                                                             }
                                                             else {
-                                                                if (!res) {
+                                                                if (res == 0) {
                                                                     res.json({success: false, message: 'Could not insert into Turn tbl'})
                                                                 }
                                                             }
@@ -201,7 +201,7 @@ module.exports = (app) => {
                             console.log(`Error: ${err}`);
                         }
                         else {
-                            if ( !res ) {
+                            if ( res == 0 ) {
                                 res.json({success: false, message: 'Failed to add new tag'})
                                 res.end();
                             }
@@ -212,7 +212,7 @@ module.exports = (app) => {
                                         console.log(`Error: ${err}`);
                                     }
                                     else {
-                                        if (!rows) {
+                                        if (rows == 0) {
                                             console.log('Failed to get tag');
                                         }
                                         else {
@@ -228,14 +228,14 @@ module.exports = (app) => {
                                         console.log(`Error: ${err}`);
                                     }
                                     else {
-                                        if (!rows) {
+                                        if (rows == 0) {
                                             // Insert in to the turn table
                                             taggerModel.turn_insert2(tid, logged_in_user_id, (err, res) => {
                                                 if (err) {
                                                     console.log(`Error: ${err}`);
                                                 }
                                                 else {
-                                                    if (!res) {
+                                                    if (res == 0) {
                                                         res.json({success: false, message: 'Could not insert into Turn tbl'})
                                                         res.end();
                                                     }
@@ -282,7 +282,7 @@ module.exports = (app) => {
                               console.log(`Error: ${err}`);
                           }
                           else {
-                              if (!rows) {
+                              if (rows == 0) {
                                   // respond with custom error message
                                   res.json({success: false, message: 'Sorry! Could not get any match'})
                               }
@@ -301,7 +301,7 @@ module.exports = (app) => {
                                         console.log(`Error: ${err}`);
                                       }
                                       else {
-                                        if (!rows) {
+                                        if (rows == 0) {
                                           console.log('Error! Could not get player name');
                                         }
                                         else {
@@ -316,7 +316,7 @@ module.exports = (app) => {
                                         console.log(`Error: ${err}`);
                                       }
                                       else {
-                                        if (!rows) {
+                                        if (rows == 0) {
                                           console.log('Error! Could not get opponent name');
                                         }
                                         else {
@@ -341,7 +341,7 @@ module.exports = (app) => {
                                                     console.log(`Error: ${err}`);
                                                 }
                                                 else {
-                                                    if (!res) {
+                                                    if (res == 0) {
                                                         res.json({success: false, message: 'Could not insert into Turn tbl'})
                                                         res.end();
                                                     }
@@ -387,7 +387,7 @@ module.exports = (app) => {
                             console.log(`Error: ${err}`);
                           }
                           else {
-                            if ( !res ) {
+                            if ( res == 0 ) {
                                 res.json({success: false, message: 'Failed to add a new tag'})
                                 res.end();
                             }
@@ -398,7 +398,7 @@ module.exports = (app) => {
                                   console.log(`Error: ${err}`);
                                 }
                                 else {
-                                  if ( !rows ) {
+                                  if ( rows == 0 ) {
                                     console.log('Failed to get tag');
                                   }
                                   else {
@@ -425,7 +425,7 @@ module.exports = (app) => {
                                         console.log(`Error: ${err}`);
                                       }
                                       else {
-                                        if (!res) {
+                                        if (res == 0) {
                                           res.json({success: false, message: 'Could not insert into Turn tbl'})
                                         }
                                       }

@@ -12,15 +12,15 @@ import { SocketService } from '../../socket.service';
   providers: [SocketService]
 })
 export class ViewersComponent implements OnInit {
-  public activity = [];
+  public activity;
   error;
-  public Ques = [];
-  chats = [];
+  public Ques;
+  chats;
   empty;
   needed = false;
-  choices = [];
+  choices;
   q_count;
-  gameOver = [];
+  gameOver;
   p_count;
   o_count;
 
@@ -51,16 +51,16 @@ export class ViewersComponent implements OnInit {
 
      // Getting need
      this.socket.needed().subscribe( data => {
-        if (data.success === true) {
-          this.needed = true;
-          const chat = document.getElementById('chat');
-          chat.style.display = 'block';
-        } else {
-          this.needed = false;
-          const chat = document.getElementById('chat');
-          chat.style.display = 'none';
-        }
-        console.log(data)
+        // if (data.success === true) {
+        //   this.needed = true;
+        //   const chat = document.getElementById('chat');
+        //   chat.style.display = 'block';
+        // } else {
+        //   this.needed = false;
+        //   const chat = document.getElementById('chat');
+        //   chat.style.display = 'none';
+        // }
+        console.log(data);
      });
 
 

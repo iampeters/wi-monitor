@@ -3,11 +3,13 @@ import { Router } from '@angular/router';
 import { GetQuestionsService } from '../services/get-questions.service';
 import { MiscService } from '../services/misc.service';
 import { Answer, Chat } from '../classes/user';
+import { SocketService } from '../socket.service';
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.scss']
+  styleUrls: ['./quiz.component.scss'],
+  providers: [SocketService]
 })
 
 export class QuizComponent implements OnInit {
@@ -31,8 +33,8 @@ export class QuizComponent implements OnInit {
   wrong = 0;
   right = 0;
 
-  opp = [];
-  p1 = [];
+  opp;
+  p1;
 
   q_count = 10;
   marks = 0;
@@ -40,8 +42,8 @@ export class QuizComponent implements OnInit {
   o_time = 30;
   counter = 15;
   expired = 0;
-  public chats = [];
-  public choices = [];
+  public chats;
+  public choices;
   GameOver;
 
   answerModel = new Answer('');
@@ -50,7 +52,8 @@ export class QuizComponent implements OnInit {
   constructor(
     private router: Router,
     private choice: GetQuestionsService,
-    private misc: MiscService
+    private misc: MiscService,
+    private socket: SocketService
   ) { }
 
 
@@ -93,10 +96,10 @@ export class QuizComponent implements OnInit {
         }
 
         // Getting questions from user preferred subject
-        this.choice.getQuestions().subscribe();
+        this.socket.getQuestions().subscribe();
 
         // getting answers
-        this.misc.getAnswers().subscribe( data3 => {
+        this.socket.getViewersAnswers().subscribe( data3 => {
           this.choices = data3;
         });
 
@@ -114,15 +117,14 @@ export class QuizComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-
     // Get questions
    setInterval(() => {
-     this.misc.getQues().subscribe(data => {
-       this.question = data.question;
+     this.socket.getQues().subscribe(data => {
+       this.question = data;
      });
 
      // getting answers
-     this.misc.getAnswers().subscribe(data3 => {
+     this.socket.getViewersAnswers().subscribe(data3 => {
        this.choices = data3;
      });
 
@@ -132,7 +134,7 @@ export class QuizComponent implements OnInit {
      }
 
      // Game Over
-     this.misc.gameOver().subscribe(data => {
+     this.socket.gameOver().subscribe(data => {
        this.GameOver = data;
      });
 
@@ -143,23 +145,22 @@ export class QuizComponent implements OnInit {
 
       // Getting the current player
       const getter = setInterval(() => {
-        this.misc.getter().subscribe(data => {
-          if (data.success === true && data.msg === true) {
+        this.socket.getter().subscribe(data => {
+          if (data === true) {
             this.turn = true;
 
           } else {
             this.turn = false;
-
           }
         });
 
         // Get player one scores
-        this.misc.getP1Scores().subscribe( data => {
+        this.socket.getP1Scores().subscribe( data => {
           this.p1 = data;
         });
 
         // Get player two scores
-        this.misc.getOpp().subscribe(data5 => {
+        this.socket.getOpp().subscribe(data5 => {
           this.opp = data5;
         });
 
@@ -167,12 +168,12 @@ export class QuizComponent implements OnInit {
 
       // Getting viewers
       setInterval(() => {
-        this.misc.getViewers().subscribe(data => {
-          this.viewers = data.message;
+        this.socket.getViewers().subscribe(data => {
+          this.viewers = data;
         });
 
         // Getting the chat
-        this.misc.chatter().subscribe(data => {
+        this.socket.chatter().subscribe(data => {
 
           this.chats = data;
 
@@ -202,7 +203,7 @@ export class QuizComponent implements OnInit {
 
 
           // // getting answers
-          // this.misc.getAnswers().subscribe(data3 => {
+          // this.socket.getViewersAnswers().subscribe(data3 => {
           //   this.choices = data3;
           // });
         }
@@ -289,14 +290,12 @@ export class QuizComponent implements OnInit {
     this.misc.setter().subscribe();
 
      // getting answers
-     this.misc.getAnswers().subscribe(data3 => {
+     this.socket.getViewersAnswers().subscribe(data3 => {
        this.choices = data3;
      });
 
    }
 
-    // This will set the user timer
-    // this.misc.timer().subscribe();
   }
 
   quit() {
@@ -316,7 +315,7 @@ export class QuizComponent implements OnInit {
     this.choice.generator().subscribe();
 
     // getting answers
-    this.misc.getAnswers().subscribe(data3 => {
+    this.socket.getViewersAnswers().subscribe(data3 => {
       this.choices = data3;
     });
 

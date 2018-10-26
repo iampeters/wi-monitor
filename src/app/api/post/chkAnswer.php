@@ -7,7 +7,7 @@
     $_POST = json_decode(file_get_contents('php://input'), true);
 
     if (isset($_POST['choice'])) {
-        
+
         # session variables
         $choice = $_POST['choice'];
         $right = 1;
@@ -36,17 +36,17 @@
 
             #Get the current value of the user's correct answers
             $sql2 = mysqli_query($conn, "SELECT correct, scores from scores where player_id = '$player_id' and session_key = '$key' ");
-            
+
             if ( mysqli_num_rows($sql2) == 1 ) {
-                
+
                 $row = mysqli_fetch_assoc($sql2);
                 $correct_value = $row['correct'] ;
                 $scores = $row['scores'];
 
                 $new_value = $correct_value + 1;
-                $new_scores = $scores + 5; 
+                $new_scores = $scores + 5;
 
-                # Inserting the current value of the correct choices
+                # update scores tbl with the current value of the correct choices
                 $correct_update = mysqli_query( $conn, "UPDATE scores set correct = '$new_value', scores = '$new_scores', timer = 0 where player_id = '$player_id' " );
 
                 echo '{
@@ -68,15 +68,15 @@
                     "message" : "Correct"
                 }';
             }
-            # End of correct answer check 
+            # End of correct answer check
 
         } else {
 
             #Get the current value of the user's wrong answers
             $sql2 = mysqli_query($conn, "SELECT wrong from scores where player_id = '$player_id' and session_key = '$key' ");
-            
+
             if ( mysqli_num_rows($sql2) == 1 ) {
-                
+
                 $row = mysqli_fetch_assoc($sql2);
                 $wrong_value = $row['wrong'] ;
 

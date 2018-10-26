@@ -4,7 +4,7 @@ const conn = require('../database/db');
 const tagger = (subject_id, callback) => {
   var sql = `SELECT * from tag where subject_id = '${subject_id}' and has_ended = '${false}' and is_merged = '0'`;
 
-  conn.query(sql, ( err, rows, fields ) =>{
+  conn.query(sql, ( err, rows, fields ) => {
     callback( err, rows, fields );
   })
 }

@@ -18,7 +18,7 @@
 	      $data = htmlspecialchars($data);
 	      $data = nl2br($data);
           return $data;
-          
+
 	    }
 
         # Dependencies
@@ -63,7 +63,7 @@
             }';
         }
 
-       
+
     } else {
         echo '{
             "message" : "Please enter a message"

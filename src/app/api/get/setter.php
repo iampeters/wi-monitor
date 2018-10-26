@@ -35,10 +35,10 @@
                 $usrChk = mysqli_query($conn, "select * from turns where player_id = '$db_player_id' and tag_id = '$tid'  ");
 
                 if ( mysqli_num_rows( $usrChk ) ) {
-                    
+
                     # saving the results
                     $chkRows = mysqli_fetch_assoc( $usrChk );
-                    
+
                     # Assigning results
                     $chk_p_id = $chkRows['player_id'];
                     $isTurn = $chkRows['is_player'];
@@ -69,11 +69,11 @@
                                     "success": false
                                 }';
                             }
-                            
+
                         }
 
                     } else {
-                        
+
                         # Updating the tbl to true if the tbl value is false
                         $update = mysqli_query($conn, "update turns set is_player = '1' where player_id = '$chk_p_id' and tag_id = '$tid' ");
 
@@ -100,7 +100,7 @@
                             }
                         }
                     }
-                    
+
                 } else {
 
                     # is there an error?
@@ -109,17 +109,17 @@
                         "message": "Oops! Could not start your turn"
                     }';
                 }
-                
+
             } elseif ( $uid === $db_opponent_id ) {
-                
+
                 # Getting the user id from the database
                 $usrChk = mysqli_query($conn, "select * from turns where player_id = '$db_opponent_id' and tag_id = '$tid'  ");
 
                 if ( mysqli_num_rows( $usrChk ) ) {
-                    
+
                     # saving the results
                     $chkRows = mysqli_fetch_assoc( $usrChk );
-                    
+
                     # Assigning results
                     $chk_p_id = $chkRows['player_id'];
                     $isTurn = $chkRows['is_player'];
@@ -135,7 +135,7 @@
                                 "message": "Oops! Could not start your turn"
                             }';
                         } else {
-                            
+
                             # Updating the opponent
                             $opp_update = mysqli_query($conn, "update turns set is_player = '1' where player_id = '$db_player_id' and tag_id = '$tid'  ");
 
@@ -153,7 +153,7 @@
                         }
 
                     } else {
-                        
+
                         # Updating the tbl to true if the tbl value is false
                         $update = mysqli_query($conn, "update turns set is_player = '1' where player_id = '$chk_p_id' and tag_id = '$tid' ");
 
@@ -180,7 +180,7 @@
                             }
                         }
                     }
-                    
+
                 } else {
 
                     # is there an error?
@@ -191,14 +191,14 @@
 
                     }';
                 }
-                
+
 
             } else {
                 echo '{
 
                     "success": false,
                     "message": "Oops! There are no turns to display"
-                    
+
                 }';
             }
 

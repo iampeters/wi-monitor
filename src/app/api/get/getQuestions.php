@@ -24,6 +24,7 @@
 
         if (!$conn->connect_error) {
 
+            // get subject id
             $sql = "SELECT * from questions where subject_id = $id  order by rand() limit 1";
 
             $query = mysqli_query($conn, $sql);
@@ -71,7 +72,7 @@
                 }';
                 exit();
             }
-            
+
 
         }
 
@@ -82,6 +83,6 @@
         }';
         exit();
     }
-    
+
 
 ?>

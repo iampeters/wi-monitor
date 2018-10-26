@@ -11,7 +11,9 @@ export class QuestionsService {
   constructor( private http: HttpClient ) { }
 
   getQuestions(subject) {
-  return this.http.post<MySub>(this.url, subject, { withCredentials: true });
+  return this.http.post<MySub>(this.url + 'questions', {
+    subject
+  });
 
   }
 }

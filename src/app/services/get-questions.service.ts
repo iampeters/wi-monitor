@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class GetQuestionsService {
 
+  __server = 'http://localhost:3000/';
+
   url = '/quizzer/api/get/subjectChoice.php';
   url1 = '/quizzer/api/get/getQuestions.php';
   url2 = '/quizzer/api/get/generator.php';
@@ -16,7 +18,7 @@ export class GetQuestionsService {
 
   // Getting the user preferred subject
   getSubject() {
-    return this.http.get<MyInt>(this.url);
+    return this.http.get<MyInt>(this.__server + 'subjects/choice');
   }
 
   // Getting questions from the preferred subject
@@ -26,7 +28,7 @@ export class GetQuestionsService {
 
   // Getting questions from the server
   generator() {
-    return this.http.get<MyInt>(this.url2);
+    return this.http.get<MyInt>(this.__server + 'game/generator');
   }
 
   // Get questions for loggedIn viewers
