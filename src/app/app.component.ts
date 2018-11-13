@@ -12,7 +12,7 @@ export class AppComponent {
   title = 'app';
 
   constructor (
-  	private misc: MiscService
+    private misc: MiscService
   ) {}
 
   // ngOnInit() {

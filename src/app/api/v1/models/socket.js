@@ -55,16 +55,17 @@ const vQuesQues = (qid, callback) => {
 }
 
 // Get the answers
-const vQuesAns = (qid, callback) => {
-  var sql = `SELECT * from answers where question_id = '${qid}'`;
+const vQuesAns = (question_id, sub_id, callback) => {
+  var sql = `SELECT * from answers where question_id = '${question_id}' and subject_id = ${sub_id} `;
 
   conn.query(sql, (err, rows, fields) => {
+
     callback(err, rows, fields)
   })
 }
 
 // Get viewers questions id
-const vGetQues = (key, sub_id, callback) => {
+const vGetQues = (sub_id, key, callback) => {
   var sql = `SELECT question_id from vQues where session_key = '${key}' and subject_id = '${sub_id}' order by id desc limit 1 `;
 
   conn.query(sql, (err, rows, fields) => {
@@ -92,7 +93,7 @@ const vGetAns = (questions_id, sub_id, callback) => {
 
 // Get tag
 const vGetTag = (key, callback) => {
-  var sql = `SELECT * from tag where session_key = '${key}' and has_ended = '${false}' `;
+  var sql = `SELECT * from tag where session_key = '${key}' and has_ended = 'false' `;
 
   conn.query(sql, (err, rows, fields) => {
     callback(err, rows, fields)
@@ -289,7 +290,7 @@ const getAllFrmTurn = (tid, uid, callback) => {
 }
 
 // Get the current value of the user's correct answers
-const getUserCorrectScores = (key, player_id, callback) => {
+const getUserCorrectScores = (player_id, key, callback) => {
   var sql = `SELECT correct, wrong, questions, scores from scores where player_id = '${player_id}' and session_key = '${key}'`;
 
   conn.query(sql, (err, rows, fields) => {
@@ -298,7 +299,7 @@ const getUserCorrectScores = (key, player_id, callback) => {
 }
 
 // Get the current value of the user's correct answers
-const getOppScores = (key, uid, callback) => {
+const getOppScores = (uid, key, callback) => {
   var sql = `SELECT * from scores where session_key = '${key}' and player_id != '${uid}'`;
 
   conn.query(sql, (err, rows, fields) => {

@@ -15,14 +15,31 @@ export class ViewersComponent implements OnInit {
   public activity;
   error;
   public Ques;
-  chats;
+  chats: any = [];
   empty;
   needed = false;
   choices;
   q_count;
   gameOver;
-  p_count;
+
+  player;
+  opponent;
+  p_scores;
+  p_correct;
+  p_wrong;
+  o_scores;
+  o_correct;
+  o_wrong;
+  p_username;
+  o_username;
+  subject;
+  p_fullname;
+  o_fullname;
+  viewers;
   o_count;
+  p_count;
+  p_turns;
+  o_turns;
 
   chatModel = new Chat('', '');
 
@@ -42,10 +59,28 @@ export class ViewersComponent implements OnInit {
     });
 
     // Getting game activity
-   setInterval(() => {
+    setInterval(() => {
      this.socket.viewerInit().subscribe(data => {
-       this.activity = data;
-       console.log(data);
+
+      // this.player = data.player;
+      // this.opponent = data.opponent;
+      // this.p_scores = data.p_scores;
+      // this.p_correct = data.p_correct;
+      // this.p_wrong = data.p_wrong;
+      // this.o_scores = data.o_scores;
+      // this. o_correct = data.o_correct;
+      // this.o_wrong = data.o_wrong;
+      // this.p_username = data.p_username;
+      // this.o_username = data.o_username;
+      // this.subject = data.subject;
+      // this.p_fullname = data.p_fullname;
+      // this.o_fullname = data.o_fullname;
+      // this.viewers = data.viewers;
+      // this.p_count = data.p_count;
+      // this.o_count = data.o_count;
+      // this.p_turns = data.p_turn;
+      // this.o_turns = data.o_turn;  
+      console.log(data);
 
      });
 
@@ -60,18 +95,18 @@ export class ViewersComponent implements OnInit {
         //   const chat = document.getElementById('chat');
         //   chat.style.display = 'none';
         // }
-        console.log(data);
+        // console.log(data);
      });
 
 
      // Getting the chats
      this.socket.parentChatter().subscribe( data => {
-       this.chats = data;
+       // this.chats = data;
      });
 
      // Getting the points
      this.socket.vGameOver().subscribe( data => {
-       this.gameOver = data;
+       // this.gameOver = data;
 
      });
 
@@ -82,12 +117,12 @@ export class ViewersComponent implements OnInit {
   ngAfterViewInit() {
     setInterval(() => {
       this.socket.vQues().subscribe( data => {
-        this.Ques = data;
+        // this.Ques = data;
       });
 
       // getting answers
       this.socket.getViewersAnswers().subscribe(data3 => {
-        this.choices = data3;
+        // this.choices = data3;
       });
     }, 1000);
   }

@@ -1,3 +1,4 @@
+/* jshint  esversion: 6 */
 const gameModel = require('../models/game')
 const userModel = require('../models/users')
 const ws = require('./game')
@@ -14,206 +15,229 @@ module.exports = (io) => {
 			console.log('user disconnected');
 		})
 
+
+		// tagger session setter
+	    socket.on('tagger-session', (data) => {
+
+	      // set session variables
+	      socket.handshake.session.key = data.session_key
+	      socket.handshake.session.game = data.session_key
+	      socket.handshake.session.tid = data.tag_id
+	      socket.handshake.session.gid = data.game_id
+	      socket.handshake.session.save()
+
+	    })
+
 		// listens to vInit emit event
 		socket.on('vInit', (data) => {
 
-				if (socket.handshake.session.parent && socket.handshake.session.game) {
-					const game = socket.handshake.session.game;
+			var player,
+		        opponent,scores,correct,wrong,o_scores,o_correct,o_wrong,
+		        p_username, o_username,subject,p_fullname,
+		        o_fullname,viewers,p_ques,o_ques,p_turns,o_turns;
 
-					gameModel.gameActivity( game, (err, rows, fields) => {
-						if (err) {
-							console.log(`Error: ${err}`);
-						}
-						else {
-								if (rows == 0) {
-									socket.emit('vInit', {success: false, message: 'Sorry! No tags to display'})
-								}
-								else {
-									// store results
-									var subject_id = rows[0].subject_id,
-											player = rows[0].player_id,
-											opponent = rows[0].opponent_id,
-											tag_id = rows[0].tag_id;
+			if (socket.handshake.session.parent && socket.handshake.session.game) {
+				const game = socket.handshake.session.game;
 
-									// ADD TO SESSION VARIALBLES
-									socket.handshake.session.tag_id = tag_id
-									socket.handshake.session.sub_id = subject_id
+				gameModel.gameActivity( game, (err, rows, fields) => {
+					if (err) {
+						console.log(`Error1: ${err}`);
+					}
+					else {
+							if (rows == 0) {
+								socket.emit('vInit', {success: false, message: 'Sorry! No tags to display'})
+							}
+							else {
+								// store results
+								var subject_id = rows[0].subject_id,
+									player = rows[0].player_id,
+									opponent = rows[0].opponent_id,
+									tag_id = rows[0].tag_id;
 
-									// getting player names
-									gameModel.p_name(player, (err, rows, fields) => {
-										if (err) {
-											console.log(`Error: ${err}`);
-										}
-										else {
-											if ( rows == 0 ) {
-												console.log('Failed to fetch player name');
-											}
-											else {
-												var p_username = rows[0].useranme,
-														p_fullname = rows[0].fullname;
-											}
-										}
-									})
+								// ADD TO SESSION VARIALBLES
+								socket.handshake.session.tag_id = tag_id
+								socket.handshake.session.sub_id = subject_id
+								socket.handshake.session.save()
 
-									// getting opponent names
-									gameModel.o_name(opponent, (err, rows, fields) => {
-										if (err) {
-											console.log(`Error: ${err}`);
-										}
-										else {
-											if ( rows == 0 ) {
-												console.log('Failed to fetch player name');
-											}
-											else {
-												var o_username = rows[0].useranme,
-														o_fullname = rows[0].fullname;
-											}
-										}
-									})
-
-									// get subject
-									gameModel.subj(subject_id, (err, rows, fields) => {
-										if (err) {
-											console.log(`Error: ${err}`);
-										}
-										else {
-											if ( rows == 0 ) {
-												console.log('Failed to fetch player name');
-											}
-											else {
-												// store results
-												var subject = rows[0].subject
-											}
-										}
-									})
-
-									// get viewers
-									gameModel.viewers(game, (err, rows, fields) => {
-										if (err) {
-											console.log(`Error: ${err}`);
-										}
-										else {
-											if ( rows == 0 ) {
-												console.log('Failed to fetch player name');
-											}
-											else {
-												// store results
-												var viewers = rows[0].viewers
-											}
-										}
-									})
-
-									// get turns for player
-									gameModel.turns_p_query(tag_id, player, (err, rows, fields) => {
-										if (err) {
-											console.log(`Error: ${err}`);
-										}
-										else {
-											if ( rows == 0 ) {
-												console.log('Failed to fetch player name');
-											}
-											else {
-												// store results
-												var p_turns = rows[0].is_player
-											}
-										}
-									})
-
-									// get turns for opponent
-									gameModel.turns_o_query(tag_id, opponent, (err, rows, fields) => {
-										if (err) {
-											console.log(`Error: ${err}`);
-										}
-										else {
-											if ( rows == 0 ) {
-												console.log('Failed to fetch player name');
-											}
-											else {
-												// store results
-												var o_turns = rows[0].is_player
-											}
-										}
-									})
-
-									// Getting the scores for player
-									gameModel.player_score(player, game, (err, rows, fields) => {
-										if (err) {
-											console.log(`Error: ${err}`);
-										}
-										else {
-											if ( rows == 0 ) {
-												// store results
-												var correct = 0,
-														wrong = 0,
-														scores = 0,
-														p_ques = 0;
-											}
-											else {
-												// store results
-												var correct = rows[0].correct,
-														wrong = rows[0].wrong,
-														scores = rows[0].scores,
-														p_ques = rows[0].questions;
-											}
-										}
-									})
-
-									// Getting the scores for opponent
-									gameModel.opponent_score(opponent, game, (err, rows, fields) => {
-										if (err) {
-											console.log(`Error: ${err}`);
-										}
-										else {
-											if ( rows == 0 ) {
-												// store results
-												var o_correct = 0,
-														o_wrong = 0,
-														o_scores = 0,
-														o_ques = 0;
-											}
-											else {
-												// store results
-												var o_correct = rows[0].correct,
-														o_wrong = rows[0].wrong,
-														o_scores = rows[0].scores,
-														o_ques = rows[0].questions;
-											}
-										}
-									})
-
-									// RETURN SERVER RESPONSE
-									var data = {
-											success : true,
-											player : player,
-											opponent : opponent,
-											p_scores : scores,
-											p_correct : correct,
-											p_wrong : wrong,
-											o_scores : o_scores,
-											o_correct : o_correct,
-											o_wrong : o_wrong,
-											p_username : p_username,
-											o_username : o_username,
-											subject : subject,
-											p_fullname : p_fullname,
-											o_fullname : o_fullname,
-											viewers : viewers,
-											p_count : p_ques,
-											o_count : o_ques,
-											p_turn : p_turns,
-											o_turn : o_turns
+								// getting player names
+								gameModel.p_name(player, (err, rows, fields) => {
+									if (err) {
+										console.log(`Error2: ${err}`);
 									}
+									else {
+										if ( rows == 0 ) {
+											console.log('Failed to fetch player name');
+										}
+										else {
+											p_username = rows[0].useranme
+											p_fullname = rows[0].fullname
+										}
+									}
+								})
 
-									socket.emit('vInit', data)
-								}
+								// getting opponent names
+								gameModel.o_name(opponent, (err, rows, fields) => {
+									if (err) {
+										console.log(`Error3: ${err}`);
+									}
+									else {
+										if ( rows == 0 ) {
+											console.log('Failed to fetch player name');
+										}
+										else {
+											var o_username = rows[0].useranme,
+													o_fullname = rows[0].fullname;
+										}
+									}
+								})
+
+								// get subject
+								gameModel.subj(subject_id, (err, rows, fields) => {
+									if (err) {
+										console.log(`Error4: ${err}`);
+									}
+									else {
+										if ( rows == 0 ) {
+											console.log('Failed to fetch player name');
+										}
+										else {
+											// store results
+											var subject = rows[0].subject
+										}
+									}
+								})
+
+								// get viewers
+								gameModel.viewers(game, (err, rows, fields) => {
+									if (err) {
+										console.log(`Error5: ${err}`);
+									}
+									else {
+										if ( rows == 0 ) {
+											console.log('Failed to fetch player name');
+										}
+										else {
+											// store results
+											var viewers = rows[0].viewers
+										}
+									}
+								})
+
+								// get turns for player
+								gameModel.turns_p_query(tag_id, player, (err, rows, fields) => {
+									if (err) {
+										console.log(`Error6: ${err}`);
+									}
+									else {
+										if ( rows == 0 ) {
+											console.log('Failed to fetch player name');
+										}
+										else {
+											// store results
+											var p_turns = rows[0].is_player
+										}
+									}
+								})
+
+								// get turns for opponent
+								gameModel.turns_o_query(tag_id, opponent, (err, rows, fields) => {
+									if (err) {
+										console.log(`Error7: ${err}`);
+									}
+									else {
+										if ( rows == 0 ) {
+											console.log('Failed to fetch player name');
+										}
+										else {
+											// store results
+											var o_turns = rows[0].is_player
+										}
+									}
+								})
+
+								// Getting the scores for player
+								gameModel.player_score(player, game, (err, rows, fields) => {
+									if (err) {
+										console.log(`Error8: ${err}`);
+									}
+									else {
+										if ( rows == 0 ) {
+											// store results
+											var correct = 0,
+													wrong = 0,
+													scores = 0,
+													p_ques = 0;
+										}
+										else {
+											// store results
+											var correct = rows[0].correct,
+													wrong = rows[0].wrong,
+													scores = rows[0].scores,
+													p_ques = rows[0].questions;
+										}
+									}
+								})
+
+								// Getting the scores for opponent
+								gameModel.opponent_score(opponent, game, (err, rows, fields) => {
+									if (err) {
+										console.log(`Error9: ${err}`);
+									}
+									else {
+										if ( rows == 0 ) {
+											// store results
+											var o_correct = 0,
+													o_wrong = 0,
+													o_scores = 0,
+													o_ques = 0;
+										}
+										else {
+											// store results
+											var o_correct = rows[0].correct,
+													o_wrong = rows[0].wrong,
+													o_scores = rows[0].scores,
+													o_ques = rows[0].questions;
+										}
+									}
+								})
+
+								// RETURN SERVER RESPONSE
+								// var data = {
+								// 	success : true,
+								// 	player : player,
+								// 	opponent : opponent,
+								// 	p_scores : scores,
+								// 	p_correct : correct,
+								// 	p_wrong : wrong,
+								// 	o_scores : o_scores,
+								// 	o_correct : o_correct,
+								// 	o_wrong : o_wrong,
+								// 	p_username : p_username,
+								// 	o_username : o_username,
+								// 	subject : subject,
+								// 	p_fullname : p_fullname,
+								// 	o_fullname : o_fullname,
+								// 	viewers : viewers,
+								// 	p_count : p_ques,
+								// 	o_count : o_ques,
+								// 	p_turn : p_turns,
+								// 	o_turn : o_turns
+								// }
+
+								// socket.emit('vInit', data)
+								console.log(p_username +' ' + p_fullname)
+							}
 						}
 					})
 				}
 				else {
 					// emit 401 error
-					socket.emit('vInit', {success: false, message: 'Unauthorized Access /'})
+					// socket.emit('vInit', {success: false, message: 'Unauthorized Access /'})
+					console.log('Invalid session')
 				}
 		})
+
+
 
 		// listens to Needed
 		socket.on('needed', (data) => {
@@ -225,7 +249,7 @@ module.exports = (io) => {
 				// Query to get ward_id from guardian tbl
 				wsModel.wardId( parent, (err, rows, fields) => {
 					if (err) {
-						console.log(`Error: ${err}`);
+						console.log(`Error10: ${err}`);
 					}
 					else {
 						if (rows == 0) {
@@ -250,64 +274,66 @@ module.exports = (io) => {
 		socket.on('parent-chatter', (data) => {
 
 			if (socket.handshake.session.parent) {
-					var parent = socket.handshake.session.parent,
-							game = socket.handshake.session.game;
+				var parent = socket.handshake.session.parent,
+						game = socket.handshake.session.game;
 
-					// Query to get ward_id from guardian tbl
-					wsModel.wardId( parent, (err, rows, fields) => {
-						if (err) {
-							console.log(`Error: ${err}`);
+				// Query to get ward_id from guardian tbl
+				wsModel.wardId( parent, (err, rows, fields) => {
+					if (err) {
+						console.log(`Error11: ${err}`);
+					}
+					else {
+						if (rows == 0) {
+							// emit RESPONSE
+							socket.emit('parent-chatter', {success: false, message: 'Sorry! ward does not exist'})
 						}
 						else {
-							if (rows == 0) {
-								// emit RESPONSE
-								socket.emit('parent-chatter', {success: false, message: 'Sorry! ward does not exist'})
-							}
-							else {
-								var ward_id = rows[0].ward_id
+							var ward_id = rows[0].ward_id
 
-								// Query to get ward usrname from users tbl
-								wsModel.wardUsername( ward_id, (err, rows, fields) => {
-									if (err) {
-										console.log(`Error: ${err}`);
+							// Query to get ward usrname from users tbl
+							wsModel.wardUsername( ward_id, (err, rows, fields) => {
+								if (err) {
+									console.log(`Error12: ${err}`);
+								}
+								else {
+									if (rows == 0) {
+										// emit error
+										socket.emit('parent-chatter', {success: false})
 									}
 									else {
-										if (rows == 0) {
-											// emit error
-											socket.emit('parent-chatter', {success: false})
-										}
-										else {
-											// store result
-											var username = rows[0].username;
-										}
+										// store result
+										var username = rows[0].username;
+
+
+										// chat logic
+										wsModel.getChats(username, parent, (err, rows, fields) => {
+											if (err) {
+												console.log(`Error13: ${err}`);
+											}
+											else {
+												if (rows > 0) {
+													// emit response
+													socket.emit('parent-chatter', {data: rows[0]})
+												}
+												else {
+													// will emit empty chats
+													socket.emit('parent-chatter', {success: false, message: 'There are no chats to display'})
+												}
+											}
+										})
 									}
-								})
+								}
+							})
 
-							}
 						}
-					})
+					}
+				})
 
-					// chat logic
-					wsModel.getChats(username, parent, (err, rows, fields) => {
-						if (err) {
-							console.log(`Error: ${err}`);
-						}
-						else {
-							if (rows) {
-								// emit response
-								socket.emit('parent-chatter', {data: rows[0]})
-							}
-							else {
-								// will emit empty chats
-								socket.emit('parent-chatter', {data: rows[0]})
-							}
-						}
-					})
 			}
-			else {
-				// RETURN 401 ERROR
-				socket.emit('parent-chatter', {success: false, message: 'Unauthorized Access /'});
-			}
+			// else {
+			// 	// RETURN 401 ERROR
+			// 	socket.emit('parent-chatter', {success: false, message: 'Unauthorized Access /'});
+			// }
 		})
 
 		// viewers game over
@@ -319,7 +345,7 @@ module.exports = (io) => {
 					// Get tag
 					wsModel.getTag(key, (err, rows, fields) => {
 						if (err) {
-							console.log(`Error: ${err}`);
+							console.log(`Error14: ${err}`);
 						}
 						else {
 							if (rows == 0) {
@@ -373,9 +399,6 @@ module.exports = (io) => {
 						socket.emit('vGameOver', data)
 					})
 			}
-			else {
-				console.log('Unauthorized Access /');
-			}
 		})
 
 		// vQues
@@ -388,7 +411,7 @@ module.exports = (io) => {
 					// Query for question id from vQues tbl
 					wsModel.vQues(key, (err, rows, fields) => {
 						if (err) {
-							console.log(`Error: ${err}`);
+							console.log(`Error15: ${err}`);
 						}
 						else {
 							if (rows == 0) {
@@ -406,7 +429,7 @@ module.exports = (io) => {
 					// Get the actual question
 					wsModel.vQuesQues(qid, (err, rows, fields) => {
 						if (err) {
-							console.log(`Error: ${err}`);
+							console.log(`Error16: ${err}`);
 						}
 						else {
 							if (rows == 0) {
@@ -423,7 +446,7 @@ module.exports = (io) => {
 					// Get the answers
 					wsModel.vQuesAns(qid, (err, rows, fields) => {
 						if (err) {
-							console.log(`Error: ${err}`);
+							console.log(`Error17: ${err}`);
 						}
 						else {
 							if (rows == 0) {
@@ -449,12 +472,13 @@ module.exports = (io) => {
 					// EMIT RESPONSE
 					socket.emit('vQues', data);
 			}
-			else {
-				// EMIT 401 ERROR
-				socket.emit('vQues', {success: false, message: 'Unauthorized Access /'});
-			}
+			// else {
+			// 	// EMIT 401 ERROR
+			// 	socket.emit('vQues', {success: false, message: 'Unauthorized Access /'});
+			// }
 
 		})
+
 
 		// get viewers answers
 		socket.on('getViewerAns', (data) => {
@@ -466,22 +490,25 @@ module.exports = (io) => {
 					// Get viewers questions id
 					wsModel.vGetQues(sub_id, key, (err, rows, fields) => {
 						if (err) {
-							console.log(`Error: ${err}`);
+							console.log(`Error18: ${err}`);
 						}
 						else {
 							if (rows == 0) {
 								// emit response
-								var question = 'I didnt get anything'
-								socket.emit('getViewerAns', {question});
+								// socket.emit('getViewerAns', {question: 'I didnt get anything'});
+								console.log('getViewerAns', {question: 'I didnt get anything'});
 							}
 							else {
 								// store result
 								var question_id = rows[0].question_id
 
+								socket.handshake.session.vQuesId = question_id
+								socket.handshake.session.save()
+
 								// Get the viewers actual question
-								wsModel.vGetActualQues(questions_id, (err, rows, fields) => {
+								wsModel.vGetActualQues(question_id, (err, rows, fields) => {
 									if (err) {
-										console.log(`Error: ${err}`);
+										console.log(`Error19: ${err}`);
 									}
 									else {
 										if (rows == 0) {
@@ -496,9 +523,9 @@ module.exports = (io) => {
 								})
 
 								// Query to get answers
-								wsModel.vQuesAns(questions_id, sub_id, (err, rows, fields) => {
+								wsModel.vQuesAns(question_id, sub_id, (err, rows, fields) => {
 									if (err) {
-										console.log(`Error: ${err}`);
+										console.log(`Error20: ${err}`);
 									}
 									else {
 										if (rows == 0) {
@@ -509,12 +536,13 @@ module.exports = (io) => {
 											// store result in a js array
 											var data = [{},{},{},{}];
 											data[0].answer = rows[0].option_1
-			                data[1].answer = rows[0].option_2
-			                data[2].answer = rows[0].option_3
-			                data[3].answer = rows[0].answer
+											data[1].answer = rows[0].option_2
+											data[2].answer = rows[0].option_3
+											data[3].answer = rows[0].answer
 
 											// emit response
 											socket.emit('getViewerAns', data);
+											// console.log('getViewerAns', data);
 										}
 									}
 								})
@@ -533,7 +561,7 @@ module.exports = (io) => {
 			// get tag
 			wsModel.vGetTag(key, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error21: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -555,7 +583,7 @@ module.exports = (io) => {
 			// Get question id
 			wsModel.GetQuesId(key, subject_id, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error22: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -572,7 +600,7 @@ module.exports = (io) => {
 			// get questions
 			wsModel.GetQues(key, subject_id, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error23: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -582,7 +610,7 @@ module.exports = (io) => {
 					else {
 						// store result
 						var question = rows[0].question,
-								answer = rows[0].answer
+							answer = rows[0].answer
 					}
 				}
 			})
@@ -590,7 +618,7 @@ module.exports = (io) => {
 			// Get player 1 fullname
 			wsModel.getP1(player_id, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error24: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -607,7 +635,7 @@ module.exports = (io) => {
 			// Get player 2 fullname
 			wsModel.getP2(opponent_id, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error25: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -624,7 +652,7 @@ module.exports = (io) => {
 			// Get subjects
 			wsModel.getLiveSub(subject_id, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error26: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -641,7 +669,7 @@ module.exports = (io) => {
 			// Get Scores for player 1
 			wsModel.getP1Score(player_id, key, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error27: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -661,7 +689,7 @@ module.exports = (io) => {
 			// Get Scores for player 2
 			wsModel.getP2Score(opponent_id, key, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error28: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -681,7 +709,7 @@ module.exports = (io) => {
 			// Get player 1 turn from turns tbl
 			wsModel.getP1Turn(player_id, tag_id, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error29: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -698,7 +726,7 @@ module.exports = (io) => {
 			// Get player 2 turn from turns tbl
 			wsModel.getP2Turn(opponent_id, tag_id, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error30: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -715,7 +743,7 @@ module.exports = (io) => {
 			// Get viewers from game tbl
 			wsModel.getViews(key, (err, rows, fields) => {
 				if (err) {
-					console.log(`Error: ${err}`);
+					console.log(`Error31: ${err}`);
 				}
 				else {
 					if (rows == 0) {
@@ -733,6 +761,7 @@ module.exports = (io) => {
 			socket.handshake.session.QID = question_id
 			socket.handshake.session.wid = player_id
 			socket.handshake.session.game = key
+			socket.handshake.session.save()
 
 			// EMIT RESPONSE
 			var data = {
@@ -763,7 +792,7 @@ module.exports = (io) => {
 
 				wsModel.getLiveAns(question_id, (err, rows, fields) => {
 					if (err) {
-						console.log(`Error: ${err}`);
+						console.log(`Error32: ${err}`);
 					}
 					else {
 						if (rows == 0) {
@@ -803,7 +832,7 @@ module.exports = (io) => {
 				// get quiz subject id
 				wsModel.getQuizSubId(id, (err, rows, fields) => {
 					if (err) {
-						console.log(`Error: ${err}`);
+						console.log(`Error33: ${err}`);
 					}
 					else {
 						if (rows == 0) {
@@ -819,7 +848,7 @@ module.exports = (io) => {
 							// getting available options
 							wsModel.getAvailOpt(Qid, (err, rows, fields) => {
 								if (err) {
-									console.log(`Error: ${err}`);
+									console.log(`Error34: ${err}`);
 								}
 								else {
 									if (rows == 0) {
@@ -829,14 +858,14 @@ module.exports = (io) => {
 									else {
 										// store results
 										var option1 = rows[0].option1,
-												option2 = rows[0].option2,
-												option3 = rows[0].option3,
-												c_answer = rows[0].answer
+											option2 = rows[0].option2,
+											option3 = rows[0].option3,
+											c_answer = rows[0].answer
 
 										// Inserting into vQues tbl
-										wsModel.vQuesInsert(qid, id, key, (err, res) => {
+										wsModel.vQuesInsert(Qid, id, key, (err, res) => {
 											if (err) {
-												console.log(`Error: ${err}`);
+												console.log(`Error35: ${err}`);
 											}
 											else {
 												if (res == 0) {
@@ -870,30 +899,36 @@ module.exports = (io) => {
 			if (socket.handshake.session.subject) {
 				// store session variables
 				var sub_id = socket.handshake.session.subject_id,
-						key = socket.handshake.session.key,
+						key = socket.handshake.session.session_key,
 						ques_id = socket.handshake.session.questions_id
+
+						var vQuesId = socket.handshake.session.vQuesId
 
 				// get quiz qid
 				wsModel.getQuizQid(sub_id, key, (err, rows, fields) => {
 					if (err) {
-						console.log(`Error: ${err}`);
+						console.log(`Error36: ${err}`);
 					}
 					else {
 						if (rows == 0) {
 							// emit response
-							socket.emit('getQuizQues', [{success: false, question: 'I didnt get anything'}]);
+							console.log('getQuizQues', {success: false, message: 'I didnt get anything'});
 						}
 						else {
 							// store results
-							var question_id = rows[0].questions_id
+							var question_i = rows[0].question_id
 
 							// add to session variables
-							socket.handshake.session.questions_id = question_id
+							// socket.handshake.session.questions_id = question_id
+							// socket.handshake.session.save(
+							question_id = vQuesId;
+
+
 
 							// Query the actual question
 							wsModel.getQuizActualQues(question_id, (err, rows, fields) => {
 								if (err) {
-									console.log(`Error: ${err}`);
+									console.log(`Error37: ${err}`);
 								}
 								else {
 									if (rows == 0) {
@@ -904,11 +939,11 @@ module.exports = (io) => {
 										// store results
 										var question = rows[0].question
 									}
+
+									// emit result
+									socket.emit('getQuizQues', {success: true, question: question, question_id: question_id });
 								}
 							})
-
-							// emit result
-							socket.emit('getQuizQues', {success: true, question: question, question_id: question_id });
 						}
 					}
 				})
@@ -928,9 +963,10 @@ module.exports = (io) => {
 						key = socket.handshake.session.key,
 						ques_id = socket.handshake.session.questions_id
 
+
 				wsModel.getQuizQid(sub_id, key, (err, rows, fields) => {
 					if (err) {
-						console.log(`Error: ${err}`);
+						console.log(`Error38: ${err}`);
 					}
 					else {
 						if (rows == 0) {
@@ -944,7 +980,7 @@ module.exports = (io) => {
 							// Query the actual question
 							wsModel.getQuizActualQues(question_id, (err, rows, fields) => {
 								if (err) {
-									console.log(`Error: ${err}`);
+									console.log(`Error39: ${err}`);
 								}
 								else {
 									if (rows == 0) {
@@ -959,7 +995,7 @@ module.exports = (io) => {
 										// getting available options
 										wsModel.getQuizOpt(sub_id, question_id, (err, rows, fields) => {
 											if (err) {
-												console.log(`Error: ${err}`);
+												console.log(`Error40: ${err}`);
 											}
 											else {
 												if (rows == 0) {
@@ -1005,7 +1041,7 @@ module.exports = (io) => {
 					// Get tag
 					wsModel.getTag(key, (err, rows, fields) => {
 						if (err) {
-							console.log(`Error: ${err}`);
+							console.log(`Error41: ${err}`);
 						}
 						else {
 							if (rows == 0) {
@@ -1059,13 +1095,11 @@ module.exports = (io) => {
 						socket.emit('GameOver', data)
 					})
 			}
-			else {
-				console.log('Unauthorized Access /');
-			}
 		})
 
 		// getter
 		socket.on('getter', (data) => {
+
 			if (socket.handshake.session.tid && socket.handshake.session.uid) {
 					var uid = socket.handshake.session.uid,
 							tid = socket.handshake.session.tid;
@@ -1073,7 +1107,7 @@ module.exports = (io) => {
 					// Get all from turns tbl getAllFrmTurn
 					wsModel.getAllFrmTurn(tid, uid, (err, rows, fields) => {
 						if (err) {
-							console.log(`Error: ${err}`);
+							console.log(`Error42: ${err}`);
 						}
 						else {
 							if (rows == 0) {
@@ -1084,15 +1118,13 @@ module.exports = (io) => {
 								// store result
 								var isTurn = rows[0].is_player;
 
-								if ($isTurn == 0) {
+								if (isTurn == 0) {
 										// emit response
-										var success = false;
-									socket.emit('getter', {success})
+									socket.emit('getter', {success: false})
 		            }
 								else {
 										// emit response
-										var success = true;
-									socket.emit('getter', {success})
+									socket.emit('getter', {success: true})
 		            }
 							}
 						}
@@ -1100,7 +1132,8 @@ module.exports = (io) => {
 			}
 			else {
 				// emit RESPONSE
-				socket.emit('getter', {success: false, message: 'Unauthorized Access /'})
+				// socket.emit('getter', {success: false, message: 'Unauthorized Access /'})
+				console.log(`Getter has Failed`)
 			}
 		})
 
@@ -1114,10 +1147,11 @@ module.exports = (io) => {
 						tid = socket.handshake.session.tid,
 						gid = socket.handshake.session.gid
 
+
 				// Get the current value of the user's correct answers
 				wsModel.getUserCorrectScores(player_id, key, (err, rows, fields) => {
 					if (err) {
-						console.log(`Error: ${err}`);
+						console.log(`Error43: ${err}`);
 					}
 					else {
 						if (rows == 0) {
@@ -1127,7 +1161,7 @@ module.exports = (io) => {
 								p_scores:0,
 								p_wrong: 0,
 								p_questions: 0,
-								success: true
+								success: false
 							}
 							// emit response
 							socket.emit('scoreUpdate', data)
@@ -1135,10 +1169,10 @@ module.exports = (io) => {
 						else {
 							// store result
 							var data = {
-								p_correct : row[0].correct,
-								p_scores : row[0].scores,
-								p_wrong : row[0].wrong,
-								p_questions : row[0].questions,
+								p_correct : rows[0].correct,
+								p_scores : rows[0].scores,
+								p_wrong : rows[0].wrong,
+								p_questions : rows[0].questions,
 								success : true
 							}
 							// emit response
@@ -1146,12 +1180,9 @@ module.exports = (io) => {
 						}
 					}
 				})
-
-
 			}
 			else {
-				// emit response
-				socket.emit('scoreUpdate', {success: false, message: 'Unauthorized Access /'})
+				console.log(`Access denied for scoreUpdate`);
 			}
 		})
 
@@ -1168,23 +1199,31 @@ module.exports = (io) => {
 				// Get the current value of the user's correct answers
 				wsModel.getOppScores(uid, key, (err, rows, fields) => {
 					if (err) {
-						console.log(`Error: ${err}`);
+						console.log(`Error44: ${err}`);
 					}
 					else {
 						if (rows == 0) {
 							// emit response
-							socket.emit('getP2Scores', {success: false, message: 'Sorry! There\'s nothing on the Scoreboard'})
+							var data = {
+								o_correct : 0,
+								o_scores : 0,
+								o_wrong : 0,
+								o_questions : 0
+							}
+
+							// emit response
+							socket.emit('getP2Scores', data)
 						}
 						else {
 
 							if (uid !== rows[0].player_id) {
 								// store result
 								var data = {
-									o_correct : row[0].correct,
-									o_scores : row[0].scores,
-									o_wrong : row[0].wrong,
-									o_questions : row[0].questions,
-									opponent: rows[0].player_id
+									o_correct : rows[0].correct,
+									o_scores : rows[0].scores,
+									o_wrong : rows[0].wrong,
+									o_questions : rows[0].questions,
+									opponent: rowss[0].player_id
 								}
 								// emit response
 								socket.emit('getP2Scores', data)
@@ -1200,8 +1239,8 @@ module.exports = (io) => {
 
 			}
 			else {
-				// emit response
-				socket.emit('scoreUpdate', {success: false, message: 'Unauthorized Access /'})
+				// // emit response
+				console.log(`Access denied for P2 scoreUpdate`);
 			}
 		})
 
@@ -1213,29 +1252,27 @@ module.exports = (io) => {
 				// Getting viewers
 				wsModel.getViewers(key, (err, rows, fields) => {
 					if (err) {
-						console.log(`Error: ${err}`);
+						console.log(`Error45: ${err}`);
 					}
 					else {
 						if (rows == 0) {
 							// emit response
-							var message = 'Oops! There are no turns to display';
-							socket.emit('getViewers', {message})
+							socket.emit('getViewers', {message: 'Oops! There are no turns to display'})
 						}
 						else {
 							// store result
 							var viewers = rows[0].viewers;
 
 							// emit response
-							socket.emit('getViewers', {viewers})
+							socket.emit('getViewers', {viewers: viewers})
 						}
 					}
 				})
 			}
-			else {
-				// emit response
-				var success = false;
-				socket.emit('getViewers', {success})
-			}
+			// else {
+			// 	// emit response
+			// 	socket.emit('getViewers', {success: false})
+			// }
 		})
 
 		// chatter
@@ -1248,7 +1285,7 @@ module.exports = (io) => {
 				// Query id and username from guardian tbl
 				wsModel.getUserInfo(uid, (err, rows, fields) => {
 					if (err) {
-						console.log(`Error: ${err}`);
+						console.log(`Error46: ${err}`);
 					}
 					else {
 						if (rows == 0) {
@@ -1260,31 +1297,36 @@ module.exports = (io) => {
 							var guardian_id = rows[0].id,
 									g_uname = rows[0].username;
 						}
+
+						// Query chats from the chat tbl
+						wsModel.getAllChats(g_uname, username, (err, rows, fields) => {
+							if (err) {
+								console.log(`Error47: ${err}`);
+							}
+							else {
+
+								if (rows == 0) {
+									// emit response
+									// socket.emit('chatter', {data: 'empty'})
+								}
+								else {
+									// store result
+									// emit response
+									socket.emit('chatter', rows)
+								}
+							}
+						})
 					}
 				})
 
-				// Query chats from the chat tbl
-				wsModel.getAllChats(g_uname, username, (err, rows, fields) => {
-					if (err) {
-						console.log(`Error: ${err}`);
-					}
-					else {
-
-						if (rows == 0) {
-							// emit response
-							socket.emit('chatter', {data: rows[0]})
-						}
-						else {
-							// store result
-							// emit response
-							socket.emit('chatter', {data: rows[0]})
-						}
-					}
-				})
 			}
 			else {
 				// emit response
-				socket.emit('chatter', {success: false, message: '401 Unauthorized Access /'})
+				var data = {
+					success: false,
+					message: '401 Unauthorized Access /'
+				}
+				socket.emit('chatter', data)
 			}
 
 		})

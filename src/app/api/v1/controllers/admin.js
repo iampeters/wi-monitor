@@ -94,7 +94,7 @@ module.exports = (app) => {
           console.log('Error: ${err}');
         }
         else {
-          if (rows) {
+          if (rows > 0) {
             res.json({success: false, message: 'Sorry! Username already taken'})
             res.end()
           }

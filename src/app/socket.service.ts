@@ -13,6 +13,8 @@ export class SocketService {
   constructor( ) {
   }
 
+
+
   // send a message to socket
   message(msg) {
     // send msg
@@ -38,7 +40,7 @@ export class SocketService {
     this.socket.emit('vInit', 'hi');
 
     // get server response
-    const observable = new Observable(observer => {
+    const observable = new Observable<Activity>(observer => {
       this.socket.on('vInit', (data) => {
         observer.next(data);
       });
@@ -74,7 +76,7 @@ export class SocketService {
     this.socket.emit('parent-chatter', 'hi');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<Chatter[]>( observer => {
       this.socket.on('parent-chatter', (data) => {
         observer.next(data);
       });
@@ -133,12 +135,28 @@ export class SocketService {
     return observable;
   }
 
+  // // getViewersAnswers
+  // getViewersAnswers() {
+  //   this.socket.emit('getQuizAns', 'hi');
+
+  //   // get socket response
+  //   const observable = new Observable<Myface>( observer => {
+  //     this.socket.on('getQuizAns', (data) => {
+  //       observer.next(data);
+  //     });
+  //       return () => {
+  //         this.socket.disconnect();
+  //       };
+  //   });
+  //   return observable;
+  // }
+
   // getViewersAnswers
   getViewersAnswers() {
     this.socket.emit('getViewerAns', 'hi');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<Myface>( observer => {
       this.socket.on('getViewerAns', (data) => {
         observer.next(data);
       });
@@ -220,7 +238,7 @@ export class SocketService {
     this.socket.emit('getQuizQues', 'hello socket');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<Myface>( observer => {
       this.socket.on('getQuizQues', (data) => {
         observer.next(data);
       });
@@ -236,7 +254,7 @@ export class SocketService {
     this.socket.emit('getter', 'hello socket');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<Myface>( observer => {
       this.socket.on('getter', (data) => {
         observer.next(data);
       });
@@ -252,7 +270,7 @@ export class SocketService {
     this.socket.emit('scoreUpdate', 'hello socket');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<Data>( observer => {
       this.socket.on('scoreUpdate', (data) => {
         observer.next(data);
       });
@@ -268,7 +286,7 @@ export class SocketService {
     this.socket.emit('getP2Scores', 'hello socket');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<Data>( observer => {
       this.socket.on('getP2Scores', (data) => {
         observer.next(data);
       });
@@ -284,7 +302,7 @@ export class SocketService {
     this.socket.emit('getViewers', 'hello socket');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<Data>( observer => {
       this.socket.on('getViewers', (data) => {
         observer.next(data);
       });
@@ -300,7 +318,7 @@ export class SocketService {
     this.socket.emit('chatter', 'hi');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<Chatter[]>( observer => {
       this.socket.on('chatter', (data) => {
         observer.next(data);
       });
@@ -311,5 +329,159 @@ export class SocketService {
     return observable;
   }
 
+  send(message) {
+      this.socket.emit('test', message);
+      // get socket response
+      const observable = new Observable<Data>( observer => {
+        this.socket.on('test', (data) => {
+          observer.next(data);
+        });
+          return () => {
+            this.socket.disconnect();
+          };
+      });
+      return observable;
+  }
 
+  taggerSession(game_id, session_key, tag_id) {
+
+    const data = {
+      game_id : game_id,
+      session_key: session_key,
+      tag_id: tag_id
+    };
+
+    // emit socket
+    this.socket.emit('tagger-session', data);
+  }
+
+
+
+}
+
+export interface Data {
+  p_correct: string;
+  p_scores: string;
+  p_wrong: string;
+  subject: string;
+  p2_name: string;
+  p_name: string;
+  p_questions: string;
+  o_questions: any;
+  o_scores: number;
+  o_wrong: number;
+  o_correct: number;
+  question: string;
+  p1_turn: number;
+  p2_turn: number;
+  viewers: number;
+  success: boolean;
+  opponent: number;
+  message: string;
+
+  // Options from the set question
+  option1: string;
+  option2: string;
+  option3: string;
+  option4: string;
+}
+
+export interface Myface {
+  success: boolean;
+  fullname: string;
+  username: string;
+  password: string;
+  message: string;
+  guardian: string;
+  subject: string;
+  option1: string;
+  option2: string;
+  option3: string;
+  option4: string;
+  answer: string;
+  question: string;
+  ward: string;
+  question_id: number;
+}
+
+export interface Chatter {
+  success: boolean;
+  mid: number;
+  sender: string;
+  receiver: string;
+  message: string;
+}
+
+export interface Game {
+  session_key: string;
+  success: boolean;
+  message: string;
+}
+
+export interface Activity {
+  success: boolean;
+  opponent: string;
+  player: string;
+  subject: string;
+  p_correct: number;
+  p_wrong: number;
+  p_scores: number;
+  o_correct: number;
+  o_wrong: number;
+  o_scores: number;
+  p_username: string;
+  o_username: string;
+  o_fullname: string;
+  p_fullname: string;
+  viewers: number;
+  o_count: any;
+  p_count: number;
+  p_turn: number;
+  o_turn: number;
+  p_questions: number;
+  o_questions: any;
+}
+
+export interface GameOver {
+  player: string;
+  opponent: string;
+}
+
+export interface Points {
+  userid: number;
+  username: string;
+  points: number;
+  wins: number;
+  losses: number;
+  draws: number;
+  id: number;
+  level: number;
+}
+
+export interface Log {
+  username: string;
+  password: string;
+}
+
+export interface Tagger {
+  success: boolean;
+  message: string;
+  data: string;
+  game_id: number;
+  tag_id: number;
+  subject_id: number;
+  subject: string;
+  player_id: number;
+  opponent_id: number;
+  session_key: string;
+  player_name: string;
+  opponent_name: string;
+  loggedInUser: string;
+  username: string;
+  wrong: number;
+  right: number;
+  value: number;
+  scores: number;
+  msg: boolean;
+  time: number;
 }

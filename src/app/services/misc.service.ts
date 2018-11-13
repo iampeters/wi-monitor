@@ -90,6 +90,13 @@ export class MiscService {
     return this.http.get<Tagger>(this.__server + 'tagger');
   }
 
+  // this will set the tagger session
+  taggerSession(game_id, session_key, tag_id) {
+    return this.http.post(this.__server + 'tagger/session', {
+      game_id, session_key, tag_id
+    });
+  }
+
   // This will check if a user is logged in for all template
   isLoggedIn() {
     return this.http.get<Myface>(this.__server + 'is-logged-in');
@@ -441,5 +448,5 @@ export interface Points {
 export interface Log {
   username: string;
   password: string;
-  fullname;
+  fullname: string;
 }

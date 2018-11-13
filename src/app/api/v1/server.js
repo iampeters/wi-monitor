@@ -17,9 +17,10 @@ const sharedSession = require('express-socket.io-session')
 
 const app = express();
 
-//session
+// Use express-session middleware for express
 app.use(session)
 
+// Http headers middleware
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', "http://localhost:4200")
     res.header('Access-Control-Allow-Methods', "GET, PUT, POST, DELETE")
@@ -29,9 +30,14 @@ app.use((req, res, next) => {
 })
 
 const server = http.Server(app)
-const io = socket(server, { cookie: true })
 
-io.use(sharedSession(session))
+const io = socket(server)
+
+// Use shared session middleware for socket.io
+// setting autoSave:true
+io.use(sharedSession(session, {
+    autoSave: true
+}))
 
 
 // Fire controllers

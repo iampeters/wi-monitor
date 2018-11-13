@@ -15,26 +15,22 @@ res;
   constructor( private socket: SocketService ) { }
 
   ngOnInit() {
-    // setInterval(() => {
-    //   const msg = 'hello dave';
-    //
-    //   this.connection = this.socket.message(msg).subscribe(data => {
-    //     // this.res = data
-    //     console.log(data.username);
-    //   });
-    // }, 1000)
+    setInterval(() => {
+      const msg = 'hello dave';
+      this.connection = this.socket.send(msg).subscribe(data => {
+        this.res = data;
+        console.log(data.message);
+      });
+    }, 1000);
   }
 
   send() {
     const msg = 'hello dave';
 
-    this.connection = this.socket.message(msg).subscribe(data => {
-      // this.res = data
+    this.connection = this.socket.send(msg).subscribe(data => {
+      this.res = data.message;
       console.log(data);
     });
-    // .subscribe( data => {
-    //   console.log(msg);
-    // });
   }
 
   ngOnDestroy() {

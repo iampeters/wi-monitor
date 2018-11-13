@@ -17,6 +17,7 @@ export class InstructionsComponent implements OnInit, OnDestroy {
   sub;
   subjectChosen;
   error;
+  subscription;
 
   constructor(
     private router: Router,
@@ -26,9 +27,6 @@ export class InstructionsComponent implements OnInit, OnDestroy {
   ) { }
 
   public getSub() {
-    this.returned.getSubjects().subscribe(data => {
-      this.subjects = data;
-    });
   }
 
   ngOnInit() {
@@ -45,11 +43,15 @@ export class InstructionsComponent implements OnInit, OnDestroy {
     // this.returned.getSubjects().subscribe(data => {
     //   this.subjects = data;
     // });
-    this.getSub();
+    // this.getSub();
+    this.subscription = this.returned.getSubjects().subscribe(data => {
+      this.subjects = data;
+    });
   }
 
   ngOnDestroy(): void {
     // some code...
+    this.subscription.unsubscribe();
   }
 
 
@@ -63,7 +65,7 @@ export class InstructionsComponent implements OnInit, OnDestroy {
 
         this.subjectChosen = data.message;
 
-        this.router.navigate(['quiz']);
+        this.router.navigate(['/quiz']);
 
 
       } else {

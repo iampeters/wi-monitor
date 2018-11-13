@@ -27,14 +27,21 @@ export class QuizComponent implements OnInit {
   error;
   player;
   opponent;
-  o_scores = 0;
-  o_correct = 0;
-  o_wrong = 0;
   wrong = 0;
   right = 0;
 
   opp;
   p1;
+  // player 1 Variables
+  p_correct;
+  p_scores;
+  p_wrong;
+  p_questions;
+  // player 2 Variables
+  o_correct;
+  o_scores;
+  o_wrong;
+  o_questions;
 
   q_count = 10;
   marks = 0;
@@ -42,9 +49,14 @@ export class QuizComponent implements OnInit {
   o_time = 30;
   counter = 15;
   expired = 0;
-  public chats;
-  public choices;
+  public chats: any = [];
   GameOver;
+
+  // options
+  option1;
+  option2;
+  option3;
+  option4;
 
   answerModel = new Answer('');
   chatModel = new Chat('', '');
@@ -98,10 +110,13 @@ export class QuizComponent implements OnInit {
         // Getting questions from user preferred subject
         this.socket.getQuestions().subscribe();
 
-        // getting answers
-        this.socket.getViewersAnswers().subscribe( data3 => {
-          this.choices = data3;
-        });
+        // the below will set the sessions
+        const session_key = data.session_key,
+              tag_id = data.tag_id,
+              game_id = data.game_id;
+
+        this.socket.taggerSession(game_id, session_key, tag_id);
+        // the above will set the sessions
 
       } else {
         // alert(data.message);
@@ -118,15 +133,25 @@ export class QuizComponent implements OnInit {
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
     // Get questions
-   setInterval(() => {
-     this.socket.getQues().subscribe(data => {
-       this.question = data;
-     });
 
-     // getting answers
-     this.socket.getViewersAnswers().subscribe(data3 => {
-       this.choices = data3;
-     });
+    setInterval(() => {
+      // getting answers
+      this.socket.getViewersAnswers().subscribe(data3 => {
+       //  this.choices = data3;
+        this.option1 = data3[0].answer;
+        this.option2 = data3[1].answer;
+        this.option3 = data3[2].answer;
+        this.option4 = data3[3].answer;
+
+      });
+
+       this.socket.getQues().subscribe(data => {
+        this.question = data.question;
+        // console.log(data);
+      });
+    }, 2000);
+
+   setInterval(() => {
 
     //  Game over
      if (this.q_count < 1) {
@@ -135,7 +160,8 @@ export class QuizComponent implements OnInit {
 
      // Game Over
      this.socket.gameOver().subscribe(data => {
-       this.GameOver = data;
+       // this.GameOver = data;
+       // console.log(data);
      });
 
    }, 1000);
@@ -146,7 +172,7 @@ export class QuizComponent implements OnInit {
       // Getting the current player
       const getter = setInterval(() => {
         this.socket.getter().subscribe(data => {
-          if (data === true) {
+          if (data.success === true) {
             this.turn = true;
 
           } else {
@@ -154,28 +180,40 @@ export class QuizComponent implements OnInit {
           }
         });
 
+      }, 1000);
+
+      const score = setInterval(() => {
         // Get player one scores
         this.socket.getP1Scores().subscribe( data => {
           this.p1 = data;
+          this.p_correct = data.p_correct;
+          this.p_scores = data.p_scores;
+          this.p_wrong = data.p_wrong;
+          this.p_questions = data.p_questions;
         });
 
         // Get player two scores
         this.socket.getOpp().subscribe(data5 => {
-          this.opp = data5;
+          this.o_correct = data5.o_correct;
+          this.o_wrong = data5.o_wrong;
+          this.o_questions = data5.o_questions;
+          this.o_scores = data5.o_scores;
         });
-
-      }, 1000);
+        // clearInterval(score);
+      }, 2000);
 
       // Getting viewers
       setInterval(() => {
         this.socket.getViewers().subscribe(data => {
-          this.viewers = data;
+          this.viewers = data.viewers;
+          // console.log(data);
         });
 
         // Getting the chat
         this.socket.chatter().subscribe(data => {
 
           this.chats = data;
+          // console.log(data);
 
         });
 
@@ -246,6 +284,7 @@ export class QuizComponent implements OnInit {
 
 
   // Checking user answer
+
   userAns(event) {
     const userChoice = event.option;
 
@@ -271,11 +310,13 @@ export class QuizComponent implements OnInit {
      this.misc.chkAnswer(userChoice).subscribe(data4 => {
 
        if (data4.success === true && data4.message === 'Correct') {
-          this.right = data4.value;
-          this.marks = data4.scores;
+          // this.right = data4.value;
+          // this.marks = data4.scores;
+          console.log(data4);
 
        } else if (data4.success === true && data4.message === 'Wrong') {
-          this.wrong = data4.value;
+          // this.wrong = data4.value;
+          console.log(data4);
 
        } else {
         // <3
@@ -291,7 +332,10 @@ export class QuizComponent implements OnInit {
 
      // getting answers
      this.socket.getViewersAnswers().subscribe(data3 => {
-       this.choices = data3;
+       this.option1 = data3[0].answer;
+       this.option2 = data3[1].answer;
+       this.option3 = data3[2].answer;
+       this.option4 = data3[3].answer;
      });
 
    }
@@ -316,7 +360,10 @@ export class QuizComponent implements OnInit {
 
     // getting answers
     this.socket.getViewersAnswers().subscribe(data3 => {
-      this.choices = data3;
+       this.option1 = data3[0].answer;
+       this.option2 = data3[1].answer;
+       this.option3 = data3[2].answer;
+       this.option4 = data3[3].answer;
     });
 
 

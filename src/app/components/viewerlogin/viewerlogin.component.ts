@@ -35,7 +35,7 @@ export class ViewerloginComponent implements OnInit {
 
     this.misc.guardianLogin(username, ward).subscribe( data => {
       if (data.success === true) {
-        this.http.navigate(['gid']);
+        this.http.navigate(['/gid']);
       } else {
         this.loginFalse = data.message;
       }

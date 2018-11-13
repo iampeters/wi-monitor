@@ -13,14 +13,14 @@
 <!-- Preloader -->
 
 <!-- Game over section -->
-<div id="game-over" *ngIf='opp.o_questions == 0; else  showQuiz' class="animated fadeIn">
+<div id="game-over" *ngIf='q_count == 0; else  showQuiz' class="animated fadeIn">
     <div class="container game-over bg-white" style="max-width: 1000px">
         <div align="center" class="row">
             <div class="col-12 col-md-5 animated pulse">
                 <h3 class="p-3 text-center">{{player}}</h3>
-                <h6 class="badge red d-inline-block p-3">Wrong Choices: &nbsp;{{p1.p_wrong}}</h6>&nbsp;&nbsp;
-                <h6 class="badge green d-inline-block p-3">Right Choices: &nbsp;{{p1.p_correct}}</h6>&nbsp;&nbsp;
-                <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{p1.p_scores}}</h6><br><br>
+                <h6 class="badge red d-inline-block p-3">Wrong Choices: &nbsp;{{p_wrong}}</h6>&nbsp;&nbsp;
+                <h6 class="badge green d-inline-block p-3">Right Choices: &nbsp;{{p_correct}}</h6>&nbsp;&nbsp;
+                <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{p_scores}}</h6><br><br>
                 <h5 *ngIf="GameOver.player == 'Win'; " class="p-3 text-center text-success animated fadeIn mb-3"><i class="fas fa-trophy fa-5x mb-3"></i><br>Won</h5>
                 <h5 *ngIf="GameOver.player == 'Lost'; " class="p-3 text-center text-danger animated fadeIn mb-3"><i class="fas fa-frown fa-5x mb-3"></i><br>Lost</h5>
                 <h5 *ngIf="GameOver.player == 'Draw'; " class="p-3 text-center text-warning animated fadeIn mb-3"><i class="fas fa-handshake fa-5x mb-3"></i><br>Draw</h5>
@@ -57,10 +57,16 @@
                         <input type="hidden" name="hidden" #hidden="ngModel" [(ngModel)]="chatModel.chats" />
 
                         <div *ngFor="let chat of chats">
-                            <div>
+                            <div *ngIf="chat.sender !== player">
+                                <span class="c-left bg-success mb-2">
+                                    <span style="font-size: 10px" class="mb-2 text-white">{{ chat.sender}}</span><br>
+                                    <span>{{ chat.message }}</span>
+                                </span>
+                            </div>
+                            <div *ngIf="chat.sender === player" >
                                 <span class="c-right bg-info mb-2">
                                     <span style="font-size: 10px" class="mb-2 text-white">{{ chat.sender}}</span><br>
-                                <span>{{ chat.message }}</span>
+                                    <span>{{ chat.message }}</span>
                                 </span>
                             </div>
 
@@ -104,10 +110,10 @@
                                     <div class="col-4 score p-0">
                                         <h6 class="text-white">{{player}}</h6>
                                         <span class="badge bg-success">Correct:</span> &nbsp;
-                                        <span class="badge bg-success">{{p1.p_correct}}</span>
+                                        <span class="badge bg-success">{{p_correct}}</span>
                                         <br>
                                         <span class="badge bg-danger">Wrong:&nbsp;</span> &nbsp;
-                                        <span class="badge bg-danger">{{p1.p_wrong}}</span>
+                                        <span class="badge bg-danger">{{p_wrong}}</span>
                                     </div>
                                     <div class="col-4 time text-center p-0">
                                         <h6 class="viewer text-white">Viewers</h6>
@@ -117,7 +123,7 @@
                                         <h6 class="text-white text-right">
                                             Time left:
                                         </h6>
-                                        <span class="badge">{{p_time}} secs</span>
+                                        <span class="badge"> secs</span>
 
                                     </div>
                                 </div>
@@ -135,33 +141,33 @@
                                                 <div class="row">
                                                     <div class="col-12 col-md-6 p-0">
                                                         <label for="A" class="form-check-label btn btn-white btn-mod">
-                                                            <input type="radio" #option="ngModel" name="option" value="{{ choices.option1}}" [ngModel] class="d-none" id="A">
+                                                            <input type="radio" #option="ngModel" name="option" value="{{option1}}" [ngModel] class="d-none" id="A">
                                                             <span class="badge "></span>
-                                                            <span class="ans">{{choices.option1}}</span>
+                                                            <span class="ans">{{option1}}</span>
                                                             <span class="b-mask"></span>
                                                         </label>
                                                     </div>
                                                     <div class="col-12 col-md-6 p-0">
                                                         <label for="B" class="form-check-label btn btn-white btn-mod">
-                                                            <input type="radio" #option="ngModel" name="option" value="{{ choices.option2}}" [ngModel] class="d-none" id="B">
+                                                            <input type="radio" #option="ngModel" name="option" value="{{ option2}}" [ngModel] class="d-none" id="B">
                                                             <span class="badge "></span>
-                                                            <span class="ans">{{choices.option2}}</span>
+                                                            <span class="ans">{{option2}}</span>
                                                             <span class="b-mask"></span>
                                                         </label>
                                                     </div>
                                                     <div class="col-12 col-md-6 p-0">
                                                         <label for="C" class="form-check-label btn btn-white btn-mod">
-                                                            <input type="radio" #option="ngModel" name="option" value="{{ choices.option3}}" [ngModel] class="d-none" id="C">
+                                                            <input type="radio" #option="ngModel" name="option" value="{{option3}}" [ngModel] class="d-none" id="C">
                                                             <span class="badge "></span>
-                                                            <span class="ans">{{choices.option3}}</span>
+                                                            <span class="ans">{{option3}}</span>
                                                             <span class="b-mask"></span>
                                                         </label>
                                                     </div>
                                                     <div class="col-12 col-md-6 p-0">
                                                         <label for="D" class="form-check-label btn btn-white btn-mod">
-                                                            <input type="radio" #option="ngModel" name="option" value="{{ choices.option4}}" [ngModel] class="d-none" id="D">
+                                                            <input type="radio" #option="ngModel" name="option" value="{{option4}}" [ngModel] class="d-none" id="D">
                                                             <span class="badge "></span>
-                                                            <span class="ans">{{choices.option4}}</span>
+                                                            <span class="ans">{{option4}}</span>
                                                             <span class="b-mask"></span>
                                                         </label>
                                                     </div>
@@ -188,8 +194,8 @@
                                 <div class="">
                                     <div class="col-12 col-md-11 offset-md-1 text-white">
                                         <span class="badge red">Subject:</span> {{ subject }} &nbsp;
-                                        <span class="badge red">Questions:</span> {{p1.p_questions}} &nbsp;
-                                        <span class="badge red">Points:</span> {{p1.p_scores}}
+                                        <span class="badge red">Questions:</span>  &nbsp; {{p_questions}}
+                                        <span class="badge red">Points:</span> {{p_scores}}
                                     </div>
                                 </div>
 
@@ -287,10 +293,10 @@
                                     <div class="col-4 score p-0">
                                         <h6 class="text-white">{{opponent}}</h6>
                                         <span class="badge bg-success">Correct:</span> &nbsp;
-                                        <span class="badge bg-success">{{opp.o_correct}}</span>
+                                        <span class="badge bg-success">{{o_correct}}</span>
                                         <br>
                                         <span class="badge bg-danger">Wrong:&nbsp;</span> &nbsp;
-                                        <span class="badge bg-danger">{{opp.o_wrong}}</span>
+                                        <span class="badge bg-danger">{{o_wrong}}</span>
                                     </div>
                                     <div class="col-4 time text-center p-0">
                                         <h6 class="viewer text-white">Viewers</h6>
@@ -318,22 +324,22 @@
                                                 <div class="row">
                                                     <div class="col-12 col-md-6 p-0">
                                                         <label for="_{{i+5}}" class="form-check-label btn btn-white btn-mod">
-                                                        <span class="ans">{{choices.option1}}</span>
+                                                        <span class="ans">{{option1}}</span>
                                                     </label>
                                                     </div>
                                                     <div class="col-12 col-md-6 p-0">
                                                         <label for="_{{i+5}}" class="form-check-label btn btn-white btn-mod">
-                                                        <span class="ans">{{choices.option2}}</span>
+                                                        <span class="ans">{{option2}}</span>
                                                     </label>
                                                     </div>
                                                     <div class="col-12 col-md-6 p-0">
                                                         <label for="_{{i+5}}" class="form-check-label btn btn-white btn-mod">
-                                                        <span class="ans">{{choices.option3}}</span>
+                                                        <span class="ans">{{option3}}</span>
                                                     </label>
                                                     </div>
                                                     <div class="col-12 col-md-6 p-0">
                                                         <label for="_{{i+5}}" class="form-check-label btn btn-white btn-mod">
-                                                        <span class="ans">{{choices.option4}}</span>
+                                                        <span class="ans">{{option4}}</span>
                                                     </label>
                                                     </div>
 
@@ -354,8 +360,8 @@
                                 <div class="">
                                     <div class="col-12 col-md-11 offset-md-1 text-white">
                                         <span class="badge red">Subject:</span> {{ subject }} &nbsp;
-                                        <span class="badge red">Questions:</span> {{opp.o_questions}} &nbsp;
-                                        <span class="badge red">Points:</span> {{opp.o_scores}}
+                                        <span class="badge red">Questions:</span> {{o_questions}} &nbsp;
+                                        <span class="badge red">Points:</span> {{o_scores}}
                                     </div>
                                 </div>
 
@@ -438,8 +444,6 @@
 
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>

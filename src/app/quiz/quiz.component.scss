@@ -1,4 +1,4 @@
-// Variables 
+// Variables
 $bar-color: #fff;
 $ball-color: #fff;
 $bg-color: rgba(26, 4, 7, 0.856);
@@ -491,16 +491,19 @@ input[type="radio"] {
 
 .c-overlay {
     position: absolute;
+    top: 0;
     left: 0;
     right: 0;
     width: 100%;
     height: 100vh;
     background: rgba(0, 0, 0, .76);
     z-index: 3000;
+
 }
 
 .container-fluid .row .card {
     position: absolute;
+    top: 0;
     z-index: 3001;
     margin-top: 100px;
 }
@@ -514,6 +517,14 @@ input[type="radio"] {
 .container-fluid .row .card .card-body .area {
     width: 100%;
     height: auto;
+}
+
+.c-right {
+    float: right;
+}
+
+.c-left {
+    float: left;
 }
 
 .c-left,

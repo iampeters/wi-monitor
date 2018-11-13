@@ -29,6 +29,7 @@ module.exports = (app) => {
                       SESSION.username = user.username
                       SESSION.fullname = user.fullname
                       SESSION.uid = user.user_id
+                    //   SESSION.key = 'gid_278443'
                       // return response
                       res.json({success: true, username: user.username, fullname: user.fullname})
                       // console.log(SESSION.username)
@@ -51,7 +52,7 @@ module.exports = (app) => {
     })
 
     // user registration
-    app.post('/register', jsonParser, (req, res) => {
+    app.post('/register', jsonParser, (req, response) => {
         // SET THE SESSION
         SESSION = req.session;
         const { username, fullname, password } = req.body;
@@ -64,17 +65,17 @@ module.exports = (app) => {
                 } else {
 
                     if(res == 0) {
-                        res.json({success: false, message: 'Username already taken'})
-                        res.end();
+                        response.json({success: false, message: 'Username already taken'})
+                        response.end();
 
                     } else {
-                        res.json({success: true, message: 'Account registered successfully. Click on Login button'})
+                        response.json({success: true, message: 'Account registered successfully. Click on Login button'})
                     }
                 }
             })
 
         } else {
-            res.json({success: false, message: 'All fields are required'})
+            response.json({success: false, message: 'All fields are required'})
         }
     })
 

@@ -7,14 +7,14 @@ module.exports = (app) => {
   var SESSION;
 
   // parent login
-  app.post('/parent/login', jsonParser, (req, res) => {
+  app.post('/parent/login', jsonParser, (req, response) => {
     SESSION = req.sesssion
 
     const { username, ward } = req.body;
 
     if ( username == '' || ward == '') {
-      res.status(401).send('Unauthorized Access /');
-      res.end();
+      response.status(401).send('Unauthorized Access /');
+      response.end();
     }
     else {
       // check if ward exist and return the id
@@ -24,12 +24,13 @@ module.exports = (app) => {
         }
         else {
           if (rows == 0) {
-            res.status(401).json({success: false, message: 'Invalid login credentials'})
-            res.end();
+            response.status(401).json({success: false, message: 'Invalid ward username'})
+            response.end();
           }
           else {
             // store the ward id
-            var user_id = rows.user_id
+            user_id = rows[0].user_id
+
 
             // Checking if this guardian is associated with the ward
             parentModel.login(username, user_id, (err, rows, fields) => {
@@ -38,12 +39,12 @@ module.exports = (app) => {
               }
               else {
                 if (rows == 0) {
-                  res.status(401).json({success: false, message: 'Invalid login credentials'})
-                  res.end();
+                  response.status(401).json({success: false, message: 'Invalid login credentials'})
+                  response.end();
                 }
                 else {
                     // store the ward id
-                    var guardian_id = rows.id;
+                    var guardian_id = rows[0].id;
 
                     var data = {
                       success : true,
@@ -53,13 +54,14 @@ module.exports = (app) => {
                     }
 
                     // ADD TO SESSION VARIABLES
-                    SESSION.wid = user_id
-                    SESSION.parent = username
-                    SESSION.parent_id = guardian_id
+                    req.session.wid = user_id
+                    req.session.parent = username
+                    req.session.parent_id = guardian_id
+                    // console.log(`here is the user id ${user_id}`)
 
                     // RETURN RESPONSE
-                    res.json(data)
-                    res.end()
+                    response.json(data)
+                    response.end()
                 }
             }
           })

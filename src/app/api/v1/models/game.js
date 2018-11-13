@@ -41,7 +41,7 @@ const getGame = (callback) => {
 
 // get game activity
 const gameActivity = (game, callback) => {
-  var sql = `SELECT * from tag where session_key = '${game}' and has_ended = '${false}'`;
+  var sql = `SELECT * from tag where session_key = '${game}' and has_ended = 'false'`;
 
   conn.query(sql, (err, rows, fields) => {
     callback(err, rows, fields)
@@ -356,7 +356,7 @@ const unsetGameUpdate = (key, callback) => {
 
 // Query to get guardian from guardian tbl 2
 const chkGuard = (uid, callback) => {
-  var sql = `SELECT username from guardian where ward_id = '${uid}' and needed = 1`;
+  var sql = `SELECT username from guardian where ward_id = '${uid}' and needed = 0`;
 
   conn.query(sql, (err, rows, fields) => {
     callback(err, rows, fields)
@@ -401,7 +401,7 @@ const chatGuardChk = (uid, callback) => {
 
 // insert into the chat table
 const chatInsert = (username, g_uname, key, message, callback) => {
-  var sql = `INSERT INTO chat values(null, '${username}', '${g_uname}', '${key}', '${msg}')`;
+  var sql = `INSERT INTO chat values(null, '${username}', '${g_uname}', '${key}', '${message}')`;
 
   conn.query(sql, (err, res) => {
     callback(err, res)

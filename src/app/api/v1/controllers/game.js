@@ -123,6 +123,27 @@ module.exports = (app) => {
       SESSION = req.session
       const { game } = req.body;
 
+      SESSION.game = game
+
+      var player,
+        opponent,
+        scores,
+        correct,
+        wrong,
+        o_scores,
+        o_correct,
+        o_wrong,
+        p_username,
+        o_username,
+        subject,
+        p_fullname,
+        o_fullname,
+        viewers,
+        p_ques,
+        o_ques,
+        p_turns,
+        o_turns
+
       // checks for session variables
       if (SESSION.parent) {
         gameModel.gameActivity(game, (err, rows, fields) => {
@@ -390,7 +411,7 @@ module.exports = (app) => {
     })
 
     // check users choice
-    app.post('/game/choice', jsonParser, (req, res) => {
+    app.post('/game/choice', jsonParser, (req, response) => {
       SESSION = req.session
       var { choice } = req.body,
           right = 1,
@@ -401,29 +422,45 @@ module.exports = (app) => {
           key = SESSION.key,
           sid = SESSION.subject_id,
           player_id = SESSION.uid,
-          ques_id = SESSION.questions_id,
+          ques_id = SESSION.vQuesId,
           sub_id = SESSION.subject_id;
 
       // get answers with the ques_id and choice
       gameModel.getChoiceAns(ques_id, choice, (err, rows, fields) => {
         if (err) {
-          console.log(`Error: ${err}`);
+          console.log(`Error1: ${err}`);
         }
         else {
           if (rows == 0) {
             // Get the current value of the user's wrong answers
             gameModel.getWrongVal(player_id, key, (err, rows, fields) => {
-              if (rows) {
+              if (rows < 0) {
+                // Inserting the current value of the wrong choice
+                gameModel.insertWrong(wrong, player_id, gid, tid, sid, key, (err, res) => {
+                  if (err) {
+                    console.log(`Error3: ${err}`);
+                  }
+                  else {
+                    if(res) {
+                      response.json({success: true, value: 1, message: 'wrong'})
+                    } else {
+                      console.log('Failed to insert into scores tbl');
+                    }
+                  }
+                })
+              }
+              else {
+
                 var wrong_value = rows[0].wrong,
                     new_value = wrong_value + 1;
                 // Update scores tbl with the current value of the wrong choice
                 gameModel.UpdateWrong(new_value, player_id, (err, res) => {
                   if (err) {
-                    console.log(`Error: ${err}`);
+                    console.log(`Error2: ${err}`);
                   }
                   else {
                     if(res) {
-                      res.json({
+                      response.json({
                           success: true,
                           value: new_value,
                           message: 'Wrong'
@@ -435,45 +472,30 @@ module.exports = (app) => {
                   }
                 })
               }
-              else {
-                // Inserting the current value of the wrong choice
-                gameModel.insertWrong(wrong, player_id, gid, tid, sid, key, (err, res) => {
-                  if (err) {
-                    console.log(`Error: ${err}`);
-                  }
-                  else {
-                    if(res) {
-                      res.json({success: true, value: 1, message: 'wrong'})
-                    } else {
-                      console.log('Failed to insert into scores tbl');
-                    }
-                  }
-                })
-              }
             })
           }
           else {
             // store result
-            var answer = rows[0].answer
+            // var answer = rows[0].answer
             // Get the current value of the user's correct answers
 
             gameModel.getCorVal(player_id, key, (err, rows, fields) => {
               if (err) {
-                console.log(`Error: ${err}`);
+                console.log(`Error4: ${err}`);
               }
               else {
-                if (rows == 0) {
+                if (rows < 0) {
                   // Inserting the current value of the correct choices
                   gameModel.ScoresInsert(player_id, right, score, gid, tid, sid, key, (err, res) => {
                     if (err) {
-                      console.log(`Error: ${err}`);
+                      console.log(`Error5: ${err}`);
                     }
                     else {
                       if (res == 0) {
                         console.log(`Error: Failed to insert into scores tbl`);
                       }
                       else {
-                        res.json({
+                        response.json({
                             success: true,
                             value: 1,
                             scores: 5,
@@ -492,14 +514,14 @@ module.exports = (app) => {
                   // update scores tbl with the current value of the correct choices
                   gameModel.ScoresUpdate(player_id, new_scores, new_value, (err, res) => {
                     if (err) {
-                      console.log(`Error: ${err}`);
+                      console.log(`Error6: ${err}`);
                     }
                     else {
                       if (res == 0) {
                         console.log(`Error: Failed to update scores`);
                       }
                       else {
-                        res.status(200).json({
+                        response.status(200).json({
                             success: true,
                             value: new_value,
                             scores: new_scores,
@@ -520,7 +542,7 @@ module.exports = (app) => {
 
 
     // generator
-    app.get('/game/generator', (req, res) => {
+    app.get('/game/generator', (req, response) => {
       SESSION = req.session
 
       if(SESSION.subject) {
@@ -533,18 +555,18 @@ module.exports = (app) => {
           // Query 1
           gameModel.generator(sid, (err, rows, fields) => {
             if (err) {
-              console.log(`Error: ${err}`);
+              console.log(`Error1: ${err}`);
             }
             else {
               if(rows) {
-                var Qid = rows[0].question_id,
+                var Qid = rows[0].questions_id,
                     question = rows[0].question,
                     answer = rows[0].answer
 
                 // getting available options
                 gameModel.generatorOptions(Qid, (err, rows, fields) => {
                   if (err) {
-                    console.log(`Error: ${err}`);
+                    console.log(`Error2: ${err}`);
                   }
                   else {
                     if(rows) {
@@ -556,11 +578,11 @@ module.exports = (app) => {
                       // Inserting into vQues tbl
                       gameModel.genvQuesIns(Qid, key, sid, (err, res) => {
                         if (err) {
-                          console.log(`Error: ${err}`);
+                          console.log(`Error3: ${err}`);
                         }
                         else {
                           if (res) {
-                            res.json({
+                            response.json({
                                 success: true,
                                 Qid: Qid,
                                 question: question
@@ -573,7 +595,7 @@ module.exports = (app) => {
                       })
                     }
                     else {
-                      res.json({
+                      response.json({
                           success: false,
                           message: 'A fatal error has occured'
                       })
@@ -584,7 +606,7 @@ module.exports = (app) => {
               }
               else {
                 // No questions
-                res.json({
+                response.json({
                     success : false,
                     message : 'Sorry! There are no questions yet'
                 })
@@ -593,13 +615,13 @@ module.exports = (app) => {
           })
       }
       else {
-        res.status(401).json({success: false})
+        response.status(401).json({success: false})
       }
     })
 
 
     // game setter
-    app.get('/game/setter', (req, res) => {
+    app.get('/game/setter', (req, response) => {
       SESSION = req.session
 
       if(SESSION.uid && SESSION.tid) {
@@ -609,10 +631,10 @@ module.exports = (app) => {
         // Getting players from the tag table
         gameModel.getSetterTag(tid, (err, rows, fields) => {
           if(err) {
-            console.log('Error: ${err}');
+            console.log(`Error1: ${err}`);
           }
           else {
-            if (rows) {
+            if (rows != 0) {
               // Assigning variables
               var db_tid = rows[0].tag_id,
                   db_player_id = rows[0].player_id,
@@ -622,23 +644,23 @@ module.exports = (app) => {
                 // Getting the user id from the database
                 gameModel.setterUserChk(db_player_id, tid, (err, rows, fields) => {
                   if(err) {
-                    console.log('Error: ${err}');
+                    console.log(`Error2: ${err}`);
                   }
                   else {
-                    if (rows) {
+                    if (rows != 0) {
                       // store results
                       var chk_p_id = rows[0].player_id,
                           isTurn = rows[0].is_player
 
-                      if ( $isTurn == 1 ) {
+                      if ( isTurn == 1 ) {
                         // Updating the tbl to false if the tbl value is true
                         gameModel.Turnsetter(chk_p_id, tid, (err, res) => {
                           if(err) {
-                            console.log('Error: ${err}');
+                            console.log(`Error3: ${err}`);
                           }
                           else {
                             if (res == 0) {
-                              res.json({
+                              response.json({
                                   success: false,
                                   message: "Oops! Could not start your turn"
                               })
@@ -647,14 +669,14 @@ module.exports = (app) => {
                               // Updating the opponent
                               gameModel.TurnsetterOpp(db_opponent_id, tid, (err, res) => {
                                 if(err) {
-                                  console.log('Error: ${err}');
+                                  console.log(`Error4: ${err}`);
                                 }
                                 else {
                                   if (res) {
-                                    res.json({success: true })
+                                    response.json({success: true })
                                   }
                                   else {
-                                    res.json({success: false})
+                                    response.json({success: false})
                                   }
                                 }
                               })
@@ -666,11 +688,11 @@ module.exports = (app) => {
                         // Updating the tbl to true if the tbl value is false
                         gameModel.TurnsetterP1(chk_p_id, tid, (err, res) => {
                           if(err) {
-                            console.log('Error: ${err}');
+                            console.log(`Error5: ${err}`);
                           }
                           else {
                             if (res == 0) {
-                              res.json({
+                              response.json({
                                   success: false,
                                   message: "Oops! Could not start your turn"
                               })
@@ -679,14 +701,14 @@ module.exports = (app) => {
                               // Updating the opponent
                               gameModel.TurnsetterP2(db_opponent_id, tid, (err, res) => {
                                 if(err) {
-                                  console.log('Error: ${err}');
+                                  console.log(`Error6: ${err}`);
                                 }
                                 else {
                                   if (res) {
-                                    res.json({success: true })
+                                    response.json({success: true })
                                   }
                                   else {
-                                    res.json({success: false})
+                                    response.json({success: false})
                                   }
                                 }
                               })
@@ -697,7 +719,7 @@ module.exports = (app) => {
 
                     }
                     else {
-                      res.json({
+                      response.json({
                           success: false,
                           message: "Oops! Could not start your turn"
                       })
@@ -709,23 +731,23 @@ module.exports = (app) => {
                 // Getting the user id from the database
                 gameModel.setterUserChk2(db_opponent_id, tid, (err, rows, fields) => {
                   if(err) {
-                    console.log('Error: ${err}');
+                    console.log(`Error7: ${err}`);
                   }
                   else {
-                    if (rows) {
+                    if (rows > 0) {
                       // saving the results
                       var chk_p_id = rows[0].player_id,
                           isTurn = rows[0].is_player
 
-                      if ( $isTurn == 1 ) {
+                      if ( isTurn == 1 ) {
                         // Updating the tbl to false if the tbl value is true
                         gameModel.Turnsetter2(chk_p_id, tid, (err, res) => {
                           if(err) {
-                            console.log('Error: ${err}');
+                            console.log('Error8: ${err}');
                           }
                           else {
                             if (res == 0) {
-                              res.json({
+                              response.json({
                                   success: false,
                                   message: "Oops! Could not start your turn"
                               })
@@ -734,14 +756,14 @@ module.exports = (app) => {
                               // Updating the opponent
                               gameModel.TurnsetterOpp2(db_player_id, tid, (err, res) => {
                                 if(err) {
-                                  console.log('Error: ${err}');
+                                  console.log('Error9: ${err}');
                                 }
                                 else {
                                   if (res) {
-                                    res.json({success: true})
+                                    response.json({success: true})
                                   }
                                   else {
-                                    res.json({success: false})
+                                    response.json({success: false})
                                   }
                                 }
                               })
@@ -753,24 +775,24 @@ module.exports = (app) => {
                         // Updating the tbl to true if the tbl value is false
                         gameModel.TurnsetterP1_2(chk_p_id, tid, (err, res) => {
                           if(err) {
-                            console.log('Error: ${err}');
+                            console.log('Error10: ${err}');
                           }
                           else {
                             if (res == 0) {
-                              res.json({success: false, message: 'Oops! Could not start your turn'})
+                              response.json({success: false, message: 'Oops! Could not start your turn'})
                             }
                             else {
                               // Updating the opponent
                               gameModel.TurnsetterOpp2_2(db_player_id, tid, (err, res) => {
                                 if(err) {
-                                  console.log('Error: ${err}');
+                                  console.log('Error11: ${err}');
                                 }
                                 else {
                                   if (res) {
-                                    res.json({success: true})
+                                    response.json({success: true})
                                   }
                                   else {
-                                    res.json({success: false})
+                                    response.json({success: false})
                                   }
                                 }
                               })
@@ -780,19 +802,19 @@ module.exports = (app) => {
                       }
                     }
                     else {
-                      res.json({success: false, message: 'Oops! Could not start your turn'})
+                      response.json({success: false, message: 'Oops! Could not start your turn'})
                     }
                   }
                 })
               }
               else {
-                res.json({success: false, message: 'Oops! There are no turns to display'})
+                response.json({success: false, message: 'Oops! There are no turns to display'})
               }
 
             }
             else {
-              res.status(501).json({ success: false, message: 'Oops! Something went wrong'})
-              res.end();
+              response.status(501).json({ success: false, message: 'Oops! Something went wrong'})
+              response.end();
             }
           }
         })
@@ -871,9 +893,9 @@ module.exports = (app) => {
 
     // chat OPEN
     // this will open the chat dialog
-    app.post('/chat/open', (req, res) => {
+    app.post('/chat/open', jsonParser, (req, res) => {
       SESSION = req.session
-      var { open } = req.body
+      // var open = req.body
 
       var username = SESSION.username,
           uid = SESSION.uid;
@@ -884,9 +906,10 @@ module.exports = (app) => {
           console.log(`Error: ${err}`);
         }
         else {
-          if (rows) {
+          if (rows != 0) {
             var g_uname = rows[0].username
             res.json({success: true})
+            // console.log(g_uname);
           }
           else {
             res.json({success: false})
@@ -894,7 +917,7 @@ module.exports = (app) => {
 
           gameModel.GuardUpdate(uid, g_uname, (err, res) => {
             if (err) {
-              console.log(`Error: ${err}`);
+              console.log(`Error from chat open: ${err}`);
             }
             else {
               if (res) {
@@ -912,7 +935,7 @@ module.exports = (app) => {
 
     // chat close
     // this will close the chat dialog
-    app.post('/chat/close', (req, res) => {
+    app.post('/chat/close', jsonParser, (req, res) => {
       SESSION = req.session
       var { close } = req.body
 
@@ -922,15 +945,17 @@ module.exports = (app) => {
       // Query to get guardian from guardian tbl
       gameModel.chkGuard2(uid, (err, rows, fields) => {
         if (err) {
-          console.log(`Error: ${err}`);
+          console.log(`Error from close: ${err}`);
         }
         else {
-          if (rows) {
+          if (rows != 0) {
             var g_uname = rows[0].username
             res.json({success: true})
+            
           }
           else {
-            res.json({success: false})
+            // res.json({success: false})
+            console.log(`could not get Guardian name from the close`)
           }
 
           gameModel.GuardUpdate2(uid, g_uname, (err, res) => {
@@ -952,21 +977,21 @@ module.exports = (app) => {
     })
 
     // this will send chat message
-    app.post('/chat/send', (req, res) => {
+    app.post('/chat/send', jsonParser, (req, response) => {
       SESSION = req.session
       var { message } = req.body,
           key = SESSION.key,
           uid = SESSION.uid,
           username = SESSION.username;
 
-      if (message !== '') {
+      if (message != '') {
         // Query guardian table
         gameModel.chatGuardChk(uid, (err, rows, fields) => {
           if (err) {
-            console.log(`Error: ${err}`);
+            console.log(`Error chat: ${err}`);
           }
           else {
-            if (rows) {
+            if (rows != 0) {
               var guardian_id = rows[0].id,
                   g_uname = rows[0].username;
 
@@ -984,12 +1009,12 @@ module.exports = (app) => {
                       }
                       else {
                         if (res) {
-                          res.status(200).json({success: true, message: 'Inserted'})
-                          res.end()
+                          response.status(200).json({success: true, message: 'Inserted'})
+                          response.end()
                         }
                         else {
-                          res.status(200).json({success: false, message: 'Failed to get help'})
-                          res.end()
+                          response.status(200).json({success: false, message: 'Failed to get help'})
+                          response.end()
                         }
                       }
                     })
@@ -1008,6 +1033,11 @@ module.exports = (app) => {
         })
 
       }
+      else {
+        console.log('Chat message cannot be empty')
+      }
 
     })
+
+
 }

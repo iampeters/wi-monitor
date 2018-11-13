@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MiscService } from '../../services/misc.service';
 import { Register } from '../../classes/user';
@@ -8,10 +8,9 @@ import { Register } from '../../classes/user';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit {
 
   info;
-  subscription;
 
   registerModel = new Register('', '', '');
 
@@ -28,10 +27,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
+ 
   // New user registration
   register(event) {
     const target = event.target;
@@ -39,7 +35,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const username = target.querySelector('#materialFormRegisterUsernameEx').value;
     const password = target.querySelector('#materialFormLoginPasswordEx').value;
 
-    this.subscription = this.misc.registerUser(fname, username, password).subscribe(data => {
+    this.misc.registerUser(fname, username, password).subscribe(data => {
       // Will do someting here
       if (data.success === true) {
         this.info = data.message;
