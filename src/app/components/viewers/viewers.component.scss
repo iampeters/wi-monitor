@@ -536,6 +536,9 @@ input[type="radio"] {
 
 #chat {
     display: none;
+    position: absolute;
+    top: 0;
+    z-index: 1000;
 }
 
 #game-over {

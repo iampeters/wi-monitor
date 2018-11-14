@@ -55,11 +55,10 @@ const vQuesQues = (qid, callback) => {
 }
 
 // Get the answers
-const vQuesAns = (question_id, sub_id, callback) => {
-  var sql = `SELECT * from answers where question_id = '${question_id}' and subject_id = ${sub_id} `;
+const vQuesAns = (question_id, callback) => {
+  var sql = `SELECT * from answers where question_id = '${question_id}'`;
 
   conn.query(sql, (err, rows, fields) => {
-
     callback(err, rows, fields)
   })
 }
@@ -136,11 +135,6 @@ const getP2 = (opponent_id, callback) => {
   })
 }
 
-
-
-
-
-
 // WHEN THE CHAT IS OPEN
 const open = (uid, callback) => {
   var sql = `SELECT username from guardian where ward_id = '${uid}'  `;
@@ -158,9 +152,6 @@ const closed = (uid, callback) => {
     callback(err, rows, fields)
   })
 }
-
-
-
 
 // Get subjects
 const getLiveSub = (subject_id, callback) => {

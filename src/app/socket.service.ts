@@ -40,7 +40,7 @@ export class SocketService {
     this.socket.emit('vInit', 'hi');
 
     // get server response
-    const observable = new Observable<Activity>(observer => {
+    const observable = new Observable<any>(observer => {
       this.socket.on('vInit', (data) => {
         observer.next(data);
       });
@@ -59,7 +59,7 @@ export class SocketService {
     this.socket.emit('needed', 'hi');
 
     // get server response
-    const observable = new Observable( observer => {
+    const observable = new Observable<any>( observer => {
       this.socket.on('needed', (data) => {
         observer.next(data);
       });
@@ -124,7 +124,7 @@ export class SocketService {
     this.socket.emit('vQues', 'hi');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<any>( observer => {
       this.socket.on('vQues', (data) => {
         observer.next(data);
       });
@@ -136,7 +136,7 @@ export class SocketService {
   }
 
   // // getViewersAnswers
-  // getViewersAnswers() {
+  // Answers() {
   //   this.socket.emit('getQuizAns', 'hi');
 
   //   // get socket response
@@ -156,7 +156,7 @@ export class SocketService {
     this.socket.emit('getViewerAns', 'hi');
 
     // get socket response
-    const observable = new Observable<Myface>( observer => {
+    const observable = new Observable<any>( observer => {
       this.socket.on('getViewerAns', (data) => {
         observer.next(data);
       });
@@ -188,7 +188,7 @@ export class SocketService {
     this.socket.emit('getLiveData', id);
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<any>( observer => {
       this.socket.on('getLiveData', (data) => {
         observer.next(data);
       });
@@ -204,7 +204,7 @@ export class SocketService {
     this.socket.emit('getLiveAns', 'id');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<any>( observer => {
       this.socket.on('getLiveAns', (data) => {
         observer.next(data);
       });
@@ -436,8 +436,8 @@ export interface Activity {
   viewers: number;
   o_count: any;
   p_count: number;
-  p_turn: number;
-  o_turn: number;
+  p_turns: number;
+  o_turns: number;
   p_questions: number;
   o_questions: any;
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MiscService } from '../services/misc.service';
-import { GetQuestionsService } from '../services/get-questions.service';
 import { SocketService } from '../socket.service';
 
 @Component({
@@ -24,53 +23,47 @@ export class LiveComponent implements OnInit {
   p_count;
   o_count;
   public id: any;
+  nogame: boolean;
+  message;
 
   constructor(
     private misc: MiscService,
     private actived: ActivatedRoute,
     private http: Router,
-    public vQues: GetQuestionsService,
     private socket: SocketService
   ) { }
 
   ngOnInit() {
     this.actived.paramMap.subscribe( params => {
-      // this.id = params.get('id');
+      this.id = params.get('id');
     });
 
     // Getting game activity
     setInterval(() => {
       this.socket.getLiveData(this.id).subscribe(data => {
-        // this.activity = data;
+        if (data.success === false) {
+          this.nogame = true;
+
+          this.message = data.message;
+          // console.log(data.message);
+        } else {
+          this.activity = data;
+        }
     });
 
     // Getting the points
     this.socket.vGameOver().subscribe(data => {
       // this.gameOver = data;
+      // console.log(data);
     });
 
     // Get Answers
     this.socket.getLiveAns().subscribe( data => {
-      // this.choices = data;
+      this.choices = data;
     });
 
     }, 1000);
 
-  }
-
-
-  // tslint:disable-next-line:use-life-cycle-interface
-  ngAfterViewInit() {
-    // setInterval(() => {
-    //   this.vQues.vQues().subscribe(data => {
-    //     this.Ques = data;
-    //   });
-
-      // getting answers
-    //   this.misc.getViewersAnswers().subscribe(data3 => {
-    //     this.choices = data3;
-    //   });
-    // }, 1000);
   }
 
 }
