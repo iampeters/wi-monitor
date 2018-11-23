@@ -1,5 +1,5 @@
 <!-- Game over section -->
-<div id="game-over" *ngIf='o_count == 0; else  showQuiz' class="animated fadeIn">
+<div id="game-over" *ngIf='o_ques == 0; else  showQuiz' class="animated fadeIn">
   <div class="container game-over bg-white" style="max-width: 1000px">
     <div align="center" class="row">
       <div class="col-12 col-md-5 animated pulse">
@@ -9,13 +9,13 @@
         <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{p_scores}}</h6>
         <br>
         <br>
-        <h5 *ngIf="gameOver.opponent == 'Win'; " class="p-3 text-center text-success animated fadeIn">
+        <h5 *ngIf="player == 'Win'; " class="p-3 text-center text-success">
           <i class="fas fa-trophy fa-5x mb-3"></i>
           <br>Won</h5>
-        <h5 *ngIf="gameOver.opponent == 'Lost'; " class="p-3 text-center text-danger animated fadeIn">
+        <h5 *ngIf="player == 'Lost'; " class="p-3 text-center text-danger">
           <i class="fas fa-frown fa-5x mb-3"></i>
           <br>Lost</h5>
-        <h5 *ngIf="gameOver.opponent == 'Draw'; " class="p-3 text-center text-warning animated fadeIn">
+        <h5 *ngIf="player == 'Draw'; " class="p-3 text-center text-warning">
           <i class="fas fa-handshake fa-5x mb-3"></i>
           <br>Draw</h5>
       </div>
@@ -26,13 +26,13 @@
         <h6 class="badge brown d-inline-block p-3">Total Points: &nbsp;{{o_scores}}</h6>
         <br>
         <br>
-        <h5 *ngIf="gameOver.player == 'Win'; " class="p-3 text-center text-success animated fadeIn">
+        <h5 *ngIf="opponent == 'Win'; " class="p-3 text-center text-success">
           <i class="fas fa-trophy fa-5x mb-3"></i>
           <br>Won</h5>
-        <h5 *ngIf="gameOver.player == 'Lost'; " class="p-3 text-center text-danger animated fadeIn">
+        <h5 *ngIf="opponent == 'Lost'; " class="p-3 text-center text-danger">
           <i class="fas fa-frown fa-5x mb-3"></i>
           <br>Lost</h5>
-        <h5 *ngIf="gameOver.player == 'Draw'; " class="p-3 text-center text-warning animated fadeIn">
+        <h5 *ngIf="opponent == 'Draw'; " class="p-3 text-center text-warning">
           <i class="fas fa-handshake fa-5x mb-3"></i>
           <br> Draw</h5>
         <!-- <h5 class="p-3 text-center text-success"> <i class="fas fa-user-lock fa-5x mb-3"></i></h5> -->
@@ -60,13 +60,6 @@
             <input type="hidden" name="hidden" #hidden="ngModel" [(ngModel)]="chatModel.chats" />
 
             <div *ngFor="let chat of chats">
-              <!-- <div>
-                    <span class="c-right bg-info mb-2">
-                        <span style="font-size: 10px" class="mb-2 text-white">{{ chat.sender}}</span>
-                    <br>
-                    <span>{{ chat.message }}</span>
-                    </span>
-                </div> -->
 
               <div *ngIf="chat.sender === p_username">
                 <span class="c-left bg-success mb-2">

@@ -10,24 +10,27 @@ module.exports = (app) => {
   app.post('/parent/login', jsonParser, (req, response) => {
     SESSION = req.sesssion
 
-    const { username, ward } = req.body;
+    const {
+      username,
+      ward
+    } = req.body;
 
-    if ( username == '' || ward == '') {
+    if (username == '' || ward == '') {
       response.status(401).send('Unauthorized Access /');
       response.end();
-    }
-    else {
+    } else {
       // check if ward exist and return the id
       parentModel.ward(ward, (err, rows, fields) => {
         if (err) {
           console.log(`Error: ${err}`);
-        }
-        else {
+        } else {
           if (rows == 0) {
-            response.status(401).json({success: false, message: 'Invalid ward username'})
+            response.status(401).json({
+              success: false,
+              message: 'Invalid ward username'
+            })
             response.end();
-          }
-          else {
+          } else {
             // store the ward id
             user_id = rows[0].user_id
 
@@ -36,35 +39,36 @@ module.exports = (app) => {
             parentModel.login(username, user_id, (err, rows, fields) => {
               if (err) {
                 console.log(`Error: ${err}`);
-              }
-              else {
+              } else {
                 if (rows == 0) {
-                  response.status(401).json({success: false, message: 'Invalid login credentials'})
+                  response.status(401).json({
+                    success: false,
+                    message: 'Invalid login credentials'
+                  })
                   response.end();
+                } else {
+                  // store the ward id
+                  var guardian_id = rows[0].id;
+
+                  var data = {
+                    success: true,
+                    parent: username,
+                    ward: ward,
+                    ward_id: user_id
+                  }
+
+                  // ADD TO SESSION VARIABLES
+                  req.session.wid = user_id
+                  req.session.parent = username
+                  req.session.parent_id = guardian_id
+                  // console.log(`here is the user id ${user_id}`)
+
+                  // RETURN RESPONSE
+                  response.json(data)
+                  response.end()
                 }
-                else {
-                    // store the ward id
-                    var guardian_id = rows[0].id;
-
-                    var data = {
-                      success : true,
-                      parent : username,
-                      ward : ward,
-                      ward_id : user_id
-                    }
-
-                    // ADD TO SESSION VARIABLES
-                    req.session.wid = user_id
-                    req.session.parent = username
-                    req.session.parent_id = guardian_id
-                    // console.log(`here is the user id ${user_id}`)
-
-                    // RETURN RESPONSE
-                    response.json(data)
-                    response.end()
-                }
-            }
-          })
+              }
+            })
           }
         }
       })
@@ -77,36 +81,42 @@ module.exports = (app) => {
     SESSION = req.session
 
     if (SESSION.parent) {
-        res.json({success: true})
-    }
-    else {
-        res.json({success: false})
+      res.json({
+        success: true
+      })
+    } else {
+      res.json({
+        success: false
+      })
     }
   })
 
 
   // parent chats
-  app.post('/parent/chat', jsonParser, (req, res) => {
+  app.post('/parent/chat', jsonParser, (req, response) => {
     SESSION = req.session
-    const { message } = req.body
+    const {
+      message
+    } = req.body
 
     if (message !== '') {
       // saving session Variables
       var key = SESSION.game,
-          pid = SESSION.parent_id,
-          parent = SESSION.parent;
+        pid = SESSION.parent_id,
+        parent = SESSION.parent;
 
       // get ward_id
       parentModel.getWardId(parent, (err, rows, fields) => {
         if (err) {
           console.log(`Error: ${err}`);
-        }
-        else {
+        } else {
           if (rows == 0) {
-            res.status(404).json({success: false, message: 'No records found'})
+            response.status(404).json({
+              success: false,
+              message: 'No records found'
+            })
             res.end();
-          }
-          else {
+          } else {
             // store result
             var ward_id = rows[0].ward_id
 
@@ -114,43 +124,50 @@ module.exports = (app) => {
             parentModel.getWardUsername(ward_id, (err, rows, fields) => {
               if (err) {
                 console.log(`Error: ${err}`);
-              }
-              else {
+              } else {
                 if (rows == 0) {
-                  res.status(404).json({success: false, message: 'No records found'})
+                  response.status(404).json({
+                    success: false,
+                    message: 'No records found'
+                  })
                   res.end();
-                }
-                else {
+                } else {
                   // store result
                   var ward = rows[0].username;
                 }
+
+                // insert into chat tbl
+                parentModel.chatInsert(parent, ward, key, message, (err, res) => {
+                  if (err) {
+                    console.log(`Error: ${err}`);
+                  } else {
+                    if (res == 0) {
+                      response.status(501).json({
+                        success: false,
+                        message: 'Failed to insert chat'
+                      })
+                      response.end();
+                    } else {
+                      // store result
+                      response.status(200).json({
+                        success: true,
+                        message: 'Inserted'
+                      })
+                      response.end();
+                    }
+                  }
+                })
               }
             })
           }
         }
       })
-
-      // insert into chat tbl
-      parentModel.chatInsert(parent, ward, key, message, (err, res) => {
-          if (err) {
-            console.log(`Error: ${err}`);
-          }
-          else {
-            if (res == 0) {
-              res.status(501).json({success: false, message: 'Failed to insert chat'})
-              res.end();
-            }
-            else {
-              // store result
-              res.status(200).json({success: true, message: 'Inserted'})
-              res.end();
-            }
-          }
+    } else {
+      response.json({
+        success: false,
+        message: 'Please Enter a message'
       })
-    }
-    else {
-      res.json({success: false, message: 'Please Enter a message'})
-      res.end();
+      response.end();
     }
   })
 
@@ -159,12 +176,15 @@ module.exports = (app) => {
     SESSION = req.session
 
     if (SESSION.parent) {
-      req.session.destroy( (err) => {
+      req.session.destroy((err) => {
         if (err) {
-          res.json({success: false})
-        }
-        else {
-          res.json({success: true})
+          res.json({
+            success: false
+          })
+        } else {
+          res.json({
+            success: true
+          })
         }
       })
     }

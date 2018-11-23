@@ -51,6 +51,8 @@ export class QuizComponent implements OnInit {
   expired = 0;
   public chats: any = [];
   GameOver;
+  gPlayer;
+  gOpponent;
 
   // options
   option1;
@@ -160,8 +162,8 @@ export class QuizComponent implements OnInit {
 
      // Game Over
      this.socket.gameOver().subscribe(data => {
-       // this.GameOver = data;
-       // console.log(data);
+       this.gPlayer = data.player;
+       this.gOpponent = data.opponent;
      });
 
    }, 1000);
@@ -213,7 +215,6 @@ export class QuizComponent implements OnInit {
         this.socket.chatter().subscribe(data => {
 
           this.chats = data;
-          // console.log(data);
 
         });
 

@@ -30,8 +30,8 @@ export class ViewersComponent implements OnInit {
   o_scores;
   o_correct;
   o_wrong;
-  // p_username;
-  // o_username;
+  p_username;
+  o_username;
   subject;
   p_fullname;
   o_fullname;
@@ -82,32 +82,35 @@ export class ViewersComponent implements OnInit {
       this.o_turns = data.o_turns;
       this.p_ques = data.p_ques;
       this.o_ques = data.o_ques;
+      this.p_username = data.p_username;
 
      });
 
      // Getting need
      this.socket.needed().subscribe( data => {
-        // if (data.success === true) {
-        //   this.needed = true;
-        //   const chat = document.getElementById('chat');
-        //   chat.style.display = 'block';
-        // } else {
-        //   this.needed = false;
-        //   const chat = document.getElementById('chat');
-        //   chat.style.display = 'none';
-        // }
+        if (data.success === true) {
+          this.needed = true;
+          const chat = document.getElementById('chat');
+          chat.style.display = 'block';
+        } else {
+          this.needed = false;
+          const chat = document.getElementById('chat');
+          chat.style.display = 'none';
+        }
      });
 
 
      // Getting the chats
      this.socket.parentChatter().subscribe( data => {
-       // this.chats = data;
-      //  console.log(data);
+       this.chats = data;
      });
 
      // Getting the points
      this.socket.vGameOver().subscribe( data => {
-       // this.gameOver = data;
+       this.gameOver = data;
+      //  console.log(data);
+      this.player = data.player;
+      this.opponent = data.opponent;
 
      });
 

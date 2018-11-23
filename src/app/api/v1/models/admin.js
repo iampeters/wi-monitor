@@ -29,7 +29,7 @@ const addSubject = (subject, callback) => {
 
 // add questions
 const addQuestion = (question, subject, answer, callback) => {
-  var sql = `insert into questions (subject, question, answer ) values('${subject_id}', '${question}', '${answer}')`;
+  var sql = `insert into questions (subject_id, question, answer ) values('${subject}', '${question}', '${answer}')`;
 
   conn.query(sql, (err, res) => {
     callback(err, res)
@@ -64,7 +64,7 @@ const chkGuardian = (username, callback) => {
 
 // Inserting new guardian if username is available
 const addGuardian = (guardian, ward, relationship, phone, email, username, callback) => {
-  var sql = `INSERT INTO guardian Values('', '${username}', '${ward_id}', '${fullname}', '${email}','${phone}','${relationship}', 0)`;
+  var sql = `INSERT INTO guardian Values('', '${username}', '${ward}', '${guardian}', '${email}','${phone}','${relationship}', 0)`;
 
   conn.query(sql, (err, res) => {
     callback(err, res)

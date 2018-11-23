@@ -25,6 +25,8 @@ export class LiveComponent implements OnInit {
   public id: any;
   nogame: boolean;
   message;
+  player;
+  opponent;
 
   constructor(
     private misc: MiscService,
@@ -43,9 +45,7 @@ export class LiveComponent implements OnInit {
       this.socket.getLiveData(this.id).subscribe(data => {
         if (data.success === false) {
           this.nogame = true;
-
           this.message = data.message;
-          // console.log(data.message);
         } else {
           this.activity = data;
         }
@@ -53,8 +53,8 @@ export class LiveComponent implements OnInit {
 
     // Getting the points
     this.socket.vGameOver().subscribe(data => {
-      // this.gameOver = data;
-      // console.log(data);
+      this.player = data.player;
+      this.opponent = data.opponent;
     });
 
     // Get Answers

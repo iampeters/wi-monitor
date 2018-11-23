@@ -39,7 +39,7 @@ module.exports = (app) => {
 
     // get list of subjects
     app.get('/subjects', (req, res) => {
-      if (req.session.username) {
+      if (req.session.username || req.session.admin) {
         // getting subjects from the gameModel
         gameModel.subjects((err, rows, fields) => {
           if( err ) {

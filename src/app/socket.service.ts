@@ -92,7 +92,7 @@ export class SocketService {
     this.socket.emit('vGameOver', 'hi');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<any>( observer => {
       this.socket.on('vGameOver', (data) => {
         observer.next(data);
       });
@@ -108,7 +108,7 @@ export class SocketService {
     this.socket.emit('GameOver', 'hi');
 
     // get socket response
-    const observable = new Observable( observer => {
+    const observable = new Observable<any>( observer => {
       this.socket.on('GameOver', (data) => {
         observer.next(data);
       });

@@ -73,7 +73,7 @@ export class MiscService {
 
   // Add subject
   addSubject(subject) {
-    return this.http.post<Myface>(this.__server + '/add/subjects', {
+    return this.http.post<Myface>(this.__server + 'add/subjects', {
       subject
     });
   }

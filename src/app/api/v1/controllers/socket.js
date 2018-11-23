@@ -66,128 +66,130 @@ module.exports = (io) => {
                   if (rows == 0) {
                     console.log('Failed to fetch player name');
                   } else {
-                    Data.p_username = rows[0].useranme
+                    Data.p_username = rows[0].username
                     Data.p_fullname = rows[0].fullname
 
                   }
-                }
-              })
 
-              // getting opponent names
-              opponent = Data.opponent
-              gameModel.o_name(opponent, (err, rows, fields) => {
-                if (err) {
-                  console.log(`Error3: ${err}`);
-                } else {
-                  if (rows == 0) {
-                    console.log('Failed to fetch player name');
-                  } else {
-                    Data.o_username = rows[0].useranme
-                    Data.o_fullname = rows[0].fullname
-                  }
-                }
-              })
 
-              // get subject
-              subject_id = Data.subject_id
-              gameModel.subj(subject_id, (err, rows, fields) => {
-                if (err) {
-                  console.log(`Error4: ${err}`);
-                } else {
-                  if (rows == 0) {
-                    console.log('Failed to fetch player name');
-                  } else {
-                    // store results
-                    Data.subject = rows[0].subject
-                  }
-                }
-              })
+                  // getting opponent names
+                  opponent = Data.opponent
+                  gameModel.o_name(opponent, (err, rows, fields) => {
+                    if (err) {
+                      console.log(`Error3: ${err}`);
+                    } else {
+                      if (rows == 0) {
+                        console.log('Failed to fetch player name');
+                      } else {
+                        Data.o_username = rows[0].username
+                        Data.o_fullname = rows[0].fullname
+                      }
+                    }
+                  })
 
-              // get viewers
-              gameModel.viewers(game, (err, rows, fields) => {
-                if (err) {
-                  console.log(`Error5: ${err}`);
-                } else {
-                  if (rows == 0) {
-                    console.log('Failed to fetch player name');
-                  } else {
-                    // store results
-                    Data.viewers = rows[0].viewers
-                  }
-                }
-              })
+                  // get subject
+                  subject_id = Data.subject_id
+                  gameModel.subj(subject_id, (err, rows, fields) => {
+                    if (err) {
+                      console.log(`Error4: ${err}`);
+                    } else {
+                      if (rows == 0) {
+                        console.log('Failed to fetch player name');
+                      } else {
+                        // store results
+                        Data.subject = rows[0].subject
+                      }
+                    }
+                  })
 
-              // get turns for player
-              tag_id = Data.tag_id
-              gameModel.turns_p_query(tag_id, player, (err, rows, fields) => {
-                if (err) {
-                  console.log(`Error6: ${err}`);
-                } else {
-                  if (rows == 0) {
-                    console.log('Failed to fetch player name');
-                  } else {
-                    // store results
-                    Data.p_turns = rows[0].is_player
-                  }
-                }
-              })
+                  // get viewers
+                  gameModel.viewers(game, (err, rows, fields) => {
+                    if (err) {
+                      console.log(`Error5: ${err}`);
+                    } else {
+                      if (rows == 0) {
+                        console.log('Failed to fetch player name');
+                      } else {
+                        // store results
+                        Data.viewers = rows[0].viewers
+                      }
+                    }
+                  })
 
-              // get turns for opponent
-              gameModel.turns_o_query(tag_id, opponent, (err, rows, fields) => {
-                if (err) {
-                  console.log(`Error7: ${err}`);
-                } else {
-                  if (rows == 0) {
-                    console.log('Failed to fetch player name');
-                  } else {
-                    // store results
-                    Data.o_turns = rows[0].is_player
-                  }
-                }
-              })
+                  // get turns for player
+                  tag_id = Data.tag_id
+                  gameModel.turns_p_query(tag_id, player, (err, rows, fields) => {
+                    if (err) {
+                      console.log(`Error6: ${err}`);
+                    } else {
+                      if (rows == 0) {
+                        console.log('Failed to fetch player name');
+                      } else {
+                        // store results
+                        Data.p_turns = rows[0].is_player
+                      }
+                    }
+                  })
 
-              // Getting the scores for player
-              gameModel.player_score(player, game, (err, rows, fields) => {
-                if (err) {
-                  console.log(`Error8: ${err}`);
-                } else {
-                  if (rows == 0) {
-                    // store results
-                    Data.correct = 0
-                    Data.wrong = 0
-                    Data.scores = 0
-                    Data.p_ques = 0
-                  } else {
-                    // store results
-                    Data.correct = rows[0].correct
-                    Data.wrong = rows[0].wrong
-                    Data.scores = rows[0].scores
-                    Data.p_ques = rows[0].questions
-                  }
-                }
-              })
+                  // get turns for opponent
+                  gameModel.turns_o_query(tag_id, opponent, (err, rows, fields) => {
+                    if (err) {
+                      console.log(`Error7: ${err}`);
+                    } else {
+                      if (rows == 0) {
+                        console.log('Failed to fetch player name');
+                      } else {
+                        // store results
+                        Data.o_turns = rows[0].is_player
+                      }
+                    }
+                  })
 
-              // Getting the scores for opponent
-              gameModel.opponent_score(opponent, game, (err, rows, fields) => {
-                if (err) {
-                  console.log(`Error9: ${err}`);
-                } else {
-                  if (rows == 0) {
-                    // store results
-                    Data.o_correct = 0
-                    Data.o_wrong = 0
-                    Data.o_scores = 0
-                    Data.o_ques = 0
-                  } else {
-                    // store results
-                    Data.o_correct = rows[0].correct
-                    Data.o_wrong = rows[0].wrong
-                    Data.o_scores = rows[0].scores
-                    Data.o_ques = rows[0].questions
-                  }
-                  // RETURN SERVER RESPONSE
-                  //   console.log(Data)
-                  socket.emit('vInit', Data)
+                  // Getting the scores for player
+                  gameModel.player_score(player, game, (err, rows, fields) => {
+                    if (err) {
+                      console.log(`Error8: ${err}`);
+                    } else {
+                      if (rows == 0) {
+                        // store results
+                        Data.correct = 0
+                        Data.wrong = 0
+                        Data.scores = 0
+                        Data.p_ques = 0
+                      } else {
+                        // store results
+                        Data.correct = rows[0].correct
+                        Data.wrong = rows[0].wrong
+                        Data.scores = rows[0].scores
+                        Data.p_ques = rows[0].questions
+                      }
+                    }
+                  })
+
+                  // Getting the scores for opponent
+                  gameModel.opponent_score(opponent, game, (err, rows, fields) => {
+                    if (err) {
+                      console.log(`Error9: ${err}`);
+                    } else {
+                      if (rows == 0) {
+                        // store results
+                        Data.o_correct = 0
+                        Data.o_wrong = 0
+                        Data.o_scores = 0
+                        Data.o_ques = 0
+                      } else {
+                        // store results
+                        Data.o_correct = rows[0].correct
+                        Data.o_wrong = rows[0].wrong
+                        Data.o_scores = rows[0].scores
+                        Data.o_ques = rows[0].questions
+                      }
+                      // RETURN SERVER RESPONSE
+                      //   console.log(Data)
+                      socket.emit('vInit', Data)
+                    }
+                  })
+
                 }
               })
 
@@ -264,22 +266,21 @@ module.exports = (io) => {
                 } else {
                   if (rows == 0) {
                     // emit error
-                    socket.emit('parent-chatter', { success: false })
+                    socket.emit('parent-chatter', {
+                      success: false
+                    })
                   } else {
                     // store result
                     var username = rows[0].username;
-
 
                     // chat logic
                     wsModel.getChats(username, parent, (err, rows, fields) => {
                       if (err) {
                         console.log(`Error13: ${err}`);
                       } else {
-                        if (rows > 0) {
+                        if (rows != 0) {
                           // emit response
-                          socket.emit('parent-chatter', {
-                            data: rows[0]
-                          })
+                          socket.emit('parent-chatter', rows)
                         } else {
                           // will emit empty chats
                           socket.emit('parent-chatter', {
@@ -297,10 +298,12 @@ module.exports = (io) => {
           }
         })
 
-      }
-      else {
-      	// RETURN 401 ERROR
-      	console.log('parent-chatter', {success: false, message: 'Unauthorized Access /'});
+      } else {
+        // RETURN 401 ERROR
+        console.log('parent-chatter', {
+          success: false,
+          message: 'Unauthorized Access /'
+        });
       }
     })
 
@@ -323,16 +326,17 @@ module.exports = (io) => {
               })
             } else {
 
+
               if (uid === rows[0].player_id) {
                 // store player result
                 var player_id = rows[0].player_id,
                   p_scores = rows[0].scores;
               }
 
-              if (uid !== rows[0].player_id) {
+              if (uid !== rows[1].player_id) {
                 // store opponent result
-                var opp = rows[0].player_id,
-                  o_scores = rows[0].scores;
+                var opp = rows[1].player_id,
+                  o_scores = rows[1].scores;
               }
 
               // scores logic for opponent
@@ -1028,10 +1032,10 @@ module.exports = (io) => {
                   p_scores = rows[0].scores;
               }
 
-              if (uid !== rows[0].player_id) {
+              if (uid !== rows[1].player_id) {
                 // store opponent result
-                var opp = rows[0].player_id,
-                  o_scores = rows[0].scores;
+                var opp = rows[1].player_id,
+                  o_scores = rows[1].scores;
               }
 
               // scores logic for opponent
