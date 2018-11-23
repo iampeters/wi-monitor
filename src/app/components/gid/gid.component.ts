@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class GidComponent implements OnInit {
 
-  public games = [];
+  public games: any = [];
   error;
 
   gameModel = new Game('Select game ID...');

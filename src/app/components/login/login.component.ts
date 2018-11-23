@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
      this.subscription = this.misc.loginUser(username, password).subscribe(data => {
       if (data.success === true) {
-        
+
         this.misc.setLoggedin(true);
 
         this.router.navigate(['/profile']);

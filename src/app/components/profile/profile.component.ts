@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
 
-  leaderboard = [];
+  leaderboard: any = [];
 
   constructor(
     private misc: MiscService,

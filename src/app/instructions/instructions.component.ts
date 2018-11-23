@@ -13,7 +13,7 @@ import { MiscService } from '../services/misc.service';
 
 export class InstructionsComponent implements OnInit, OnDestroy {
 
-  public subjects = [];
+  public subjects: any = [];
   sub;
   subjectChosen;
   error;

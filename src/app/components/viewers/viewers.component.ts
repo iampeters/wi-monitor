@@ -12,13 +12,13 @@ import { SocketService } from '../../socket.service';
   providers: [SocketService]
 })
 export class ViewersComponent implements OnInit {
-  public activity;
+  public activity: any;
   error;
   public Ques;
   chats: any = [];
   empty;
   needed = false;
-  choices = [];
+  choices: any = [];
   q_count;
   gameOver;
 

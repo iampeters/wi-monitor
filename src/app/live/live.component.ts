@@ -11,15 +11,15 @@ import { SocketService } from '../socket.service';
 })
 export class LiveComponent implements OnInit {
 
-  public activity = [];
+  public activity: any = [];
   error;
-  public Ques = [];
-  chats = [];
+  public Ques: any = [];
+  chats: any = [];
   empty;
   needed = false;
-  choices = [];
+  choices: any = [];
   q_count;
-  gameOver = [];
+  gameOver: any = [];
   p_count;
   o_count;
   public id: any;

@@ -15,7 +15,7 @@ loginModel = new Login('', '');
 
 log: any;
 
-users = [];
+users: any = [];
 fullname;
 truty = false;
 

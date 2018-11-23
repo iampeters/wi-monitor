@@ -8,7 +8,7 @@ import { MiscService } from '../../services/misc.service';
 })
 export class LeaderboardComponent implements OnInit {
 
-  leaderboard = [];
+  leaderboard: any = [];
 
   constructor( private misc: MiscService) { }
 

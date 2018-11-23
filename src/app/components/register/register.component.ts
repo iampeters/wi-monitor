@@ -27,7 +27,6 @@ export class RegisterComponent implements OnInit {
     });
   }
 
- 
   // New user registration
   register(event) {
     const target = event.target;

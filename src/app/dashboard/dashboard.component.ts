@@ -28,8 +28,8 @@ export class DashboardComponent implements OnInit {
   // new guardian model
   guardianModel = new NewGuardian('', '', '', '', '', 'Choose Ward...' );
 
-  public Subjs = [];
-  public Wards = [];
+  public Subjs: any = [];
+  public Wards: any = [];
 
   constructor(
     private misc: MiscService,
